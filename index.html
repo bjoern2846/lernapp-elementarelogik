@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Logik SS26</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   THEME — DUNKEL (Standard) / HELL
+   Toggle via JS: html.light Klasse
+   ══════════════════════════════════════ */
+
+/* ── DUNKEL (Standard, immer aktiv wenn kein .light) ── */
+:root{
+--bg:#07080b;
+--s1:#0d0f15;
+--s2:#131720;
+--s3:#1a1f2e;
+--s4:#222840;
+--border:#1e2535;
+--border2:#2a3350;
+--teal:#4dd9c0;
+--violet:#9b87f5;
+--orange:#f59e4d;
+--green:#4ade80;
+--pink:#f472b6;
+--sky:#38bdf8;
+--red:#f87171;
+--warn:#fbbf24;
+--text:#eef2f9;
+--dim:#8899bb;
+--muted:#3d4f6e;
+--r:14px;
+--r2:20px;
+--tint-teal:rgba(77,217,192,0.08);
+--tint-teal-b:rgba(77,217,192,0.22);
+--tint-violet:rgba(155,135,245,0.08);
+--tint-violet-b:rgba(155,135,245,0.22);
+--tint-warn:rgba(251,191,36,0.07);
+--tint-warn-b:rgba(251,191,36,0.22);
+--tint-sky:rgba(56,189,248,0.07);
+--tint-sky-b:rgba(56,189,248,0.22);
+--tint-orange:rgba(245,158,77,0.07);
+--tint-orange-b:rgba(245,158,77,0.22);
+--tint-green:rgba(74,222,128,0.10);
+--tint-green-b:rgba(74,222,128,0.25);
+--tint-red:rgba(248,113,113,0.09);
+--tint-red-b:rgba(248,113,113,0.25);
+}
+
+/* ── HELL (aktiv wenn html.light vorhanden) ── */
+html.light{
+--bg:#f0f2f5;
+--s1:#ffffff;
+--s2:#e8ecf2;
+--s3:#dde2eb;
+--s4:#d0d6e2;
+--border:#c8cdd9;
+--border2:#b8bfce;
+--teal:#0d9488;
+--violet:#7c3aed;
+--orange:#d97706;
+--green:#16a34a;
+--pink:#db2777;
+--sky:#0284c7;
+--red:#dc2626;
+--warn:#d97706;
+--text:#0f172a;
+--dim:#334155;
+--muted:#94a3b8;
+--tint-teal:rgba(13,148,136,0.09);
+--tint-teal-b:rgba(13,148,136,0.28);
+--tint-violet:rgba(124,58,237,0.09);
+--tint-violet-b:rgba(124,58,237,0.28);
+--tint-warn:rgba(217,119,6,0.09);
+--tint-warn-b:rgba(217,119,6,0.30);
+--tint-sky:rgba(2,132,199,0.09);
+--tint-sky-b:rgba(2,132,199,0.28);
+--tint-orange:rgba(217,119,6,0.09);
+--tint-orange-b:rgba(217,119,6,0.28);
+--tint-green:rgba(22,163,74,0.10);
+--tint-green-b:rgba(22,163,74,0.28);
+--tint-red:rgba(220,38,38,0.09);
+--tint-red-b:rgba(220,38,38,0.28);
+}
+
+/* Light-spezifische Elemente die einen eigenen Hintergrund brauchen */
+html.light #topbar    { background:#ffffff; }
+html.light #bnav      { background:#ffffff; }
+html.light .lv-topbar { background:#ffffff; }
+html.light .lv-footer { background:#f0f2f5; }
+html.light .hero-card { background:linear-gradient(135deg,#e4e9f4,#d8dff0); }
+html.light .kurs-header { background:#e8ecf2; }
+html.light .btn.p     { color:#ffffff; }
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-btn{
+width:34px; height:34px; border-radius:10px;
+border:1px solid var(--border);
+background:var(--s2); cursor:pointer;
+display:flex; align-items:center; justify-content:center;
+font-size:1rem; flex-shrink:0;
+}
+
+/* Sanfter Übergang + Reset */
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+-webkit-tap-highlight-color:transparent;
+transition:background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+}
+/* Karten-Flip-Animation nicht überschreiben */
+.fc{ transition:transform 0.5s cubic-bezier(.4,0,.2,1); }
+html{font-size:20px}
+html,body{
+height:100%;
+height:100dvh;
+overflow:hidden;
+font-family:'DM Sans',sans-serif;
+background:var(--bg);
+color:var(--text);
+display:flex;
+flex-direction:column;
+}
+/* Verhindert weißen Overscroll-Flash auf iOS */
+body::before{content:'';position:fixed;inset:0;background:var(--bg);z-index:-1}
+
+/* TOPBAR */
+#topbar{
+display:flex;align-items:center;justify-content:space-between;
+padding:13px 18px;border-bottom:1px solid var(--border);
+background:var(--bg);
+position:relative;z-index:100;flex-shrink:0;
+padding-top:max(13px, env(safe-area-inset-top));
+padding-left:max(18px, env(safe-area-inset-left));
+padding-right:max(18px, env(safe-area-inset-right));
+}
+.logo{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--teal);letter-spacing:-0.02em}
+.logo small{display:block;font-family:'DM Sans',sans-serif;font-size:0.6rem;color:var(--muted);font-weight:400;margin-top:1px}
+.pills{display:flex;gap:7px}
+.pill{background:var(--s2);border:1px solid var(--border);border-radius:999px;
+padding:4px 11px;font-size:0.7rem;font-family:'JetBrains Mono',monospace;font-weight:500}
+.pill.xp{color:var(--warn)}
+.pill.streak{color:var(--orange)}
+
+/* BOTTOM NAV — always pinned to bottom */
+#bnav{
+display:flex;background:var(--bg);border-top:1px solid var(--border);
+flex-shrink:0;z-index:100;
+padding-bottom:env(safe-area-inset-bottom);
+}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+padding:9px 4px 7px;cursor:pointer;border:none;background:none;
+color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.58rem;font-weight:600;
+letter-spacing:0.03em;gap:3px;border-top:2px solid transparent;transition:color 0.2s}
+.nb .ni{font-size:1.15rem;line-height:1}
+.nb.active{color:var(--teal);border-top-color:var(--teal)}
+
+/* SCROLL — flex:1 so it fills space between topbar and bnav */
+#content{
+flex:1;
+overflow-y:auto;
+overflow-x:hidden;
+-webkit-overflow-scrolling:touch;
+/* Ensure content area has dark bg */
+background:var(--bg);
+/* Prevent iOS momentum scroll exposing white */
+overscroll-behavior:contain;
+}
+.screen{display:none;min-height:100%;animation:fadeUp 0.2s ease;background:var(--bg)}
+.screen.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* SHARED */
+.pad{padding:18px}
+.sec-label{font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+color:var(--muted);margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);padding:16px}
+.card+.card{margin-top:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+padding:11px 20px;border-radius:11px;border:1px solid var(--border);
+background:var(--s2);color:var(--text);cursor:pointer;
+font-size:0.82rem;font-weight:600;font-family:'DM Sans',sans-serif;
+transition:all 0.15s;white-space:nowrap;-webkit-appearance:none}
+.btn:active{transform:scale(0.97)}
+.btn.p{background:var(--teal);color:#07080b;border-color:var(--teal)}
+.btn.v{background:rgba(155,135,245,0.15);color:var(--violet);border-color:rgba(155,135,245,0.3)}
+.btn.g{background:rgba(74,222,128,0.1);color:var(--green);border-color:rgba(74,222,128,0.25)}
+.btn.r{background:rgba(248,113,113,0.09);color:var(--red);border-color:rgba(248,113,113,0.25)}
+.btn.o{background:rgba(245,158,77,0.1);color:var(--orange);border-color:rgba(245,158,77,0.25)}
+.formula{background:var(--bg);border:1px solid var(--border2);border-radius:9px;
+padding:10px 14px;margin:8px 0;font-family:'JetBrains Mono',monospace;
+font-size:0.8rem;color:var(--teal);overflow-x:auto;line-height:1.9;white-space:pre-wrap}
+code{font-family:'JetBrains Mono',monospace;background:var(--s3);padding:1px 6px;
+border-radius:4px;font-size:0.85em;color:var(--teal)}
+
+/* ── DASHBOARD ══ */
+.hero-card{
+background:linear-gradient(135deg,var(--s2),var(--s3));
+border:1px solid var(--border2);border-radius:var(--r2);padding:20px;margin-bottom:14px;
+position:relative;overflow:hidden;
+}
+.hero-card::after{content:'';position:absolute;top:-60px;right:-60px;
+width:200px;height:200px;
+background:radial-gradient(circle,rgba(77,217,192,0.07) 0%,transparent 65%);border-radius:50%}
+.hero-greeting{font-size:0.68rem;color:var(--dim);margin-bottom:3px}
+.hero-h{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;line-height:1.15;margin-bottom:14px}
+.hero-h span{color:var(--teal)}
+.pbar-wrap{background:var(--bg);border-radius:999px;height:7px;overflow:hidden;margin-bottom:5px}
+.pbar{height:100%;border-radius:999px;transition:width 0.7s cubic-bezier(.4,0,.2,1)}
+.pbar.main{background:linear-gradient(90deg,var(--teal),var(--violet))}
+.pbar.teal{background:var(--teal)}
+.pbar.violet{background:var(--violet)}
+.pbar.orange{background:var(--orange)}
+.pbar.green{background:var(--green)}
+.pbar.sky{background:var(--sky)}
+.pct-label{font-size:0.68rem;color:var(--dim);font-family:'JetBrains Mono',monospace}
+
+/* Stats: 2 col portrait, 4 col landscape */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+@media (min-width:600px) and (orientation:landscape){
+.stats-grid{grid-template-columns:repeat(4,1fr)}
+}
+.stat-box{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px}
+.stat-v{font-size:1.55rem;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}
+.stat-l{font-size:0.62rem;color:var(--muted);margin-top:4px;font-weight:400}
+
+/* Topic rows: single col portrait, 2-col landscape */
+.topic-rows{display:flex;flex-direction:column;gap:9px}
+@media (min-width:600px) and (orientation:landscape){
+.topic-rows{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+}
+.trow{display:flex;align-items:center;gap:9px}
+.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tname{font-size:0.76rem;flex:1;color:var(--dim);font-weight:500}
+.tbar-w{width:70px;background:var(--s3);border-radius:999px;height:4px;overflow:hidden}
+.tbar{height:100%;border-radius:999px;transition:width 0.6s}
+.tpct{font-size:0.67rem;color:var(--muted);font-family:'JetBrains Mono',monospace;min-width:28px;text-align:right}
+
+/* Landscape: hero + stats columns */
+@media (min-width:600px) and (orientation:landscape){
+.hero-h{font-size:1.15rem}
+.pad{padding:14px}
+}
+
+.act-list{display:flex;flex-direction:column;gap:5px}
+.act-row{display:flex;align-items:center;gap:8px;font-size:0.76rem;color:var(--dim);
+padding:7px 10px;background:var(--s1);border-radius:9px;border:1px solid var(--border)}
+.adot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* ══ KURS ══ */
+.kurs-header{
+background:var(--s2);
+padding:20px 18px 16px;border-bottom:1px solid var(--border);
+}
+.kurs-header h2{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;margin-bottom:3px}
+.kurs-header p{font-size:0.76rem;color:var(--dim);font-weight:300;margin-bottom:10px}
+
+.mod-list{padding:14px;padding-bottom:30px}
+/* Landscape: two-column module list */
+@media (min-width:600px) and (orientation:landscape){
+.mod-list{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+align-items:start;
+}
+.mod-list .mod-card{margin-bottom:0}
+}
+.mod-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);
+margin-bottom:10px;overflow:hidden}
+.mod-head{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
+.mod-num{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;
+justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.mod-info{flex:1}
+.mod-title{font-size:0.88rem;font-weight:600;margin-bottom:2px}
+.mod-meta{font-size:0.67rem;color:var(--muted);font-weight:400}
+.mod-status{font-size:1rem;flex-shrink:0}
+.mod-lessons{border-top:1px solid var(--border);display:none}
+.mod-lessons.open{display:block}
+.les-item{display:flex;align-items:center;gap:10px;padding:11px 14px;
+border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
+.les-item:last-child{border:none}
+.les-item:active{background:var(--s2)}
+.les-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
+justify-content:center;font-size:0.85rem;flex-shrink:0}
+.les-title{flex:1;font-size:0.8rem;font-weight:500;color:var(--dim)}
+.les-title.done{color:var(--muted);text-decoration:line-through}
+.les-badge{font-size:0.65rem;padding:2px 7px;border-radius:999px;font-weight:600;flex-shrink:0}
+.les-badge.new{background:rgba(77,217,192,0.12);color:var(--teal)}
+.les-badge.done-b{background:rgba(74,222,128,0.1);color:var(--green)}
+.les-badge.locked{background:var(--s3);color:var(--muted)}
+
+/* ══ LESSON VIEWER (Brilliant-style) ══ */
+#lv{
+position:fixed;inset:0;background:var(--bg);z-index:200;
+display:none;flex-direction:column;
+padding-top:env(safe-area-inset-top);
+padding-bottom:env(safe-area-inset-bottom);
+padding-left:env(safe-area-inset-left);
+padding-right:env(safe-area-inset-right);
+}
+#lv.open{display:flex}
+
+.lv-topbar{
+display:flex;align-items:center;gap:10px;padding:13px 16px;
+border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0;
+}
+.lv-back{font-size:1.2rem;cursor:pointer;color:var(--dim);padding:4px 8px;border-radius:8px;
+background:var(--s2);border:1px solid var(--border)}
+.lv-info{flex:1}
+.lv-info h3{font-size:0.84rem;font-weight:600;line-height:1.2}
+.lv-info span{font-size:0.62rem;color:var(--muted)}
+.lv-prog-text{font-size:0.68rem;font-family:'JetBrains Mono',monospace;color:var(--violet);flex-shrink:0}
+.lv-pbar-wrap{height:3px;background:var(--s3);flex-shrink:0}
+.lv-pbar{height:100%;background:linear-gradient(90deg,var(--teal),var(--violet));transition:width 0.4s}
+
+/* lesson body needs bottom padding so content not hidden behind footer */
+.lv-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.lv-step{padding:20px 18px 120px;max-width:600px;margin:0 auto;animation:fadeUp 0.25s}
+/* Landscape: limit step width better */
+@media (orientation:landscape){
+.lv-step{padding:16px 18px 100px;max-width:700px}
+}
+
+/* STEP TYPES */
+.st-title{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;line-height:1.2;
+color:var(--text);margin-bottom:10px}
+.st-subtitle{font-size:0.82rem;color:var(--dim);font-weight:300;line-height:1.6;margin-bottom:18px}
+
+/* callout */
+.callout{border-radius:var(--r);padding:14px 16px;margin:14px 0}
+.callout.def{background:var(--tint-teal);border:1px solid var(--tint-teal-b)}
+.callout.satz{background:var(--tint-violet);border:1px solid var(--tint-violet-b)}
+.callout.warn{background:var(--tint-warn);border:1px solid var(--tint-warn-b)}
+.callout.info{background:var(--tint-sky);border:1px solid var(--tint-sky-b)}
+.callout.example{background:var(--tint-orange);border:1px solid var(--tint-orange-b)}
+.callout-label{font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.callout.def .callout-label{color:var(--teal)}
+.callout.satz .callout-label{color:var(--violet)}
+.callout.warn .callout-label{color:var(--warn)}
+.callout.info .callout-label{color:var(--sky)}
+.callout.example .callout-label{color:var(--orange)}
+.callout p{font-size:0.84rem;line-height:1.7;color:var(--text)}
+.callout p+p{margin-top:6px}
+.callout ul{padding-left:16px;margin-top:6px}
+.callout ul li{font-size:0.83rem;color:var(--dim);margin-bottom:5px;line-height:1.5}
+
+.prose{font-size:0.87rem;color:var(--dim);line-height:1.75;margin:10px 0}
+.prose strong{color:var(--text);font-weight:600}
+.prose em{font-style:italic;color:var(--dim)}
+
+/* truth table */
+.tt-wrap{overflow-x:auto;margin:12px 0;border-radius:var(--r);border:1px solid var(--border2)}
+table.tt{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.78rem}
+table.tt th{background:var(--s3);color:var(--teal);padding:9px 12px;text-align:center;
+font-size:0.72rem;border-bottom:1px solid var(--border2)}
+table.tt td{padding:8px 12px;text-align:center;border-bottom:1px solid var(--border);color:var(--dim)}
+table.tt tr:last-child td{border-bottom:none}
+table.tt td.hi{color:var(--green);font-weight:700}
+table.tt td.lo{color:var(--red)}
+table.tt td.hl{color:var(--teal);font-weight:700}
+
+/* interactive: toggle table builder */
+.toggle-table{margin:14px 0}
+.tt-builder-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.tt-var{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--dim);min-width:24px}
+.tt-cell{width:38px;height:38px;border-radius:9px;border:1px solid var(--border2);
+background:var(--s2);font-family:'JetBrains Mono',monospace;font-size:0.82rem;
+cursor:pointer;font-weight:600;transition:all 0.15s;color:var(--dim);display:flex;align-items:center;justify-content:center}
+.tt-cell.w-on{background:var(--tint-green);border-color:var(--green);color:var(--green)}
+.tt-cell.f-on{background:var(--tint-red);border-color:var(--red);color:var(--red)}
+.tt-result{margin-top:8px;padding:10px 14px;border-radius:9px;font-size:0.8rem;
+font-family:'JetBrains Mono',monospace;display:none}
+.tt-result.show{display:block}
+.tt-result.ok{background:var(--tint-green);color:var(--green);border:1px solid var(--tint-green-b)}
+.tt-result.no{background:var(--tint-red);color:var(--red);border:1px solid var(--tint-red-b)}
+.tt-result.hint{background:var(--tint-sky);color:var(--sky);border:1px solid var(--tint-sky-b)}
+.tt-check-btn{margin-top:8px}
+
+/* drag / match */
+.match-area{margin:14px 0}
+.match-pairs{display:flex;flex-direction:column;gap:8px}
+.match-row{display:flex;align-items:center;gap:10px}
+.match-left{background:var(--s2);border:1px solid var(--border2);border-radius:9px;
+padding:9px 13px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--teal);min-width:80px;text-align:center}
+.match-arrow{color:var(--muted);font-size:0.9rem}
+.match-sel{flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:9px;
+padding:9px 13px;font-size:0.8rem;font-family:'DM Sans',sans-serif;color:var(--dim);cursor:pointer;
+appearance:none;-webkit-appearance:none;text-align:center}
+.match-sel.correct{border-color:var(--green);color:var(--green);background:var(--tint-green)}
+.match-sel.wrong{border-color:var(--red);color:var(--red);background:var(--tint-red)}
+.match-check{margin-top:8px;display:flex;gap:8px;align-items:center}
+.match-fb{font-size:0.78rem;color:var(--dim);padding:8px 12px;border-radius:8px;display:none;flex:1}
+.match-fb.show{display:block}
+.match-fb.ok{color:var(--green)}
+.match-fb.no{color:var(--red)}
+
+/* MCQ */
+.mcq{margin:14px 0}
+.mcq-q{font-size:0.9rem;font-weight:600;margin-bottom:13px;line-height:1.45;
+font-family:'Fraunces',serif;font-style:italic;color:var(--text)}
+.mcq-opts{display:flex;flex-direction:column;gap:8px}
+.mcq-opt{
+text-align:left;padding:12px 15px;border-radius:11px;border:1px solid var(--border);
+background:var(--s2);color:var(--dim);font-size:0.83rem;font-family:'DM Sans',sans-serif;
+font-weight:500;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;
+}
+.mcq-opt:active:not(:disabled){transform:scale(0.985)}
+.mcq-opt .opt-letter{width:22px;height:22px;border-radius:6px;background:var(--s3);
+display:flex;align-items:center;justify-content:center;font-size:0.7rem;
+font-family:'JetBrains Mono',monospace;font-weight:700;flex-shrink:0;color:var(--muted)}
+.mcq-opt.correct{background:var(--tint-green);border-color:var(--green);color:var(--green)}
+.mcq-opt.correct .opt-letter{background:var(--tint-green);color:var(--green)}
+.mcq-opt.wrong{background:var(--tint-red);border-color:var(--red);color:var(--red)}
+.mcq-opt.wrong .opt-letter{background:var(--tint-red);color:var(--red)}
+.mcq-opt.reveal{border-color:var(--tint-green-b);color:var(--green)}
+.mcq-fb{font-size:0.8rem;padding:11px 14px;border-radius:9px;margin-top:8px;display:none;line-height:1.55}
+.mcq-fb.show{display:block}
+.mcq-fb.ok{background:var(--tint-green);color:var(--green);border:1px solid var(--tint-green-b)}
+.mcq-fb.no{background:var(--tint-red);color:var(--red);border:1px solid var(--tint-red-b)}
+
+/* fill-in */
+.fillin{margin:14px 0}
+.fillin-q{font-size:0.87rem;color:var(--dim);line-height:1.6;margin-bottom:10px}
+.fillin-wrap{display:flex;gap:8px}
+.fillin-input{flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:10px;
+padding:11px 14px;font-size:0.85rem;font-family:'JetBrains Mono',monospace;color:var(--text);
+outline:none;transition:border-color 0.15s}
+.fillin-input:focus{border-color:var(--violet)}
+.fillin-input.ok{border-color:var(--green);color:var(--green)}
+.fillin-input.no{border-color:var(--red)}
+.fillin-fb{margin-top:8px;font-size:0.79rem;padding:8px 12px;border-radius:8px;display:none}
+.fillin-fb.show{display:block}
+.fillin-fb.ok{background:var(--tint-green);color:var(--green)}
+.fillin-fb.no{background:var(--tint-red);color:var(--red)}
+
+/* reveal steps */
+.reveal-steps{margin:14px 0;display:flex;flex-direction:column;gap:8px}
+.reveal-step{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);
+overflow:hidden;cursor:pointer}
+.rs-header{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.rs-num{width:26px;height:26px;border-radius:7px;background:var(--s3);
+font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;
+display:flex;align-items:center;justify-content:center;color:var(--dim);flex-shrink:0}
+.rs-title{font-size:0.82rem;font-weight:600;flex:1;color:var(--dim)}
+.rs-arrow{color:var(--muted);font-size:0.85rem;transition:transform 0.2s}
+.rs-arrow.open{transform:rotate(90deg)}
+.rs-body{display:none;padding:0 14px 12px;font-size:0.82rem;color:var(--dim);line-height:1.6;border-top:1px solid var(--border)}
+.rs-body.open{display:block;animation:fadeUp 0.15s}
+.rs-num.done{background:var(--tint-green);color:var(--green)}
+
+/* word cloud / sort */
+.sort-zone{margin:14px 0}
+.sort-bank{display:flex;flex-wrap:wrap;gap:7px;padding:12px;
+background:var(--s2);border:1px solid var(--border);border-radius:var(--r);min-height:48px;margin-bottom:8px}
+.sort-chip{padding:6px 12px;border-radius:8px;font-size:0.78rem;font-family:'JetBrains Mono',monospace;
+cursor:pointer;border:1px solid var(--border2);background:var(--s3);color:var(--teal);
+transition:all 0.15s;user-select:none}
+.sort-chip:active{transform:scale(0.95)}
+.sort-chip.placed{opacity:0.4;pointer-events:none}
+.sort-slots{display:flex;flex-direction:column;gap:7px}
+.sort-slot{display:flex;align-items:center;gap:8px;padding:10px 12px;
+background:var(--s2);border:1px solid dashed;border-color:var(--border2);border-style:dashed;
+border-radius:var(--r);min-height:42px;cursor:pointer;transition:border-color 0.15s}
+.sort-slot:hover{border-color:var(--violet)}
+.sort-slot.filled{border-style:solid;border-color:var(--border)}
+.sort-slot.correct{border-color:var(--green);background:var(--tint-green)}
+.sort-slot.wrong{border-color:var(--red);background:var(--tint-red)}
+.sort-slot-label{font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;min-width:50px}
+.sort-slot-val{font-size:0.8rem;color:var(--teal);font-family:'JetBrains Mono',monospace}
+.sort-fb{margin-top:8px;font-size:0.79rem;padding:9px 12px;border-radius:8px;display:none}
+.sort-fb.show{display:block}
+.sort-fb.ok{background:var(--tint-green);color:var(--green)}
+.sort-fb.no{background:var(--tint-red);color:var(--red)}
+
+/* completion screen */
+.lesson-complete{text-align:center;padding:30px 20px}
+.lc-emoji{font-size:3rem;margin-bottom:12px}
+.lc-title{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;margin-bottom:6px}
+.lc-sub{font-size:0.84rem;color:var(--dim);margin-bottom:20px;font-weight:300}
+.lc-xp{font-size:1.8rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--warn);margin-bottom:4px}
+.lc-xp-label{font-size:0.72rem;color:var(--muted);margin-bottom:20px}
+
+/* footer */
+.lv-footer{
+display:flex;gap:10px;padding:12px 18px;
+background:var(--bg);border-top:1px solid var(--border);
+flex-shrink:0;
+}
+.continue-hint{text-align:center;padding:8px;font-size:0.7rem;color:var(--muted);font-style:italic}
+
+/* RECALL */
+.recall-wrap{margin:14px 0}
+.recall-label{font-size:0.58rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;color:var(--violet);margin-bottom:7px}
+.recall-prompt{font-size:0.88rem;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:12px;font-family:'Fraunces',serif;font-style:italic}
+.recall-input-row{display:flex;gap:8px;margin-bottom:8px}
+.recall-input{flex:1;background:var(--s2);border:1.5px solid var(--border2);border-radius:10px;padding:11px 14px;font-size:0.85rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.15s}
+.recall-input:focus{border-color:var(--violet)}
+.recall-hint-btn{padding:10px 14px;border-radius:10px;border:1px solid var(--border2);background:var(--s2);color:var(--muted);font-size:0.75rem;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.recall-result{display:none;border-radius:var(--r);padding:13px 15px;margin-top:8px;font-size:0.83rem;line-height:1.65}
+.recall-result.show{display:block;animation:fadeUp 0.2s}
+.recall-result.hint{background:var(--tint-sky);border:1px solid var(--tint-sky-b);color:var(--sky)}
+.recall-selfcheck{margin-top:10px;font-size:0.78rem;color:var(--dim)}
+.recall-selfcheck strong{color:var(--text)}
+.recall-btns{display:flex;gap:7px;margin-top:9px}
+
+/* THINK */
+.think-wrap{background:var(--tint-violet);border:1px solid var(--tint-violet-b);border-radius:var(--r);padding:15px 16px;margin:14px 0}
+.think-label{font-size:0.58rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;color:var(--violet);margin-bottom:7px}
+.think-q{font-size:0.87rem;color:var(--text);line-height:1.6;margin-bottom:11px;font-style:italic}
+.think-ta{width:100%;background:var(--s2);border:1px solid var(--border2);border-radius:9px;padding:10px 13px;font-size:0.83rem;font-family:'DM Sans',sans-serif;color:var(--text);resize:none;outline:none;min-height:70px;transition:border-color 0.15s}
+.think-ta:focus{border-color:var(--violet)}
+.think-submit{margin-top:8px;padding:9px 16px;border-radius:9px;border:1px solid var(--tint-violet-b);background:rgba(155,135,245,0.12);color:var(--violet);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.think-fb{display:none;margin-top:9px;font-size:0.8rem;color:var(--dim);line-height:1.6;background:var(--s2);border-radius:9px;padding:10px 13px;border:1px solid var(--border)}
+.think-fb.show{display:block;animation:fadeUp 0.2s}
+
+/* SPACED REVIEW */
+.sr-banner{background:linear-gradient(135deg,rgba(155,135,245,0.12),rgba(77,217,192,0.08));border:1px solid var(--tint-violet-b);border-radius:var(--r);padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sr-badge{font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;color:var(--violet);background:rgba(155,135,245,0.15);padding:3px 8px;border-radius:999px;flex-shrink:0}
+.sr-text{font-size:0.75rem;color:var(--dim);line-height:1.4}
+
+/* LOCK */
+#lvNext.locked{opacity:0.35;cursor:not-allowed;pointer-events:none}
+#lvNext.locked::after{content:' 🔒'}
+
+.fc-filters{display:flex;gap:7px;padding:13px 16px;overflow-x:auto;
+scrollbar-width:none;border-bottom:1px solid var(--border)}
+.fc-filters::-webkit-scrollbar{display:none}
+.fc-chip{flex-shrink:0;padding:5px 12px;border-radius:999px;border:1px solid var(--border);
+background:var(--s1);font-size:0.7rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.12s}
+.fc-chip.active{border-color:var(--teal);color:var(--teal);background:rgba(77,217,192,0.07)}
+/* Center everything in the cards screen */
+#s-karten{display:none;flex-direction:column;align-items:stretch}
+#s-karten.active{display:flex}
+.fc-scene{padding:14px;display:flex;justify-content:center}
+.fc-wrap{perspective:1400px;width:100%;max-width:480px}
+@media (orientation:landscape){
+.fc-wrap{max-width:420px}
+}
+.fc{width:100%;min-height:220px;position:relative;transform-style:preserve-3d;
+transition:transform 0.5s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.fc.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;
+background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);
+padding:22px;display:flex;flex-direction:column;justify-content:center;
+align-items:center;text-align:center;min-height:220px}
+.fc-back{transform:rotateY(180deg);background:var(--s2)}
+.fc-cat{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+font-family:'JetBrains Mono',monospace;color:var(--teal);margin-bottom:10px}
+.fc-q{font-family:'Fraunces',serif;font-size:1.1rem;line-height:1.4;color:var(--text);margin-bottom:8px}
+.fc-h{font-size:0.7rem;color:var(--muted);font-style:italic}
+.fc-a{font-size:0.84rem;color:var(--dim);line-height:1.7}
+.fc-a code{font-family:'JetBrains Mono',monospace;background:var(--s3);padding:1px 6px;border-radius:4px;font-size:0.85em;color:var(--teal)}
+.fc-tap-hint{text-align:center;font-size:0.68rem;color:var(--muted);padding:0 14px 6px;font-style:italic}
+.fc-nav{
+display:flex;align-items:center;justify-content:center;
+padding:0 14px 8px;gap:16px;
+/* landscape: constrain to same max-width as card */
+max-width:480px;margin:0 auto;width:100%;
+}
+.fc-nav .btn{flex:0 0 auto}
+.fc-ctr{font-size:0.78rem;font-family:'JetBrains Mono',monospace;color:var(--muted);min-width:60px;text-align:center}
+.fc-rating{display:none;flex-direction:row;gap:7px;padding:0 14px 14px;
+max-width:480px;margin:0 auto;width:100%}
+.fc-rating.show{display:flex}
+@media (orientation:landscape){
+.fc-nav{max-width:420px}
+.fc-rating{max-width:420px}
+}
+
+/* ══ QUIZ ══ */
+.q-setup{padding:18px;display:flex;flex-direction:column;gap:9px}
+.q-setup h3{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;margin-bottom:3px}
+.q-setup p{font-size:0.78rem;color:var(--dim);margin-bottom:6px;font-weight:300}
+.q-topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:6px}
+.q-tbtn{padding:11px 10px;border-radius:var(--r);border:1px solid var(--border);
+background:var(--s1);font-size:0.76rem;font-weight:600;color:var(--dim);
+cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;transition:all 0.12s}
+.q-tbtn span{display:block;font-size:0.62rem;color:var(--muted);font-weight:400;margin-top:2px}
+.q-tbtn.sel{border-color:var(--violet);color:var(--violet);background:rgba(155,135,245,0.07)}
+.q-active{padding:14px;display:none}
+.q-active.show{display:block}
+.q-toprow{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.q-pbar-w{flex:1;background:var(--s3);border-radius:999px;height:4px;overflow:hidden}
+.q-pbar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--violet),var(--pink));transition:width 0.35s}
+.q-info{font-size:0.68rem;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+.q-score-d{font-size:0.68rem;font-family:'JetBrains Mono',monospace;color:var(--violet);font-weight:700}
+.q-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);
+padding:18px;margin-bottom:10px;animation:fadeUp 0.2s}
+.q-cat{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;
+color:var(--violet);font-family:'JetBrains Mono',monospace;margin-bottom:7px}
+.q-q{font-family:'Fraunces',serif;font-size:1rem;line-height:1.5;color:var(--text);margin-bottom:14px;font-style:italic}
+.q-opts{display:flex;flex-direction:column;gap:7px}
+.q-opt{padding:11px 14px;border-radius:10px;border:1px solid var(--border);
+background:var(--s2);color:var(--dim);font-size:0.81rem;font-family:'DM Sans',sans-serif;
+font-weight:500;cursor:pointer;text-align:left;transition:all 0.12s;display:flex;align-items:center;gap:9px}
+.q-opt .ol{width:20px;height:20px;border-radius:5px;background:var(--s3);
+font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:700;
+display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.q-opt.correct{background:var(--tint-green);border-color:var(--green);color:var(--green)}
+.q-opt.correct .ol{background:var(--tint-green);color:var(--green)}
+.q-opt.wrong{background:var(--tint-red);border-color:var(--red);color:var(--red)}
+.q-fb{font-size:0.79rem;padding:10px 13px;border-radius:8px;margin-top:7px;display:none;line-height:1.55}
+.q-fb.show{display:block}
+.q-fb.ok{background:var(--tint-green);color:var(--green);border:1px solid var(--tint-green-b)}
+.q-fb.no{background:var(--tint-red);color:var(--red);border:1px solid var(--tint-red-b)}
+.q-next-wrap{display:flex;justify-content:flex-end;margin-top:7px}
+.q-result{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);
+padding:26px;text-align:center;display:none;animation:fadeUp 0.3s}
+.q-result.show{display:block}
+.qr-emoji{font-size:2.6rem;margin-bottom:9px}
+.qr-title{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:900;margin-bottom:5px}
+.qr-score{font-size:2.6rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--teal);margin-bottom:5px;line-height:1}
+.qr-sub{font-size:0.8rem;color:var(--dim);margin-bottom:16px;font-weight:300}
+.qr-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+</style>
+
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Logik<br><small>SS26 · Uni Trier</small></div>
+  <div class="pills">
+    <span class="pill streak" id="spStreak">🔥 0</span>
+    <span class="pill xp" id="spXP">0 XP</span>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Helles/Dunkles Design">🌙</button>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- ════ DASHBOARD ════ -->
+
+<div class="screen active" id="s-home">
+  <div class="pad">
+    <div class="hero-card">
+      <div class="hero-greeting">Willkommen zurück 👋</div>
+      <div class="hero-h">Elementare<br><span>Logik</span> meistern</div>
+      <div class="pbar-wrap"><div class="pbar main" id="overallBar" style="width:0%"></div></div>
+      <div class="pct-label" id="overallPct">0% Gesamtfortschritt</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-v" style="color:var(--teal)" id="dCards">0</div><div class="stat-l">Karten gelernt</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--violet)" id="dAcc">—</div><div class="stat-l">Quiz-Genauigkeit</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--warn)" id="dXP">0</div><div class="stat-l">XP verdient</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--green)" id="dLes">0</div><div class="stat-l">Lektionen fertig</div></div>
+    </div>
+    <div class="sec-label">Themenfortschritt</div>
+    <div class="card" style="margin-bottom:14px"><div class="topic-rows" id="topicRows"></div></div>
+    <div class="sec-label">Aktivitäten</div>
+    <div class="act-list" id="actList">
+      <div class="act-row"><div class="adot" style="background:var(--muted)"></div>Starte mit dem Kurs!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ KURS ════ -->
+
+<div class="screen" id="s-kurs">
+  <div class="kurs-header">
+    <h2>Elementare Logik</h2>
+    <p>6 Module · 25 Lektionen · von Grund auf aufbauend</p>
+    <div class="pbar-wrap"><div class="pbar" style="background:linear-gradient(90deg,var(--violet),var(--pink))" id="courseBar" ></div></div>
+  </div>
+  <div class="mod-list" id="modList"></div>
+</div>
+
+<!-- ════ KARTEIKARTEN ════ -->
+
+<div class="screen" id="s-karten">
+  <div class="fc-filters" id="fcFilters"></div>
+  <div class="fc-scene">
+    <div class="fc-wrap">
+      <div class="fc" id="fc" onclick="flipCard()">
+        <div class="fc-face fc-front">
+          <div class="fc-cat" id="fcCat">—</div>
+          <div class="fc-q" id="fcQ">Wähle eine Kategorie</div>
+          <div class="fc-h" id="fcH"></div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-cat" id="fcCatB">Antwort</div>
+          <div class="fc-a" id="fcA"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="fc-tap-hint">Karte antippen zum Umdrehen</p>
+  <div class="fc-nav">
+    <button class="btn" onclick="fcPrev()">←</button>
+    <span class="fc-ctr" id="fcCtr">0/0</span>
+    <button class="btn" onclick="fcNext()">→</button>
+  </div>
+  <div class="fc-rating" id="fcRating">
+    <button class="btn r" style="flex:1" onclick="fcRate(0)">😕 Nochmal</button>
+    <button class="btn o" style="flex:1" onclick="fcRate(1)">🤔 Knapp</button>
+    <button class="btn g" style="flex:1" onclick="fcRate(2)">✅ Gewusst</button>
+  </div>
+</div>
+
+<!-- ════ QUIZ ════ -->
+
+<div class="screen" id="s-quiz">
+  <div class="q-setup" id="qSetup">
+    <h3>Quiz</h3>
+    <p>Teste dein Wissen mit 10 zufälligen Fragen.</p>
+    <div class="q-topic-grid" id="qTopicGrid"></div>
+    <button class="btn p" style="width:100%" onclick="startQuiz()">Quiz starten →</button>
+  </div>
+  <div class="q-active" id="qActive">
+    <div class="q-toprow">
+      <span class="q-score-d" id="qScoreD">0/0</span>
+      <div class="q-pbar-w"><div class="q-pbar" id="qPbar" style="width:0%"></div></div>
+      <span class="q-info" id="qInfo">1/10</span>
+    </div>
+    <div id="qContainer"></div>
+    <div class="q-result" id="qResult">
+      <div class="qr-emoji" id="qrEmoji">🎉</div>
+      <div class="qr-title" id="qrTitle">Fertig!</div>
+      <div class="qr-score" id="qrScore">0/0</div>
+      <div class="qr-sub" id="qrSub"></div>
+      <div class="qr-btns">
+        <button class="btn p" onclick="restartQuiz()">🔄 Nochmal</button>
+        <button class="btn" onclick="showScreen('s-karten')">🃏 Karten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #content -->
+
+<div id="bnav">
+  <button class="nb active" onclick="showScreen('s-home')"><span class="ni">📊</span>Home</button>
+  <button class="nb" onclick="showScreen('s-kurs')"><span class="ni">📐</span>Kurs</button>
+  <button class="nb" onclick="showScreen('s-karten')"><span class="ni">🃏</span>Karten</button>
+  <button class="nb" onclick="showScreen('s-quiz')"><span class="ni">⚡</span>Quiz</button>
+</div>
+
+<!-- ════════════════ LESSON VIEWER ════════════════ -->
+
+<div id="lv">
+  <div class="lv-topbar">
+    <div class="lv-back" onclick="closeLesson()">←</div>
+    <div class="lv-info"><h3 id="lvTitle">—</h3><span id="lvMod">—</span></div>
+    <span class="lv-prog-text" id="lvProg">1/5</span>
+  </div>
+  <div class="lv-pbar-wrap"><div class="lv-pbar" id="lvPbar" style="width:0%"></div></div>
+  <div class="lv-body" id="lvBody"></div>
+  <div class="lv-footer">
+    <button class="btn" id="lvPrev" onclick="lvNav(-1)">←</button>
+    <button class="btn p" id="lvNext" onclick="lvNav(1)" style="flex:1">Weiter →</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA — TOPICS
+// ═══════════════════════════════════════════════════════════
+const TOPICS=[
+  {id:'aussagen',name:'Aussagenlogik',color:'#4dd9c0'},
+  {id:'praedikat',name:'Prädikatenlogik',color:'#9b87f5'},
+  {id:'beweise',name:'Beweistechniken',color:'#f59e4d'},
+  {id:'boolesch',name:'Boolesche Fkt.',color:'#fbbf24'},
+  {id:'resolution',name:'Resolution',color:'#4ade80'},
+];
+
+// ═══════════════════════════════════════════════════════════
+// BRILLIANT-STYLE COURSE DATA
+// ═══════════════════════════════════════════════════════════
+const MODULES=[
+{id:'m1',title:'Die Sprache der Logik',color:'#4dd9c0',icon:'1',
+ desc:'Aussagen, Wahrheitswerte und die ersten Verknüpfungen',
+ lessons:[
+  {id:'l1_1',title:'Was ist Logik?',icon:'💡',topic:'aussagen', steps:[
+    {type:'title',icon:'💡',title:'Was ist Logik?',sub:'Logik ist die Wissenschaft des korrekten Schließens. Sie hilft uns zu entscheiden, welche Schlussfolgerungen zwingend aus gegebenen Annahmen folgen.'},
+    {type:'callout',kind:'info',label:'Historische Wurzeln',html:'<p>Aristoteles (384--322 v. Chr.) begründete die formale Logik. Leibniz träumte von einer universellen Rechensprache. Boole, Frege und schließlich Gödel formalisierten sie vollständig.</p>'},
+    {type:'prose',html:'In der Informatik ist Logik <strong>das Fundament</strong> — von Schaltkreisen über Programmiersprachen bis hin zu KI-Systemen. Alles, was ein Computer "denkt", basiert auf logischen Operationen.'},
+    {type:'callout',kind:'def',label:'Definition: Aussage',html:'<p>Eine <strong>Aussage</strong> ist ein sprachliches Gebilde, bei dem es sinnvoll ist zu fragen, ob es <strong>wahr (w)</strong> oder <strong>falsch (f)</strong> ist. Diese heißen <strong>Wahrheitswerte</strong>.</p>'},
+    {type:'prose',html:'Nicht alles ist eine Aussage! Schauen wir uns Beispiele an:'},
+    {type:'reveal-steps',steps:[
+      {num:'✓',title:'„5 ist eine Primzahl."',body:'→ Aussage! Wahrheitswert: <strong style="color:#4ade80">wahr</strong>',done:false},
+      {num:'✓',title:'„√7 ist rational."',body:'→ Aussage! Wahrheitswert: <strong style="color:#f87171">falsch</strong>',done:false},
+      {num:'✓',title:'„eᵖ ist rational."',body:'→ Aussage! Wahrheitswert: <strong style="color:#fbbf24">unbekannt</strong> (aber existiert)',done:false},
+      {num:'✗',title:'„Wie geht\'s?"',body:'→ <strong>Keine</strong> Aussage! Fragen haben keinen Wahrheitswert.',done:false},
+      {num:'✗',title:'„Dieser Satz ist falsch."',body:'→ <strong>Keine</strong> Aussage! Antinomie von Russell — kein konsistenter Wahrheitswert möglich.',done:false},
+    ]},
+    {type:'mcq',q:'Was macht ein Gebilde zu einer Aussage?',opts:['Es muss wahr sein','Man kann sinnvoll fragen ob es wahr oder falsch ist','Es muss einen bekannten Wahrheitswert haben','Es muss in der Mathematik vorkommen'],correct:1,exp:'Eine Aussage braucht nur einen Wahrheitswert zu HABEN — nicht bekannt zu sein! Auch Fragen über unbekannte Sachverhalte sind Aussagen.'},
+  ]},
+  {id:'l1_2',title:'Negation & Konjunktion',icon:'∧',topic:'aussagen',steps:[
+    {type:'title',icon:'∧',title:'Aussagen verknüpfen',sub:'Aus einfachen Aussagen lassen sich komplexere bauen — durch logische Verknüpfungen, die wir Junktoren nennen.'},
+    {type:'callout',kind:'def',label:'Negation ¬p',html:'<p>¬p wird genau dann <strong>wahr</strong>, wenn p <strong>falsch</strong> ist — und umgekehrt. Das Negationssymbol ¬ dreht den Wahrheitswert um.</p>'},
+    {type:'truthtable',label:'Wahrheitstabelle: Negation',headers:['p','¬p'],rows:[['w','f'],['f','w']],hi:[[0,1],[1,0]]},
+    {type:'callout',kind:'def',label:'Konjunktion p ∧ q',html:'<p>p ∧ q wird genau dann <strong>wahr</strong>, wenn <em>sowohl p als auch q</em> wahr ist. Sprich: „p UND q".</p>'},
+    {type:'truthtable',label:'Wahrheitstabelle: Konjunktion',headers:['p','q','p ∧ q'],rows:[['w','w','w'],['w','f','f'],['f','w','f'],['f','f','f']],hi:[[0,0,0],[1,0,2],[2,0,2],[3,0,3]]},
+    {type:'callout',kind:'warn',label:'Vorsicht: Logik ≠ Sprache',html:'<p>Das logische ∧ und das deutsche „und" sind nicht identisch! „Lisa stolpert und fällt hin" hat eine zeitliche Reihenfolge — p ∧ q nicht.</p>'},
+    {type:'mcq',q:'Wann ist (p ∧ q) ∧ r wahr?',opts:['Wenn p oder q wahr ist','Wenn alle drei p, q, r wahr sind','Wenn r wahr ist','Wenn mindestens zwei wahr sind'],correct:1,exp:'Konjunktion ist nur wahr wenn ALLE Teile wahr sind. (p ∧ q) ∧ r bedeutet: p wahr UND q wahr UND r wahr.'},
+    {type:'fillin',q:'Ergänze: p ∧ __ wird zu ¬(p ∧ ¬p) — das nennt man ...',answer:'Tautologie',hint:'Tautologie',exp:'p ∧ ¬p ist immer falsch (Kontradiktion), also ist ¬(p ∧ ¬p) immer wahr — eine Tautologie!'},
+  ]},
+  {id:'l1_3',title:'Disjunktion & Implikation',icon:'→',topic:'aussagen',steps:[
+    {type:'title',icon:'→',title:'Oder und Wenn-Dann',sub:'Zwei weitere Junktoren — besonders die Implikation ist trickreich und verdient besondere Aufmerksamkeit.'},
+    {type:'callout',kind:'def',label:'Disjunktion p ∨ q',html:'<p>p ∨ q wird wahr, wenn <em>mindestens eine</em> der Aussagen wahr ist. Das logische ODER ist <strong>inklusiv</strong> — auch wenn beide wahr sind, gilt p ∨ q.</p>'},
+    {type:'truthtable',label:'Disjunktion',headers:['p','q','p ∨ q'],rows:[['w','w','w'],['w','f','w'],['f','w','w'],['f','f','f']],hi:[[0,0,0],[1,0,0],[2,0,0],[3,2,3]]},
+    {type:'callout',kind:'def',label:'Implikation p → q',html:'<p>p → q gilt genau dann, wenn (¬p) ∨ q gilt. Die Implikation ist <strong>nur falsch</strong>, wenn die Prämisse p wahr und die Konklusion q falsch ist.</p>'},
+    {type:'truthtable',label:'Implikation',headers:['p','q','p → q'],rows:[['w','w','w'],['w','f','f'],['f','w','w'],['f','f','w']],hi:[[0,0,0],[1,0,2],[2,0,0],[3,0,0]]},
+    {type:'callout',kind:'warn',label:'Ex falso quodlibet',html:'<p>Aus einer <strong>falschen Prämisse</strong> folgt alles! Ist p falsch, ist p → q immer wahr — unabhängig von q.</p><p>„Wenn 2+2=5, dann bin ich König von Frankreich" — logisch wahr!</p>'},
+    {type:'callout',kind:'satz',label:'Kontraposition',html:'<p><code>(p → q) ≡ (¬q → ¬p)</code></p><p>Beispiel: „Wenn es regnet → Straße nass" ≡ „Wenn Straße nicht nass → regnet nicht"</p>'},
+    {type:'mcq',q:'Wann ist p → q FALSCH?',opts:['p=f, q=f','p=f, q=w','p=w, q=w','p=w, q=f'],correct:3,exp:'Implikation ist nur falsch wenn die Voraussetzung wahr (p=w) und die Schlussfolgerung falsch (q=f) ist. Nur dieser eine Fall!'},
+    {type:'sort',q:'Ordne zu: Was ist logisch äquivalent?',pairs:[{from:'p → q',to:'¬p ∨ q'},{from:'¬(p ∧ q)',to:'¬p ∨ ¬q'},{from:'p ∧ f',to:'f'}],options:['¬p ∨ q','¬p ∨ ¬q','f','¬p ∧ ¬q'],exp:'Implikation auflösen: p→q ≡ ¬p∨q. De Morgan: ¬(p∧q) ≡ ¬p∨¬q. Dominanz: p∧f ≡ f.'},
+  ]},
+  {id:'l1_4',title:'Tautologien & Äquivalenz',icon:'≡',topic:'aussagen',steps:[
+    {type:'title',icon:'≡',title:'Tautologien & Äquivalenz',sub:'Manche Aussageformen sind immer wahr, andere immer falsch. Und manche bedeuten dasselbe — diese heißen äquivalent.'},
+    {type:'callout',kind:'def',label:'Tautologie & Kontradiktion',html:'<ul><li><strong>Tautologie</strong>: Stets wahr, unabhängig von den Variablen. Beispiel: p ∨ ¬p</li><li><strong>Kontradiktion</strong>: Stets falsch. Beispiel: p ∧ ¬p</li><li><strong>Erfüllbar</strong>: Mindestens eine Belegung macht die Aussage wahr.</li></ul>'},
+    {type:'callout',kind:'satz',label:'De Morgan Gesetze',html:'<p>Diese zwei Gesetze sind <strong>absolut fundamental</strong> — auswendig lernen!</p>'},
+    {type:'formula',f:'¬(p ∧ q)  ≡  (¬p ∨ ¬q)\n¬(p ∨ q)  ≡  (¬p ∧ ¬q)'},
+    {type:'prose',html:'<strong>Merkhilfe:</strong> Negation „reinziehen" → Junktor wechselt (∧↔∨).'},
+    {type:'callout',kind:'satz',label:'Wichtige Tautologien',html:'<ul><li><code>p ∨ ¬p</code> — Satz vom ausgeschlossenen Dritten</li><li><code>(p ∧ (p → q)) → q</code> — Modus Ponens</li><li><code>(p → q) ≡ (¬q → ¬p)</code> — Kontraposition</li><li><code>(p → q) ≡ (¬p ∨ q)</code> — Implikation auflösen</li></ul>'},
+    {type:'callout',kind:'info',label:'≡ vs. ↔',html:'<p><code>↔</code> ist ein <strong>Junktor</strong> innerhalb von Formeln.<br><code>≡</code> ist ein <strong>Metasymbol</strong> — vergleicht Formeln von außen.<br>A ≡ B bedeutet: A ↔ B ist eine Tautologie.</p>'},
+    {type:'mcq',q:'Was ist ¬(p ∨ q) äquivalent zu?',opts:['¬p ∧ ¬q','¬p ∨ ¬q','p ∧ q','p ∨ q'],correct:0,exp:'De Morgan: ¬(p ∨ q) ≡ ¬p ∧ ¬q. Negation rein, ∨ wird zu ∧.'},
+    {type:'mcq',q:'Welche Aussage ist KEINE Tautologie?',opts:['p ∨ ¬p','¬(p ∧ ¬p)','p → p','p ∧ ¬p'],correct:3,exp:'p ∧ ¬p ist eine KONTRADIKTION — immer falsch. Alle anderen sind Tautologien.'},
+  ]},
+ ]},
+
+{id:'m2',title:'Prädikatenlogik',color:'#9b87f5',icon:'2',
+ desc:'Variablen, Prädikate und Quantoren — mehr Ausdruckskraft',
+ lessons:[
+  {id:'l2_1',title:'Aussageformen & Prädikate',icon:'P(x)',topic:'praedikat',steps:[
+    {type:'title',icon:'P(x)',title:'Aussageformen',sub:'Was passiert wenn Aussagen Variablen enthalten? Wir bekommen Aussageformen — die Grundlage der Prädikatenlogik.'},
+    {type:'callout',kind:'def',label:'Aussageform (Prädikat)',html:'<p>Eine <strong>Aussageform</strong> ist ein Gebilde mit Leerstellen (Variablen), das durch Einsetzen von Werten aus einem <strong>Universum U</strong> zu einer Aussage wird.</p>'},
+    {type:'callout',kind:'example',label:'Beispiele',html:'<ul><li><code>P(x) = „x ist durch 3 teilbar"</code> — Universum ℤ<br>P(6) = wahr, P(5) = falsch</li><li><code>Q(x,y) = „x > y"</code> — Universum ℝ<br>Q(3,1) = wahr, Q(1,3) = falsch</li></ul><p>Aussagen = Aussageformen mit 0 Leerstellen!</p>'},
+    {type:'callout',kind:'info',label:'In Programmiersprachen',html:'<p>Prädikate kennst du als Methoden:<br><code>bool isPrime(int n)</code><br><code>bool operator&lt;(int x, int y)</code></p>'},
+    {type:'mcq',q:'Was ist P(x) = „x² > 0" für x = 0 (Universum ℝ)?',opts:['Wahr','Falsch','Keine Aussage','Unbekannt'],correct:1,exp:'0² = 0, und 0 > 0 ist falsch. P(0) ist eine gültige Aussage mit Wahrheitswert falsch.'},
+  ]},
+  {id:'l2_2',title:'Allquantor ∀',icon:'∀',topic:'praedikat',steps:[
+    {type:'title',icon:'∀',title:'Der Allquantor',sub:'„Für alle x gilt..." — der Allquantor ∀ macht aus Aussageformen Aussagen über das gesamte Universum.'},
+    {type:'callout',kind:'def',label:'Universelle Quantifizierung',html:'<p><strong>∀x ∈ U: P(x)</strong> bedeutet: <em>„Alle x aus U haben Eigenschaft P."</em></p><p>Bei endlichem U = {u₁,…,uₙ}:<br>∀x P(x) ≡ P(u₁) ∧ P(u₂) ∧ … ∧ P(uₙ)</p>'},
+    {type:'callout',kind:'warn',label:'Universum bestimmt Wahrheitswert!',html:'<ul><li>U = ℤ: <code>∀x (x > 1 → x ≥ 2)</code> → <strong>wahr</strong></li><li>U = ℚ: <code>∀x (x > 1 → x ≥ 2)</code> → <strong>falsch</strong> (x = 1.5 ist Gegenbeispiel)</li></ul>'},
+    {type:'callout',kind:'info',label:'Beweisschema für ∀',html:'<ol><li><strong>„x sei beliebig aus U gewählt."</strong></li><li>Zeige P(x) (für dieses beliebige x)</li><li><strong>„Da x beliebig war, gilt ∀x P(x)."</strong></li></ol>'},
+    {type:'reveal-steps',steps:[
+      {num:'1',title:'Beweis: ∀x ∈ ℕ₀ (6|x → 3|x)',body:'Zeige: Wenn 6 ein Teiler von x ist, dann ist 3 auch ein Teiler.'},
+      {num:'2',title:'x sei beliebig aus ℕ₀',body:'Wir wählen x beliebig — es gibt keine Einschränkung.'},
+      {num:'3',title:'Annahme: 6|x',body:'→ Es gibt k mit 6·k = x'},
+      {num:'4',title:'Umformen',body:'6·k = 3·(2k) = x → mit k\'=2k gilt 3·k\'=x'},
+      {num:'5',title:'Schluss: 3|x ✓',body:'Da x beliebig war: ∀x ∈ ℕ₀ (6|x → 3|x) ∎'},
+    ]},
+    {type:'mcq',q:'Um ∀x ∈ U P(x) zu widerlegen, reicht es...',opts:['Zu zeigen dass P für kein x gilt','Ein einziges x zu finden, für das P falsch ist','Zu zeigen dass U leer ist','Den Allquantor zu negieren'],correct:1,exp:'Ein einziges Gegenbeispiel reicht! ¬(∀x P(x)) ≡ ∃x ¬P(x) — es genügt ein x für das P nicht gilt.'},
+  ]},
+  {id:'l2_3',title:'Existenzquantor & De Morgan',icon:'∃',topic:'praedikat',steps:[
+    {type:'title',icon:'∃',title:'Existenzquantor & De Morgan',sub:'„Es gibt ein x mit..." und die fundamentalen Umformungsregeln für Quantoren.'},
+    {type:'callout',kind:'def',label:'Existentielle Quantifizierung',html:'<p><strong>∃x ∈ U: P(x)</strong> bedeutet: <em>„Es gibt mindestens ein x in U mit P(x)."</em></p><p>Bei endlichem U = {u₁,…,uₙ}:<br>∃x P(x) ≡ P(u₁) ∨ P(u₂) ∨ … ∨ P(uₙ)</p>'},
+    {type:'callout',kind:'satz',label:'De Morgan für Quantoren',html:'<p>Analog zu den Junktoren:</p>'},
+    {type:'formula',f:'¬(∀x P(x))  ≡  ∃x ¬P(x)\n¬(∃x P(x))  ≡  ∀x ¬P(x)'},
+    {type:'prose',html:'<strong>Merkhilfe:</strong> Negation rein → Quantor wechselt (∀↔∃), Prädikat negiert.'},
+    {type:'callout',kind:'warn',label:'⚠️ Quantoren-Reihenfolge',html:'<p>∀x ∃y P(x,y) ≠ ∃y ∀x P(x,y) — diese sind NICHT äquivalent!</p><p>∃y ∀x P(x,y) → ∀x ∃y P(x,y) gilt, aber nicht umgekehrt.</p><p>Klassisches Beispiel: Grenzwertdefinition — hier ist die Reihenfolge der Quantoren entscheidend!</p>'},
+    {type:'mcq',q:'Was ist ¬(∀x ∈ ℤ (x > 0)) äquivalent zu?',opts:['∀x ∈ ℤ (x ≤ 0)','∃x ∈ ℤ (x ≤ 0)','∃x ∈ ℤ (x > 0)','∀x ∈ ℤ ¬(x > 0)'],correct:1,exp:'¬(∀x P(x)) ≡ ∃x ¬P(x). Hier: ¬(∀x (x>0)) ≡ ∃x ¬(x>0) ≡ ∃x (x≤0). Es gibt eine ganze Zahl ≤ 0 — wahr!'},
+    {type:'fillin',q:'Wie lautet die Negation von ∃x P(x)?',answer:'∀x ¬P(x)',hint:'∀x ¬P(x)',exp:'De Morgan für Quantoren: ¬(∃x P(x)) ≡ ∀x ¬P(x)'},
+  ]},
+  {id:'l2_4',title:'Freie & gebundene Variablen',icon:'x',topic:'praedikat',steps:[
+    {type:'title',icon:'x',title:'Freie & gebundene Variablen',sub:'Wenn Quantoren ins Spiel kommen, müssen wir zwischen freien und gebundenen Variablen unterscheiden — das ist entscheidend für korrekte Beweise.'},
+    {type:'callout',kind:'def',label:'Definition',html:'<p><strong>Frei:</strong> Eine Variable ohne Quantor — ihr Wert kann von außen belegt werden.<br><strong>Gebunden:</strong> Eine Variable unter einem Quantor ∀ oder ∃ — ihr Wert ist „intern" festgelegt.</p>'},
+    {type:'callout',kind:'example',label:'Beispiele',html:'<ul><li><code>∃x P(x, y)</code> — x ist gebunden, y ist frei</li><li><code>∀x ∃y P(x, y)</code> — beide gebunden</li><li><code>x &lt; 1 ∨ ∃x (x &lt; 2)</code> — x kommt frei UND gebunden vor!</li></ul>'},
+    {type:'callout',kind:'warn',label:'Vorsicht: gleicher Name, verschiedene Rollen',html:'<p>Dieselbe Variable kann in einer Formel frei UND gebunden vorkommen! Das ist zulässig, aber verwirrend.</p><p>Besser: Gebundene Variablen umbenennen:<br><code>∀x (x &lt; 1 ∨ ∃y (y &lt; 2))</code></p>'},
+    {type:'callout',kind:'info',label:'Substitution',html:'<p>Setzt man einen Wert für eine freie Variable ein, verändert sich nur deren freies Vorkommen — nicht die gebundene Verwendung.</p><p>Beispiel: <code>3 &lt; 1 ∨ ∃x (x &lt; 2)</code> — das ∃x bleibt unberührt.</p>'},
+    {type:'mcq',q:'In ∀x P(x, y) — welche Variable ist frei?',opts:['x','y','Beide','Keine'],correct:1,exp:'x ist durch ∀ gebunden. y hat keinen Quantor — y ist frei. Man könnte y von außen mit einem Wert belegen.'},
+    {type:'mcq',q:'∀x ∃y P(x,y) — was stimmt?',opts:['x frei, y gebunden','Beide frei','Beide gebunden','x gebunden, y frei'],correct:2,exp:'x ist an ∀ gebunden, y ist an ∃ gebunden. Beide Variablen sind durch Quantoren erfasst — es gibt keine freien Variablen. Die Formel ist eine Aussage (kein Prädikat mehr).'},
+  ]},
+  {id:'l2_5',title:'Formalisierung von Aussagen',icon:'→',topic:'praedikat',steps:[
+    {type:'title',icon:'→',title:'Prädikatenlogik in der Praxis',sub:'Wie übersetzt man mathematische Aussagen in die formale Sprache der Prädikatenlogik? Das ist eine Kernkompetenz für Informatiker.'},
+    {type:'callout',kind:'info',label:'Warum formalisieren?',html:'<p>Formale Aussagen sind präzise, eindeutig und maschinell verarbeitbar. Programme wie Prolog oder Beweisassistenten wie Coq arbeiten direkt mit prädikatenlogischen Formeln.</p>'},
+    {type:'reveal-steps',steps:[
+      {num:'1',title:'„Alle Primzahlen außer 2 sind ungerade."',body:'∀x ∈ ℕ (prim(x) ∧ x ≠ 2 → ungerade(x))'},
+      {num:'2',title:'„Es gibt unendlich viele Primzahlen."',body:'∀k ∈ ℕ ∃n ∈ ℕ (n > k ∧ prim(n))'},
+      {num:'3',title:'„f ist stetig in x."',body:'∀ε>0 ∃δ>0 ∀y (|x−y|<δ → |f(x)−f(y)|<ε)'},
+      {num:'4',title:'„Weder Samson noch Freunde von Samson schießen ein Tor."',body:'¬T(S) ∧ ∀x (F(x,S) → ¬T(x))'},
+      {num:'5',title:'„Peano: Jede Zahl hat einen Nachfolger."',body:'∀n ∈ ℕ₀ ∃m ∈ ℕ₀ (m = n + 1)'},
+    ]},
+    {type:'callout',kind:'satz',label:'Schlusskette im Beweis',html:'<p>Beispiel: Aus (A) ¬T(S) ∧ ∀x(F(x,S)→¬T(x)) und (B) T(S)∨T(J) folgt (C) ¬F(J,S).</p><p>Beweis: (A)→¬T(S), mit (B)→T(J), aus (A)→F(J,S)→¬T(J), Kontraposition→T(J)→¬F(J,S), modus ponens → ¬F(J,S) ∎</p>'},
+    {type:'mcq',q:'Wie lautet „Es gibt eine gerade Primzahl" in Prädikatenlogik?',opts:['∀x (prim(x) → gerade(x))','∃x (prim(x) ∧ gerade(x))','∀x (gerade(x) ∧ prim(x))','∃x (prim(x) → gerade(x))'],correct:1,exp:'„Es gibt" → ∃. Die Eigenschaften werden mit ∧ (UND) verknüpft, nicht mit →. ∃x(P(x)→Q(x)) wäre schwächer — das gilt schon wenn es ein x gibt für das P falsch ist!'},
+  ]},
+ ]},
+
+{id:'m3',title:'Beweistechniken',color:'#f59e4d',icon:'3',
+ desc:'Das Handwerkszeug des Mathematikers — Beweise elegant führen',
+ lessons:[
+  {id:'l3_1',title:'Direkte & indirekte Beweise',icon:'⊢',topic:'beweise',steps:[
+    {type:'title',icon:'⊢',title:'Beweistechniken I',sub:'Wie zeigt man formal, dass etwas wahr ist? Es gibt mehrere Strategien — je nach Form der Aussage ist eine eleganter als die andere.'},
+    {type:'callout',kind:'def',label:'Direkter Beweis',html:'<p>Zeige p → q durch: Annahme p, dann Schlusskette p ⇒ A₁ ⇒ A₂ ⇒ … ⇒ q.</p>'},
+    {type:'callout',kind:'def',label:'Indirekter Beweis (Widerspruch)',html:'<p>Zeige p → q durch: Annahme (p ∧ ¬q), leite Widerspruch (r ∧ ¬r) ab.</p><p>Basis: (p → q) ≡ ((p ∧ ¬q) → f)</p>'},
+    {type:'callout',kind:'def',label:'Kontraposition',html:'<p>Zeige p → q durch: Beweise ¬q → ¬p (äquivalent!).</p><p>Manchmal ist der Umweg über die Kontraposition eleganter.</p>'},
+    {type:'reveal-steps',steps:[
+      {num:'1',title:'Widerspruchsbeweis: √2 ist irrational',body:'Annahme: √2 = p/q (vollständig gekürzt)'},
+      {num:'2',title:'2 = p²/q²',body:'→ p² = 2q² → p² gerade → p gerade'},
+      {num:'3',title:'p = 2k',body:'→ (2k)² = 2q² → 4k² = 2q² → q² = 2k² → q gerade'},
+      {num:'4',title:'Widerspruch!',body:'p und q beide gerade — aber p/q war vollständig gekürzt! ✗'},
+      {num:'5',title:'Schluss: √2 ∉ ℚ ∎',body:'Die Annahme führt zum Widerspruch → √2 ist irrational.'},
+    ]},
+    {type:'mcq',q:'Bei welchem Beweistyp nimmt man ¬q an?',opts:['Direkter Beweis','Widerspruchsbeweis','Konstruktiver Beweis','Beweis durch Induktion'],correct:1,exp:'Beim Widerspruchsbeweis von q nimmt man ¬q an und leitet einen Widerspruch ab. Damit muss ¬q falsch, also q wahr sein.'},
+  ]},
+  {id:'l3_2',title:'Mathematische Induktion',icon:'∞',topic:'beweise',steps:[
+    {type:'title',icon:'∞',title:'Vollständige Induktion',sub:'Das mächtigste Werkzeug für Aussagen über natürliche Zahlen — und die Basis für rekursive Algorithmen.'},
+    {type:'callout',kind:'satz',label:'Induktionsprinzip (Peano)',html:'<p>Falls p(0) gilt und stets p(n) → p(n+1), dann gilt p(n) für alle n ∈ ℕ₀.</p><p>Anschaulich: Wie Dominosteine — fällt der erste und jeder bringt den nächsten zu Fall, fallen alle.</p>'},
+    {type:'callout',kind:'def',label:'Beweisschema (immer so!)',html:'<ol><li><strong>I.A.:</strong> Zeige p(0).</li><li>n ∈ ℕ₀ sei beliebig.</li><li><strong>I.V.:</strong> Annahme: p(n) gilt.</li><li><strong>I.B.:</strong> Zu zeigen: p(n+1).</li><li>Beweis von I.B. unter Verwendung von I.V.</li><li>Da n beliebig: ∀n p(n) ∎</li></ol>'},
+    {type:'reveal-steps',steps:[
+      {num:'I.A',title:'Behauptung: Σᵢ₌₁ⁿ (2i-1) = n²',body:'I.A. (n=0): Leere Summe = 0 = 0² ✓'},
+      {num:'I.V',title:'Induktionsvoraussetzung',body:'Annahme: Σᵢ₌₁ⁿ (2i-1) = n² gilt für ein beliebiges n.'},
+      {num:'I.B',title:'Induktionsbehauptung',body:'Zu zeigen: Σᵢ₌₁ⁿ⁺¹ (2i-1) = (n+1)²'},
+      {num:'⊢',title:'Beweis des I.S.',body:'Σᵢ₌₁ⁿ⁺¹(2i-1) = Σᵢ₌₁ⁿ(2i-1) + (2(n+1)-1) = n² + 2n+1 = (n+1)² ✓'},
+      {num:'∎',title:'Schluss',body:'Da n beliebig: ∀n ∈ ℕ₀: Σᵢ₌₁ⁿ(2i-1) = n² ∎'},
+    ]},
+    {type:'mcq',q:'Was zeigt der Induktionsanfang (I.A.)?',opts:['p(n) → p(n+1) für alle n','p(0) — den Startfall','Die Induktionsvoraussetzung','∀n p(n)'],correct:1,exp:'I.A. zeigt den Startfall p(0). Zusammen mit dem Induktionsschritt (I.V. → I.B.) schließt das Induktionsprinzip auf alle n.'},
+    {type:'mcq',q:'Was ist die Induktionsvoraussetzung (I.V.)?',opts:['Die Behauptung die bewiesen werden soll','Die Annahme, dass p(n) für ein beliebiges n gilt','Das Peano-Axiom','Der Induktionsanfang'],correct:1,exp:'I.V. ist die Annahme p(n) für beliebiges n. Im I.S. nutzt man diese Annahme um p(n+1) zu beweisen.'},
+  ]},
+  {id:'l3_3',title:'Schubfach & Fallunterscheidung',icon:'📦',topic:'beweise',steps:[
+    {type:'title',icon:'📦',title:'Schubfachprinzip & Fallunterscheidung',sub:'Zwei weitere elegante Beweisstrategien — das Schubfachprinzip liefert erstaunlich starke Aussagen aus simplen Überlegungen.'},
+    {type:'callout',kind:'satz',label:'Schubfachprinzip (Dirichlet)',html:'<p>Werden <strong>n > k</strong> Gegenstände auf <strong>k Fächer</strong> verteilt, so gibt es mindestens ein Fach mit <strong>mindestens ⌈n/k⌉</strong> Gegenständen.</p>'},
+    {type:'callout',kind:'example',label:'Beispiele',html:'<ul><li>8 Personen, 7 Wochentage → mind. 2 Personen haben am gleichen Tag Geburtstag</li><li>3 Aussagen, 2 Wahrheitswerte → mind. 2 haben denselben Wert</li><li>367 Personen → mind. 2 haben am gleichen Datum Geburtstag</li></ul>'},
+    {type:'callout',kind:'def',label:'Fallunterscheidung',html:'<p>Nutze: p ≡ (q → p) ∧ (¬q → p)</p><p>Zeige p für Fall „q gilt" und für Fall „¬q gilt" getrennt. Zusammen folgt p.</p>'},
+    {type:'callout',kind:'example',label:'Beispiel: a² mod 4',html:'<p>Behauptung: a² hat Rest 0 oder 1 bei Division durch 4.</p><p><strong>Fall a gerade:</strong> a = 2k → a² = 4k² → Rest 0 ✓</p><p><strong>Fall a ungerade:</strong> a = 2k+1 → a² = 4k²+4k+1 → Rest 1 ✓</p>'},
+    {type:'mcq',q:'13 Socken in 6 verschiedenen Farben — mind. wie viele gleichfarbig gibt es garantiert?',opts:['1','2','3','4'],correct:1,exp:'⌈13/6⌉ = 3, also gibt es ein Fach mit ≥ 3. Aber die Frage „mind. wie viele gleichfarbig" → Schubfachprinzip: 13 > 6 → mind. ein Fach mit > 1, also mind. 2 gleichfarbige.'},
+  ]},
+  {id:'l3_4',title:'Vollständige Induktion',icon:'★',topic:'beweise',steps:[
+    {type:'title',icon:'★',title:'Vollständige Induktion',sub:'Die stärkere Variante der Induktion — die Induktionsvoraussetzung umfasst alle Vorgänger, nicht nur den direkten. Besonders nützlich für rekursive Beweise.'},
+    {type:'callout',kind:'satz',label:'Vollständige Induktion',html:'<p>Statt p(n) → p(n+1) zeigt man:<br><strong>∀n: (∀m &lt; n: p(m)) → p(n)</strong></p><p>Kein expliziter I.A. nötig — der Fall n=0 ist im Schema enthalten.</p>'},
+    {type:'callout',kind:'info',label:'Wann vollständige Induktion?',html:'<ul><li>Wenn man p(n-2) oder p(n-3) braucht, nicht nur p(n-1)</li><li>Bei rekursiv definierten Funktionen (Fibonacci!)</li><li>Bei Baumstrukturen und Grammatiken</li></ul>'},
+    {type:'callout',kind:'example',label:'Beispiel: Münzwechsel',html:'<p>Behauptung: Jeder Betrag n ≥ 4 Cent kann mit 2- und 5-Cent-Münzen gezahlt werden.</p><p>I.V.: Alle Beträge 4 ≤ m &lt; n sind zahlbar.<br>Fall n=4: 2+2 ✓. Fall n=5: 5 ✓.<br>Fall n≥6: n-2 ist zahlbar (I.V.) → n-2+2 = n ✓ ∎</p>'},
+    {type:'reveal-steps',steps:[
+      {num:'1',title:'Schema: n beliebig wählen',body:'n ∈ ℕ₀ sei beliebig gewählt.'},
+      {num:'2',title:'I.V.: Alle Vorgänger gelten',body:'Annahme: ∀m < n gilt p(m).'},
+      {num:'3',title:'I.B.: p(n) zeigen',body:'Fallunterscheidung: n=0 (trivial), n>0 (nutze I.V. für p(n-1), p(n-2), …)'},
+      {num:'4',title:'Schluss',body:'Da n beliebig: ∀n ∈ ℕ₀ p(n) ∎'},
+    ]},
+    {type:'mcq',q:'Was ist der Hauptunterschied zur einfachen Induktion?',opts:['Kein Induktionsanfang','Die I.V. gilt für ALLE m < n, nicht nur m = n-1','Man braucht keinen Induktionsschritt','Die Aussage muss für n=1 starten'],correct:1,exp:'Bei vollständiger Induktion ist die I.V. stärker: man darf alle Vorgänger p(0), p(1), …, p(n-1) verwenden, nicht nur den direkten Vorgänger.'},
+  ]},
+  {id:'l3_5',title:'Beweise mit Quantoren',icon:'∀',topic:'beweise',steps:[
+    {type:'title',icon:'∀',title:'Beweise mit Quantoren',sub:'Wie beweist man Allaussagen, Existenzaussagen und negierte Quantoren? Systematische Techniken für die häufigsten Beweisformen.'},
+    {type:'callout',kind:'def',label:'Allaussage beweisen',html:'<p>∀x P(x): Wähle x beliebig, zeige P(x). Da x beliebig → gilt für alle.</p>'},
+    {type:'callout',kind:'def',label:'Existenzaussage beweisen',html:'<p>∃x P(x): Konstruiere ein konkretes x und zeige P(x). <strong>Konstruktiver Beweis!</strong></p>'},
+    {type:'callout',kind:'def',label:'Allaussage widerlegen',html:'<p>¬∀x P(x) ≡ ∃x ¬P(x): Finde ein <strong>Gegenbeispiel</strong> — ein x für das P falsch ist.</p>'},
+    {type:'reveal-steps',steps:[
+      {num:'∀',title:'Euklid: Es gibt unendlich viele Primzahlen',body:'Formal: ∀k ∈ ℕ ∃p ∈ ℕ (p > k ∧ prim(p))'},
+      {num:'1',title:'Annahme des Gegenteils',body:'∃k ∀n (n ∈ ℙ → n ≤ k) — es gibt eine größte Primzahl k₀'},
+      {num:'2',title:'Konstruktion',body:'b := 1 + (1·2·3·…·k₀) — das Produkt aller Primzahlen plus 1'},
+      {num:'3',title:'Widerspruch',body:'Kein pᵢ ≤ k₀ teilt b (Rest 1) → b hat einen Primteiler > k₀ → Widerspruch!'},
+      {num:'∎',title:'Schluss',body:'Die Annahme war falsch → Es gibt unendlich viele Primzahlen ∎'},
+    ]},
+    {type:'mcq',q:'Wie widerlegt man ∀x ∈ ℝ (x² ≥ x)?',opts:['Zeige dass x² immer negativ ist','Finde ein x mit x² < x','Zeige dass keine reelle Zahl existiert','Nutze De Morgan'],correct:1,exp:'¬(∀x P(x)) ≡ ∃x ¬P(x). Ein Gegenbeispiel reicht: x=0.5 → 0.25 < 0.5 ✓ — die Aussage ist widerlegt!'},
+  ]},
+ ]},
+
+{id:'m4',title:'Boolesche Algebra',color:'#fbbf24',icon:'4',
+ desc:'Vom Bit zum Schaltkreis — die Mathematik moderner Computer',
+ lessons:[
+  {id:'l4_1',title:'Boolesche Funktionen',icon:'⊕',topic:'boolesch',steps:[
+    {type:'title',icon:'⊕',title:'Boolesche Funktionen',sub:'Alle digitalen Computer operieren auf Bits. Boolesche Funktionen sind die mathematische Beschreibung dessen, was Transistoren tun.'},
+    {type:'callout',kind:'def',label:'Boolesche Funktion',html:'<p>Eine <strong>n-stellige Boolesche Funktion</strong> ist eine Abbildung f: {0,1}ⁿ → {0,1}.</p><p>Identifiziere: 0 ↔ f (falsch), 1 ↔ w (wahr) — identisch zur Aussagenlogik!</p>'},
+    {type:'callout',kind:'info',label:'Wie viele gibt es?',html:'<p>2ⁿ mögliche Eingaben × 2 Ausgaben pro Eingabe = <strong>2^(2^n)</strong> Funktionen.</p><ul><li>n=1: 4 Funktionen</li><li>n=2: 16 Funktionen</li><li>n=3: 256 Funktionen</li><li>n=10: astronomisch viele</li></ul>'},
+    {type:'callout',kind:'def',label:'Grundoperationen',html:'<ul><li><strong>Komplement ¬b:</strong> ¬0=1, ¬1=0</li><li><strong>Produkt b₁·b₂:</strong> 1 nur wenn beide 1</li><li><strong>Summe b₁+b₂:</strong> 0 nur wenn beide 0</li></ul>'},
+    {type:'mcq',q:'Was ergibt 1 + 1 in der Booleschen Algebra?',opts:['0','1','2','Undefined'],correct:1,exp:'Boolesche Summe = OR: 1+1=1. Es ist kein arithmetisches Plus! 1 OR 1 = 1.'},
+  ]},
+  {id:'l4_2',title:'Normalformen',icon:'NF',topic:'boolesch',steps:[
+    {type:'title',icon:'NF',title:'Normalformen',sub:'Jede Boolesche Funktion kann systematisch als DNF oder KNF geschrieben werden — das ist die Grundlage für Compiler und Schaltkreisdesign.'},
+    {type:'callout',kind:'def',label:'Minterme & DNF',html:'<p><strong>Minterm M(b)</strong> = x₁^b₁ · x₂^b₂ · … · xₙ^bₙ<br>Genau für den Vektor b gleich 1.</p><p><strong>DNF</strong> (Summe von Produkten): Für alle 1-Einträge der Wertetabelle, bilde Minterm, summiere auf.</p>'},
+    {type:'truthtable',label:'Beispiel: DNF konstruieren',headers:['x₁','x₂','f','Minterm'],rows:[['0','0','1','x̄₁·x̄₂'],['0','1','0','—'],['1','0','0','—'],['1','1','1','x₁·x₂']],hi:[[0,0,2,2],[3,0,2,2]]},
+    {type:'formula',f:'f = (x̄₁·x̄₂) + (x₁·x₂)'},
+    {type:'callout',kind:'def',label:'KNF',html:'<p><strong>KNF</strong> (Produkt von Summen): Jede Klausel ist eine Bedingung, alle müssen erfüllt sein.</p><p>Erzeugung durch Umformungsregeln: ¬¬w → w, ¬(v*w) → ¬v+¬w, v+(u*w) → (v+u)*(v+w)</p>'},
+    {type:'mcq',q:'Was ist eine DNF?',opts:['Produkt von Summen von Literalen','Summe von Produkten von Literalen','Negation einer KNF','Menge von Klauseln'],correct:1,exp:'DNF = Disjunktive Normalform = Summe (+) von Produkten (*) von Literalen. KNF ist das Gegenteil.'},
+    {type:'callout',kind:'satz',label:'Satz: Jede Funktion hat eine DNF',html:'<p>Für jede Boolesche Funktion f gibt es einen Ausdruck in DNF, der sie darstellt. Der Beweis ist konstruktiv — man liest die DNF direkt aus der Wertetabelle ab.</p>'},
+  ]},
+  {id:'l4_3',title:'Funktionale Vollständigkeit & Gatter',icon:'⊼',topic:'boolesch',steps:[
+    {type:'title',icon:'⊼',title:'Funktionale Vollständigkeit',sub:'Welche Operatoren brauche ich, um ALLE Booleschen Funktionen ausdrücken zu können? Die Antwort ist überraschend.'},
+    {type:'callout',kind:'def',label:'Funktionale Vollständigkeit',html:'<p>Ein System von Operatoren ist <strong>funktional vollständig</strong>, wenn jede Boolesche Funktion damit dargestellt werden kann.</p>'},
+    {type:'reveal-steps',steps:[
+      {num:'✓',title:'{¬, +, *} — vollständig',body:'Trivial durch DNF: Jede Funktion hat eine DNF aus ¬, + und *.'},
+      {num:'✓',title:'{¬, +} — vollständig',body:'x₁·x₂ = ¬(x̄₁+x̄₂) — AND aus NOT und OR.'},
+      {num:'✓',title:'{¬, *} — vollständig',body:'x₁+x₂ = ¬(x̄₁·x̄₂) — OR aus NOT und AND.'},
+      {num:'✓',title:'NAND allein — vollständig!',body:'¬x = x NAND x. x·y = (x NAND y) NAND (x NAND y). Echte Computer nutzen das!'},
+      {num:'✗',title:'{+, *} — NICHT vollständig',body:'Negation kann nicht aus + und * gebaut werden. ¬0 = 1 ≠ 0+0 oder 0*0.'},
+    ]},
+    {type:'prose',html:'Ein AMD Athlon XP Prozessor (2003) hatte <strong>54 Millionen Transistoren</strong> — alles aus NAND-Gattern aufgebaut!'},
+    {type:'mcq',q:'Warum reicht NAND allein für funktionale Vollständigkeit?',opts:['Weil NAND das häufigste Gatter ist','Weil man ¬ und * (und damit alle Funktionen) aus NAND bauen kann','Weil NAND = NOT AND','Weil Transistoren NAND implementieren'],correct:1,exp:'NAND ist vollständig weil: ¬x = x NAND x, und x·y = ¬(x NAND y). Da {¬,*} vollständig ist, ist NAND allein vollständig.'},
+  ]},
+  {id:'l4_4',title:'Schaltkreise & Addierer',icon:'⚡',topic:'boolesch',steps:[
+    {type:'title',icon:'⚡',title:'Kombinatorische Schaltkreise',sub:'Von der Booleschen Algebra zur Hardware — so werden Boolesche Funktionen als echte Schaltkreise aus Logikgattern gebaut.'},
+    {type:'callout',kind:'def',label:'Logikgatter',html:'<p>Gatter sind die physischen Bausteine. Wichtigste Gatter:</p><ul><li><strong>NOT</strong>: ¬x — invertiert das Bit</li><li><strong>AND</strong>: x·y — beide müssen 1 sein</li><li><strong>OR</strong>: x+y — mindestens eines muss 1 sein</li><li><strong>NAND</strong>: ¬(x·y) — allein funktional vollständig!</li><li><strong>XOR</strong>: x⊕y — genau eines muss 1 sein</li></ul>'},
+    {type:'callout',kind:'example',label:'Halbaddierer',html:'<p>Addiert zwei 1-Bit-Zahlen: Eingabe x₁, x₂ → Ausgabe s (Summe) und c (Übertrag)</p><p><strong>s = x₁⊕x₂</strong> (XOR — Summe ohne Übertrag)<br><strong>c = x₁·x₂</strong> (AND — Übertrag)</p>'},
+    {type:'truthtable',label:'Halbaddierer Wahrheitstabelle',headers:['x₁','x₂','c (Carry)','s (Sum)'],rows:[['0','0','0','0'],['0','1','0','1'],['1','0','0','1'],['1','1','1','0']],hi:[[3,0,2,3]]},
+    {type:'callout',kind:'info',label:'Volladdierer & 4-Bit-Addierer',html:'<p>Ein <strong>Volladdierer</strong> addiert 3 Bits (x₁, x₂, cᵢₙ) → s, cₒᵤₜ. Vier Volladdierer in Reihe ergeben einen <strong>4-Bit-Addierer</strong> — die Grundlage für Prozessor-ALUs!</p>'},
+    {type:'mcq',q:'Was berechnet c = x₁ · x₂ beim Halbaddierer?',opts:['Die Summe der zwei Bits','Den Übertrag (Carry)','Die Differenz','Das XOR der Bits'],correct:1,exp:'c ist der Übertrag (Carry): 1+1=10 in Binär → Summe 0, Übertrag 1. Das AND x₁·x₂ ist genau dann 1 wenn beide Eingaben 1 sind.'},
+    {type:'mcq',q:'Wie viele Volladdierer braucht man für einen 8-Bit-Addierer?',opts:['2','4','8','16'],correct:2,exp:'Ein Volladdierer addiert eine Stelle. Für 8-Bit-Zahlen braucht man 8 Volladdierer in Reihe — jeder gibt seinen Übertrag an den nächsten weiter.'},
+  ]},
+ ]},
+
+{id:'m5',title:'Resolution & Hornlogik',color:'#4ade80',icon:'5',
+ desc:'Algorithmen zum automatischen logischen Schlussfolgern',
+ lessons:[
+  {id:'l5_1',title:'Semantik & Modelle',icon:'⊨',topic:'resolution',steps:[
+    {type:'title',icon:'⊨',title:'Formale Semantik',sub:'Was bedeutet es formal, wenn eine Formel "gilt"? Wir definieren Belegungen und Modelle präzise.'},
+    {type:'callout',kind:'def',label:'Belegung & Modell',html:'<p>Eine <strong>Belegung</strong> α: D → {0,1} weist atomaren Formeln Wahrheitswerte zu.</p><p><strong>α ⊨ F</strong> bedeutet: α ist ein <strong>Modell</strong> für F (α(F) = 1).</p>'},
+    {type:'callout',kind:'def',label:'Erfüllbarkeit & Tautologie',html:'<ul><li><strong>Erfüllbar</strong>: mindestens ein Modell existiert</li><li><strong>Unerfüllbar</strong>: kein Modell existiert</li><li><strong>Tautologie</strong>: jede Belegung ist Modell</li></ul><p>F ist Tautologie ⟺ ¬F ist unerfüllbar!</p>'},
+    {type:'callout',kind:'info',label:'Warum Unerfüllbarkeit?',html:'<p>Unerfüllbarkeit zu prüfen reicht für alles:</p><ul><li>F Tautologie? → ¬F unerfüllbar?</li><li>G folgt aus F₁,…,Fₙ? → F₁∧…∧Fₙ∧¬G unerfüllbar?</li></ul>'},
+    {type:'mcq',q:'F ist genau dann eine Tautologie, wenn...',opts:['F erfüllbar ist','F unerfüllbar ist','¬F unerfüllbar ist','¬F eine Tautologie ist'],correct:2,exp:'F ist Tautologie ⟺ jede Belegung ist Modell ⟺ keine Belegung macht ¬F wahr ⟺ ¬F unerfüllbar.'},
+  ]},
+  {id:'l5_2',title:'Resolutionskalkül',icon:'⊢',topic:'resolution',steps:[
+    {type:'title',icon:'⊢',title:'Resolutionskalkül',sub:'Ein algorithmisches Verfahren zum Nachweis der Unerfüllbarkeit — die Grundlage moderner SAT-Solver.'},
+    {type:'callout',kind:'def',label:'Klausel & Resolvente',html:'<p>Eine <strong>Klausel</strong> ist eine endliche Menge von Literalen: K = {L₁,…,Lⱼ}.</p><p>Die <strong>Resolvente</strong> von K₁ (mit A) und K₂ (mit ¬A):</p><p>K₃ = (K₁ \\ {A}) ∪ (K₂ \\ {¬A})</p>'},
+    {type:'callout',kind:'example',label:'Beispiel',html:'<p>K₁ = {A, B, ¬C}, K₂ = {A, ¬B, C}</p><p>Resolution über B: K₃ = {A, ¬C, C}</p><p>Wenn K₁={A} und K₂={¬A}: K₃ = ∅ (leere Klausel!)</p>'},
+    {type:'callout',kind:'satz',label:'Resolutionssatz',html:'<p>Eine KNF F ist genau dann <strong>unerfüllbar</strong>, wenn die leere Klausel ableitbar ist:</p><p><strong>F unerfüllbar ⟺ ∅ ∈ Res∞(K(F))</strong></p>'},
+    {type:'callout',kind:'warn',label:'P=NP Problem',html:'<p>Ob SAT (Erfüllbarkeit einer KNF) in polynomialer Zeit lösbar ist, ist <strong>das ungelöste Hauptproblem der Informatik</strong>. Das Clay Institute zahlt 1 Million Dollar für die Lösung.</p>'},
+    {type:'mcq',q:'Was bedeutet ∅ ∈ Res∞(K(F))?',opts:['F ist erfüllbar','F ist eine Tautologie','F ist unerfüllbar','F hat keine Klauseln'],correct:2,exp:'Die leere Klausel ableitbar bedeutet: F ist unerfüllbar. Die leere Klausel ist der "Alarm" des Resolutionskalküls.'},
+    {type:'reveal-steps',steps:[
+      {num:'1',title:'Sudoku als Logik',body:'9×9 Sudoku: 729 Variablen x_{i,j,k} (= „Zelle(i,j) enthält k")'},
+      {num:'2',title:'Klauseln für Zeilen',body:'Jede Ziffer kommt in jeder Zeile vor: {x_{i,1,k}, x_{i,2,k},…,x_{i,9,k}}'},
+      {num:'3',title:'Ausschlussklauseln',body:'Nicht zwei Ziffern in einer Zelle: {x̄_{i,j,k}, x̄_{i,j,k\'}} für k≠k\''},
+      {num:'4',title:'SAT-Solver',body:'Moderne SAT-Solver lösen Sudokus in Millisekunden — mit Millionen von Klauseln!'},
+    ]},
+  ]},
+  {id:'l5_3',title:'Hornlogik & Prolog',icon:'?-',topic:'resolution',steps:[
+    {type:'title',icon:'?-',title:'Hornlogik & Prolog',sub:'Eine effiziente Teilmenge der Logik — die Grundlage der Programmiersprache Prolog und vieler KI-Systeme.'},
+    {type:'callout',kind:'def',label:'Hornklausel',html:'<p>Eine Klausel mit <strong>höchstens einem positiven Literal</strong>.</p><ul><li><strong>Tatsache</strong>: {A} — ein einzelnes positives Literal</li><li><strong>Regel</strong>: {¬A, ¬B, C} — entspricht A ∧ B → C</li><li><strong>Zielklausel</strong>: {¬D} — die Anfrage</li></ul>'},
+    {type:'callout',kind:'satz',label:'Markierungsalgorithmus O(n)',html:'<ol><li>Markiere alle Tatsachen</li><li>Wiederhole: Alle neg. Literale einer Regel markiert → markiere pos. Literal</li><li>Zielklausel markiert? → Ziel ist Folgerung!</li></ol><p>Laufzeit: <strong>O(n)</strong> — viel effizienter als allg. Resolution!</p>'},
+    {type:'formula',f:'% Prolog-Beispiel:\na :- b, c.   % a wenn b und c\nb.            % b ist Tatsache  \nc.            % c ist Tatsache\n?- a.         % Anfrage: gilt a?\ntrue.         % Antwort: ja!'},
+    {type:'callout',kind:'warn',label:'DFS vs BFS in Prolog',html:'<p>Prolog nutzt <strong>DFS</strong> (Tiefensuche) — effizient, aber kann in Endlosschleifen laufen!</p><p>BFS wäre vollständig, braucht aber exponentiell viel Speicher.</p>'},
+    {type:'mcq',q:'Was ist der Vorteil der Hornlogik gegenüber allg. KNF?',opts:['Mehr ausdrucksstark','Erfüllbarkeitstest in O(n) statt exponentiell','Keine Quantoren nötig','Kleinere Formeln'],correct:1,exp:'Der Markierungsalgorithmus für Hornformeln läuft in O(n) — der allgemeine Resolutionskalkül kann exponentiell laufen.'},
+  ]},
+  {id:'l5_4',title:'Prädikatenlogik formal',icon:'∀∃',topic:'resolution',steps:[
+    {type:'title',icon:'∀∃',title:'Formale Prädikatenlogik',sub:'Die vollständige formale Definition — Syntax, Semantik und ein Blick auf die Grenzen formaler Systeme.'},
+    {type:'callout',kind:'def',label:'Syntax',html:'<p>Prädikatenlogische Formeln aus: <strong>Variablen</strong> xᵢ, <strong>Funktionssymbole</strong> f^(k), <strong>Prädikate</strong> P^(k), <strong>Terme</strong>, <strong>Junktoren</strong>, <strong>Quantoren</strong> ∀,∃.</p>'},
+    {type:'callout',kind:'def',label:'Struktur (Semantik)',html:'<p>α = (U, φ, ψ, ξ) mit:</p><ul><li>U: Universum</li><li>φ: Funktionen auf U</li><li>ψ: Prädikate als Teilmengen von Uᵏ</li><li>ξ: Variablenbelegung</li></ul>'},
+    {type:'formula',f:'Stetigkeit von f in x:\n∀ε (ε>0 → ∃δ (δ>0 ∧\n  ∀y (|x-y|<δ → |f(x)-f(y)|<ε)))'},
+    {type:'callout',kind:'satz',label:'Gödelscher Unvollständigkeitssatz (1931)',html:'<p>Jedes hinreichend mächtige formale System ist entweder <strong>widersprüchlich</strong> oder <strong>unvollständig</strong>.</p><p>Es gibt wahre Aussagen, die im System nicht beweisbar sind. Das zerschlug Hilberts Programm der vollständigen Formalisierung der Mathematik.</p>'},
+    {type:'mcq',q:'Was folgt aus dem Gödelschen Unvollständigkeitssatz?',opts:['Jede wahre Aussage ist beweisbar','Kein formales System kann Arithmetik beschreiben','In jedem mächtigen System gibt es wahre, unbeweisbare Aussagen','Prädikatenlogik ist vollständig'],correct:2,exp:'Gödel zeigte: In jedem hinreichend mächtigen widerspruchsfreien System gibt es wahre Aussagen die nicht beweisbar sind — Vollständigkeit ist unerreichbar!'},
+    {type:'complete',title:'🎓 Kurs abgeschlossen!',sub:'Du hast alle 5 Module der Elementaren Logik durchgearbeitet!'},
+  ]},
+ ]},
+{id:'m6',title:'Vertiefung: Lücken geschlossen',color:'#f472b6',icon:'6',
+ desc:'Extensionalität, Boolesche Syntax, Ersetzungssatz, Klauselmenge, Lineare Resolution',
+ lessons:[
+  {id:'l6_1',title:'Extensionale Aussageverknüpfungen',icon:'⊕',topic:'aussagen',steps:[
+    {type:'title',icon:'⊕',title:'Extensionalität',sub:'Warum hängt der Wahrheitswert einer Verknüpfung nur von den Teilaussagen ab — und nicht von deren Bedeutung?'},
+    {type:'callout',kind:'def',label:'Def. 1.1.3 — Aussageverknüpfung',html:'<p>Sind p₁,…,pₙ Aussagen, so können diese zu einer Aussageverknüpfung a(p₁,…,pₙ) kombiniert werden.</p><p>Eine Verknüpfung heißt <strong>extensional</strong>, wenn ihr Wahrheitswert bereits <em>eindeutig durch die Wahrheitswerte der Teilaussagen</em> bestimmt ist.</p>'},
+    {type:'callout',kind:'example',label:'Extensional vs. nicht-extensional',html:'<p><strong>Extensional:</strong> „Alice ist reich <em>und</em> Bob ist arm." — Wahrheitswert hängt nur davon ab ob jede Teilaussage wahr ist.</p><p><strong>Nicht extensional:</strong> „Alice ist reich, <em>weil</em> Bob arm ist." — Das Wort „weil" impliziert einen kausalen Zusammenhang, der nicht im Wahrheitswert steckt.</p>'},
+    {type:'callout',kind:'info',label:'Konsequenz für die Aussagenlogik',html:'<p>Die Aussagenlogik betrachtet <strong>ausschließlich extensionale Verknüpfungen</strong>. Das bedeutet: Alle Junktoren (¬, ∧, ∨, →, ↔) liefern denselben Wahrheitswert, egal welche inhaltliche Beziehung zwischen den Aussagen besteht.</p><p>Natürliche Sprache ist oft <em>nicht</em> extensional — deshalb brauchen wir die formale Logik!</p>'},
+    {type:'callout',kind:'warn',label:'Vorsicht: Sprachfallen',html:'<p>„Lisa stolpert <em>und</em> fällt hin" impliziert zeitliche Reihenfolge.<br>„Lisa fällt hin <em>und</em> stolpert" klingt anders — aber p∧q ≡ q∧p ist eine Tautologie!</p><p>Die natürliche Sprache ist nicht extensional. Die formale Logik ignoriert solche Beziehungen absichtlich.</p>'},
+    {type:'mcq',q:'Was macht eine Aussageverknüpfung extensional?',opts:['Sie enthält nur wahre Teilaussagen','Ihr Wahrheitswert hängt ausschließlich von den Wahrheitswerten der Teilaussagen ab','Sie ist immer eine Tautologie','Sie enthält keinen Quantor'],correct:1,exp:'Extensional = der Wahrheitswert ist allein durch die Wahrheitswerte der Teile bestimmt, nicht durch inhaltliche Beziehungen.'},
+    {type:'think',q:'Das logische „und" (∧) und das deutsche „weil" haben beide zwei Teile — warum ist nur ∧ extensional?',hint:'Tipp: Was braucht man zusätzlich zum Wahrheitswert, um „weil" zu beurteilen?'},
+  ]},
+  {id:'l6_2',title:'Formale Syntax Boolescher Ausdrücke',icon:'𝔹',topic:'boolesch',steps:[
+    {type:'title',icon:'𝔹',title:'Formale Syntax Boolescher Ausdrücke',sub:'Genau wie WFF für die Aussagenlogik — aber jetzt für Boolesche Funktionen auf Bits {0,1}.'},
+    {type:'callout',kind:'def',label:'Zeichenvorrat (Def. 3.1.4)',html:'<p>Wähle als Zeichenvorrat:</p><p style="font-family:monospace;font-size:0.85em">Z = { X, 0, 1, (, ), +, *, ¬ }</p><p>Boolesche Variablen: V = {X1, X10, X11, X100, …} (Binärindizes)</p>'},
+    {type:'reveal-steps',steps:[
+      {num:'1',title:'Konstanten sind Ausdrücke',body:'<code>0</code> und <code>1</code> sind Boolesche Ausdrücke.',done:false},
+      {num:'2',title:'Variablen sind Ausdrücke',body:'Jede Variable v ∈ V ist ein Boolescher Ausdruck.',done:false},
+      {num:'3',title:'Negation',body:'Ist w ein Boolescher Ausdruck, so auch <code>¬w</code>.',done:false},
+      {num:'4',title:'Summe (ODER)',body:'Sind v, w Ausdrücke, so auch <code>(v+w)</code>.',done:false},
+      {num:'5',title:'Produkt (UND)',body:'Sind v, w Ausdrücke, so auch <code>(v*w)</code>.',done:false},
+    ]},
+    {type:'callout',kind:'info',label:'Syntaxbaum',html:'<p>Jeder Boolesche Ausdruck hat eine Baumstruktur — ähnlich wie WFF. Für (x₁+x₂)·x̄₂·x₃·(x₁+1) ergibt sich ein Baum mit +, *, ¬ als innere Knoten und Variablen als Blätter.</p><p>So wird aus Syntax (Text) eine Semantik (Boolesche Funktion): Für jede Belegung b₁,…,bₙ ∈ {0,1} wertet man den Baum von unten nach oben aus.</p>'},
+    {type:'callout',kind:'warn',label:'Unterschied zu WFF',html:'<p>Boolesche Ausdrücke erlauben <strong>Konstanten 0 und 1</strong> explizit.<br>Statt w und f gibt es 0 und 1.<br>+ ersetzt ∨, * ersetzt ∧.</p>'},
+    {type:'mcq',q:'Welcher der folgenden Ausdrücke ist nach Def. 3.1.4 ein gültiger Boolescher Ausdruck?',opts:['(X1 ∧ X2)','(X1 * X2)','X1 ODER X2','X1 xor X2'],correct:1,exp:'Der Zeichenvorrat enthält *, nicht ∧. Also ist (X1 * X2) ein gültiger Boolescher Ausdruck.'},
+    {type:'fillin',q:'Ein Boolescher Ausdruck der Form (v + w), wobei v und w selbst Ausdrücke sind, entspricht welcher aussagenlogischen Verknüpfung?',answer:'Disjunktion',hint:'Disjunktion',exp:'+ in Boolescher Algebra entspricht der Disjunktion (∨), d.h. dem logischen ODER.'},
+  ]},
+  {id:'l6_3',title:'Ersetzungssatz (Satz 4.1.5)',icon:'↔',topic:'aussagen',steps:[
+    {type:'title',icon:'↔',title:'Der Ersetzungssatz',sub:'Äquivalente Formeln können gegeneinander ausgetauscht werden — ohne den Gesamtwahrheitswert zu ändern.'},
+    {type:'callout',kind:'satz',label:'Satz 4.1.5 — Ersetzungssatz',html:'<p>Sei G eine Formel mit Teilformel F. Sei F′ eine Formel mit <strong>F ≡ F′</strong>. Entsteht G′ dadurch, dass man F in G an einer Stelle durch F′ ersetzt, so gilt: <strong>G ≡ G′</strong>.</p>'},
+    {type:'callout',kind:'example',label:'Beispiel',html:'<p>Sei G = (p → q) ∧ r und F = (p → q). Da F ≡ (¬p ∨ q), gilt:</p><p>G′ = (¬p ∨ q) ∧ r, und G ≡ G′.</p><p>Man darf also jede Teilformel durch eine äquivalente ersetzen!</p>'},
+    {type:'callout',kind:'info',label:'Warum ist das wichtig?',html:'<p>Der Ersetzungssatz erlaubt es, Formeln schrittweise umzuformen (z.B. in KNF/DNF), ohne jedes Mal eine vollständige Wahrheitstafel aufzustellen. Jeder Umformungsschritt ist durch den Ersetzungssatz gerechtfertigt.</p>'},
+    {type:'callout',kind:'warn',label:'Beweisidee (Induktion)',html:'<p>Der Beweis läuft per Induktion über die Aufbaulänge von G:</p><ul><li>Ist G = F selbst: trivial (G′ = F′ ≡ F)</li><li>Ist G = ¬H: Ersetzung in H liefert H′ mit H ≡ H′, damit ¬H ≡ ¬H′</li><li>Ist G = (H₁ ∧ H₂) oder (H₁ ∨ H₂): analog per Induktionsvor.</li></ul>'},
+    {type:'mcq',q:'Was besagt der Ersetzungssatz?',opts:['Jede Formel kann durch eine Variable ersetzt werden','Eine Teilformel darf durch eine äquivalente Formel ersetzt werden ohne G zu ändern','Nur atomare Formeln dürfen ersetzt werden','Ersetzung ändert immer den Wahrheitswert'],correct:1,exp:'Ersetzungssatz: F ≡ F′ erlaubt es, F in jeder umgebenden Formel G durch F′ zu ersetzen — G bleibt äquivalent.'},
+    {type:'think',q:'Warum reicht es beim Beweis des Ersetzungssatzes, Induktion über die Aufbaulänge der Formel G zu führen?',hint:'Tipp: Wie ist jede Formel aufgebaut? Welche Fälle gibt es beim Aufbau?'},
+  ]},
+  {id:'l6_4',title:'Klauselmenge K(F)',icon:'{}',topic:'resolution',steps:[
+    {type:'title',icon:'{}',title:'Die Klauselmenge K(F)',sub:'Formale Definition der Klauselmenge — das zentrale Objekt des Resolutionskalküls.'},
+    {type:'callout',kind:'def',label:'Def. 4.2.1 — Klausel und Klauselmenge',html:'<p>Eine <strong>Klausel</strong> ist eine endliche Menge K = {L₁,…,Lⱼ} von Literalen.</p><p>Sei F eine KNF-Formel: F = ⋀ᵢ (⋁ⱼ Lᵢⱼ). Jede Disjunktion definiert eine Klausel Kᵢ = {Lᵢ₁,…,Lᵢₘ}.</p><p>Die <strong>Klauselmenge</strong> K(F) = {K₁,…,Kₙ} ist die Menge aller dieser Klauseln.</p>'},
+    {type:'callout',kind:'example',label:'Beispiel',html:'<p>F = (A₁ ∨ A₂) ∧ (A₂ ∨ ¬A₃)</p><p>K₁ = {A₁, A₂}, K₂ = {A₂, ¬A₃}</p><p>K(F) = { {A₁, A₂}, {A₂, ¬A₃} }</p><p><strong>Wichtig:</strong> Verschiedene Formeln können dieselbe Klauselmenge haben!</p>'},
+    {type:'callout',kind:'info',label:'Belegung und Klauseln',html:'<p>Eine Belegung α ist Modell einer KNF genau dann, wenn α in <strong>jeder Klausel</strong> mindestens ein Literal erfüllt.</p><p>Die leere Klausel ∅ ist <strong>unerfüllbar</strong> — kein Literal kann erfüllt werden.</p>'},
+    {type:'callout',kind:'warn',label:'Mengendarstellung',html:'<p>Klauseln sind <strong>Mengen</strong> — d.h. doppelte Literale werden zusammengefasst, und die Reihenfolge spielt keine Rolle.</p><p>Deshalb sind {A₂, ¬A₃} und {¬A₃, A₂} dieselbe Klausel.</p>'},
+    {type:'mcq',q:'Was ist die Klauselmenge K(F) für F = A ∧ (¬A ∨ B)?',opts:['{{A}, {¬A, B}}','{{A, ¬A, B}}','{{A}, {¬A}, {B}}','{{A ∧ ¬A ∨ B}}'],correct:0,exp:'A ist eine Klausel {A}, und (¬A ∨ B) ist eine Klausel {¬A, B}. Also K(F) = {{A}, {¬A, B}}.'},
+    {type:'fillin',q:'Die leere Klausel ∅ ist stets …',answer:'unerfüllbar',hint:'unerfüllbar',exp:'∅ enthält keine Literale — keine Belegung kann sie erfüllen. Sie entsteht bei Resolution aus {A} und {¬A}.'},
+  ]},
+  {id:'l6_5',title:'Lineare Resolution',icon:'⟶',topic:'resolution',steps:[
+    {type:'title',icon:'⟶',title:'Lineare Resolution',sub:'Effizienter als allgemeine Resolution — eine Klausel wird schrittweise zur leeren Klausel resolviert.'},
+    {type:'callout',kind:'def',label:'Def. 4.3.4 — Lineare Resolution',html:'<p>Eine Folge K₀, K₁, …, Kₙ heißt <strong>lineare Resolution</strong> in F, wenn:</p><ul><li>K₀ aus K(F)</li><li>Für i=1,…,n: Kᵢ entsteht durch Resolution aus Kᵢ₋₁ und einer Seitenklausel Bᵢ</li><li>Bᵢ stammt aus K(F) ∪ {K₀,…,Kᵢ₋₁}</li></ul>'},
+    {type:'callout',kind:'example',label:'Beispiel',html:'<p>Logikprogramm: {A}, {B}, {¬A,¬B,C}, {¬B,¬C,D}, {¬D}</p><p>Lineare Resolution:<br>{A} + {¬A,¬B,C} → {¬B,C}<br>{¬B,C} + {B} → {C}<br>{C} + {¬B,¬C,D} → {¬B,D}<br>{¬B,D} + {B} → {D}<br>{D} + {¬D} → ∅</p>'},
+    {type:'callout',kind:'info',label:'Verhältnis zu anderen Resolutionsformen',html:'<ul><li><strong>Allgemeine Resolution:</strong> alle Paare von Klauseln werden resolviert</li><li><strong>Lineare Resolution:</strong> eine der Klauseln ist immer das Zwischenergebnis — effizienter</li><li><strong>Input-Resolution:</strong> Seitenklauseln nur aus K(F), nicht aus Zwischenergebnissen</li><li><strong>SLD-Resolution:</strong> Input-Resolution, Start mit Zielklausel (Prolog)</li></ul>'},
+    {type:'callout',kind:'satz',label:'Satz 4.3.7(a) — Vollständigkeit',html:'<p>Lineare Resolution ist für KNF <strong>vollständig</strong>: Für jede unerfüllbare KNF F gibt es eine lineare Resolution K₀,…,Kₙ in F mit Kₙ = ∅.</p>'},
+    {type:'mcq',q:'Was unterscheidet lineare von allgemeiner Resolution?',opts:['Lineare Resolution kann keine leere Klausel erzeugen','Bei linearer Resolution ist eine der zwei Klauseln immer das aktuelle Zwischenergebnis','Lineare Resolution benötigt nur Hornklauseln','Lineare Resolution ist langsamer'],correct:1,exp:'Bei linearer Resolution wird eine Startklausel K₀ schrittweise durch Resolution mit Seitenklauseln umgewandelt — nicht alle Paare.'},
+    {type:'mcq',q:'Welche Aussage zur SLD-Resolution ist richtig?',opts:['SLD ist vollständig für alle KNF-Formeln','SLD ist Input-Resolution startend mit einer Zielklausel, vollständig für Hornformeln','SLD verwendet BFS und ist immer terminierend','SLD kann keine leere Klausel finden'],correct:1,exp:'SLD = lineare Input-Resolution mit Zielklausel als Start. Vollständig für Hornformeln. Prolog benutzt DFS, was Nichtterminierung möglich macht.'},
+    {type:'complete',title:'✅ Modul 6 abgeschlossen!',sub:'Extensionalität, Boolesche Syntax, Ersetzungssatz, Klauselmenge K(F) und Lineare Resolution gemeistert!'},
+  ]},
+ ]},
+];
+
+// ═══════════════════════════════════════════════
+// FLASHCARDS
+// ═══════════════════════════════════════════════
+const CARDS=[
+  {t:'aussagen',q:'Was ist eine Aussage?',h:'Wahrheitswert...',a:'Gebilde, bei dem es sinnvoll ist zu fragen, ob es <code>wahr (w)</code> oder <code>falsch (f)</code> ist. Fragen & Paradoxien sind keine Aussagen.'},
+  {t:'aussagen',q:'Tautologie vs. Kontradiktion?',h:'Immer wahr / immer falsch...',a:'<code>Tautologie</code>: stets wahr (z.B. p ∨ ¬p). <code>Kontradiktion</code>: stets falsch (z.B. p ∧ ¬p).'},
+  {t:'aussagen',q:'De Morgan Gesetze?',h:'Negation reinziehen...',a:'<code>¬(p ∧ q) ≡ ¬p ∨ ¬q</code><br><code>¬(p ∨ q) ≡ ¬p ∧ ¬q</code>'},
+  {t:'aussagen',q:'Implikation p → q als Disjunktion?',h:'¬p oder q...',a:'<code>p → q ≡ ¬p ∨ q</code>. Nur falsch wenn p=w und q=f.'},
+  {t:'aussagen',q:'Kontraposition?',h:'Umkehrschluss...',a:'<code>(p → q) ≡ (¬q → ¬p)</code>'},
+  {t:'aussagen',q:'Modus Ponens?',h:'Abtrennungsregel...',a:'p gilt, p → q gilt → q gilt. Formal: <code>(p ∧ (p→q)) → q</code> ist Tautologie.'},
+  {t:'aussagen',q:'Äquivalenz ↔ auflösen?',h:'Zwei Implikationen...',a:'<code>(p↔q) ≡ ((p→q)∧(q→p)) ≡ (p∧q)∨(¬p∧¬q)</code>'},
+  {t:'aussagen',q:'Distributivgesetze?',h:'∧ über ∨...',a:'<code>p∧(q∨r) ≡ (p∧q)∨(p∧r)</code><br><code>p∨(q∧r) ≡ (p∨q)∧(p∨r)</code>'},
+  {t:'aussagen',q:'Unterschied ↔ und ≡?',h:'Junktor vs. Metasymbol...',a:'<code>↔</code> ist Junktor IN Formeln. <code>≡</code> ist Metasymbol — vergleicht Formeln von außen (A≡B bedeutet A↔B ist Tautologie).'},
+  {t:'aussagen',q:'Ex falso quodlibet?',h:'Aus Falschem...',a:'Aus einer falschen Prämisse folgt alles. Ist p falsch, ist p→q immer wahr.'},
+  {t:'aussagen',q:'Wann ist p → q falsch?',h:'Nur ein Fall...',a:'Genau dann wenn p=<code>w</code> und q=<code>f</code>.'},
+  {t:'aussagen',q:'Was ist eine WFF?',h:'Induktive Definition...',a:'Wohlgeformte Formel. Induktiv: atomare Formeln, dann ¬F, (F∧G), (F∨G). Nur so Aufgebautes ist WFF.'},
+  {t:'praedikat',q:'Allquantor ∀?',h:'Für alle...',a:'<code>∀x∈U: P(x)</code> = alle x haben P. Bei endl. U: Konjunktion aller P(uᵢ).'},
+  {t:'praedikat',q:'Existenzquantor ∃?',h:'Es gibt...',a:'<code>∃x∈U: P(x)</code> = mind. ein x mit P. Bei endl. U: Disjunktion aller P(uᵢ).'},
+  {t:'praedikat',q:'De Morgan für Quantoren?',h:'Negation rein...',a:'<code>¬(∀x P(x)) ≡ ∃x ¬P(x)</code><br><code>¬(∃x P(x)) ≡ ∀x ¬P(x)</code>'},
+  {t:'praedikat',q:'Freie vs. gebundene Variable?',h:'Quantor...',a:'Frei: kein Quantor. Gebunden: von ∀ oder ∃ quantifiziert.'},
+  {t:'praedikat',q:'Gilt ∃y∀x ≡ ∀x∃y?',h:'Reihenfolge...',a:'NEIN! ∃y∀x impliziert ∀x∃y, aber nicht umgekehrt.'},
+  {t:'praedikat',q:'Was ist ein Universum U?',h:'Grundbereich...',a:'Die Menge der Objekte, die in eine Variable eingesetzt werden dürfen. Wahrheitswert hängt von U ab!'},
+  {t:'beweise',q:'Schema math. Induktion?',h:'IA, IV, IB...',a:'1. I.A.: p(0). 2. n beliebig. 3. I.V.: p(n). 4. I.B.: p(n+1). 5. Beweis. 6. ∀n p(n) ∎'},
+  {t:'beweise',q:'Peano-Axiome?',h:'5 Axiome...',a:'(1) 0∈ℕ₀ (2) Nachfolger n+1 (3) 0 hat keinen Vorgänger (4) Injektivität (5) Induktionsaxiom'},
+  {t:'beweise',q:'Schubfachprinzip?',h:'n > k...',a:'n > k Objekte auf k Fächer → mind. 1 Fach mit ≥ ⌈n/k⌉ Objekten.'},
+  {t:'beweise',q:'Vollständige Induktion?',h:'Stärkere IV...',a:'I.V. ist ∀m<n: p(m). Kein expliziter I.A. nötig.'},
+  {t:'beweise',q:'Direkter vs. indirekter Beweis?',h:'p annehmen vs. ¬q annehmen...',a:'Direkt: p annehmen, q herleiten. Indirekt: ¬q annehmen, Widerspruch herleiten.'},
+  {t:'beweise',q:'Kontraposition als Beweisstrategie?',h:'(p→q) ≡ (¬q→¬p)...',a:'Statt p→q beweise ¬q→¬p. Äquivalent, manchmal eleganter.'},
+  {t:'boolesch',q:'Boolesche Funktion?',h:'Bits → Bit...',a:'f: {0,1}ⁿ → {0,1}. Es gibt 2^(2^n) n-stellige Boolesche Funktionen.'},
+  {t:'boolesch',q:'Minterm M(b)?',h:'Produkt von Literalen...',a:'M(b) = x₁^b₁·…·xₙ^bₙ. Genau für b gleich 1.'},
+  {t:'boolesch',q:'DNF?',h:'Summe von Produkten...',a:'Disjunktive Normalform: Summe (+) von Produkten (*) von Literalen. Jede Funktion hat eine!'},
+  {t:'boolesch',q:'KNF?',h:'Produkt von Summen...',a:'Konjunktive Normalform: Produkt (*) von Summen (+) von Literalen (Klauseln).'},
+  {t:'boolesch',q:'Funktionale Vollständigkeit?',h:'{NAND}...',a:'System mit dem jede Bool. Funktion darstellbar ist. NAND allein reicht! {+,*} ist NICHT vollständig.'},
+  {t:'boolesch',q:'Halbaddierer?',h:'Addition zweier Bits...',a:'Summe: s = x₁x̄₂+x̄₁x₂ (XOR). Übertrag: c = x₁·x₂ (AND).'},
+  {t:'resolution',q:'Klausel?',h:'Menge von Literalen...',a:'Endliche Menge von Literalen. Leere Klausel ∅ ist unerfüllbar.'},
+  {t:'resolution',q:'Resolvente?',h:'A und ¬A auflösen...',a:'K₃ = (K₁\\{A}) ∪ (K₂\\{¬A}) aus K₁ mit A und K₂ mit ¬A.'},
+  {t:'resolution',q:'Resolutionssatz?',h:'Unerfüllbar ⟺ ...',a:'F KNF unerfüllbar ⟺ ∅ ∈ Res∞(K(F)).'},
+  {t:'resolution',q:'Hornklausel?',h:'Max. 1 positives Literal...',a:'Max. 1 positives Literal. Typen: Tatsache {A}, Regel {¬A,¬B,C}, Zielklausel {¬D}.'},
+  {t:'resolution',q:'Markierungsalgorithmus Laufzeit?',h:'Polynomiell...',a:'O(n) — max. n Durchläufe. Viel effizienter als allg. Resolutionskalkül.'},
+  {t:'resolution',q:'SLD-Resolution?',h:'Prolog...',a:'Lineare Input-Resolution von Zielklauseln. Vollständig für Hornformeln. Prolog nutzt DFS.'},
+  {t:'resolution',q:'P=NP?',h:'SAT-Problem...',a:'Ungeklärt: Kann SAT in polynomialer statt exponentieller Zeit entschieden werden? 1 Mio. $ Preisgeld.'},
+  {t:'resolution',q:'Gödelscher Unvollständigkeitssatz?',h:'1931...',a:'Jedes mächtige widerspruchsfreie formale System ist unvollständig — es gibt wahre, unbeweisbare Aussagen.'},
+  {t:'aussagen',q:'Was ist eine extensionale Aussageverknüpfung?',h:'Wahrheitswert der Teile...',a:'Eine Verknüpfung ist extensional, wenn ihr Wahrheitswert <code>allein durch die Wahrheitswerte der Teilaussagen</code> bestimmt ist — unabhängig von inhaltlichen Beziehungen.'},
+  {t:'aussagen',q:'Warum ist „weil" nicht extensional?',h:'Kausalität...',a:'„Weil" drückt einen <code>kausalen Zusammenhang</code> aus, der über den reinen Wahrheitswert hinausgeht. „A weil B" ist falsch wenn A falsch ist — aber A∧B kann trotzdem wahr sein.'},
+  {t:'boolesch',q:'Formale Syntax Boolescher Ausdrücke?',h:'Induktive Def...',a:'0 und 1 sind Ausdrücke. Variablen Xᵢ sind Ausdrücke. Ist w Ausdruck → <code>¬w</code> auch. Sind v,w Ausdrücke → <code>(v+w)</code> und <code>(v*w)</code> auch.'},
+  {t:'aussagen',q:'Was besagt der Ersetzungssatz (Satz 4.1.5)?',h:'F ≡ F′...',a:'Ist F ≡ F′, dann kann man in jeder Formel G die Teilformel F durch F′ ersetzen — das Ergebnis G′ ist äquivalent zu G. Formal: <code>G ≡ G′</code>.'},
+  {t:'resolution',q:'Was ist die Klauselmenge K(F)?',h:'Endliche Mengenmenge...',a:'K(F) = {K₁,…,Kₙ} wobei jedes Kᵢ = {Lᵢ₁,…,Lᵢₘ} eine endliche Menge von Literalen (Klausel) ist. Entspricht den Disjunktionen der <code>KNF</code>.'},
+  {t:'resolution',q:'Lineare Resolution — was ist das?',h:'Schrittweise...',a:'Folge K₀,…,Kₙ wobei K₀ ∈ K(F) und jedes Kᵢ durch Resolution aus Kᵢ₋₁ und einer Seitenklausel aus K(F)∪{K₀,…,Kᵢ₋₁} entsteht. <code>Vollständig für KNF</code>.'},
+];
+
+// ═══════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════
+const QUIZ=[
+  {t:'aussagen',q:'Welche Aussageform ist eine Tautologie?',o:['p∧¬p','p∨¬p','p→¬p','p↔¬p'],c:1,e:'p∨¬p (Satz vom ausgeschlossenen Dritten) ist immer wahr.'},
+  {t:'aussagen',q:'¬(p∧q) ≡ ?',o:['¬p∧¬q','¬p∨¬q','p∨q','¬(p∨q)'],c:1,e:'De Morgan: ¬(p∧q) ≡ ¬p∨¬q.'},
+  {t:'aussagen',q:'p→q ist äquivalent zu?',o:['¬p∧q','¬p∨q','p∧¬q','¬q→p'],c:1,e:'p→q ≡ ¬p∨q — die Definition der Implikation.'},
+  {t:'aussagen',q:'Wann ist p→q FALSCH?',o:['p=f,q=f','p=f,q=w','p=w,q=w','p=w,q=f'],c:3,e:'Nur wenn p=w und q=f ist die Implikation falsch.'},
+  {t:'aussagen',q:'Was ist ¬(p∨q) äquivalent zu?',o:['¬p∧¬q','¬p∨¬q','p∧q','p∨q'],c:0,e:'De Morgan: ¬(p∨q) ≡ ¬p∧¬q.'},
+  {t:'aussagen',q:'Modus Ponens — was folgt aus p und p→q?',o:['¬p','q','¬q','p∧q'],c:1,e:'Modus Ponens: Gilt p und p→q, so gilt q.'},
+  {t:'praedikat',q:'¬(∀x P(x)) ≡ ?',o:['∀x ¬P(x)','∃x ¬P(x)','¬∃x P(x)','∀x P(¬x)'],c:1,e:'De Morgan: ¬(∀x P(x)) ≡ ∃x ¬P(x).'},
+  {t:'praedikat',q:'Gilt ∃y∀x P(x,y) → ∀x∃y P(x,y)?',o:['Ja','Nein','Nur für endliche U','Nur wenn P symmetrisch'],c:0,e:'∃y∀x impliziert ∀x∃y, aber nicht umgekehrt.'},
+  {t:'praedikat',q:'Was ist eine gebundene Variable?',o:['Hat keinen Typ','Durch Quantor quantifiziert','Freie Variable','Variable im Universum'],c:1,e:'Gebunden = durch ∀ oder ∃ erfasst.'},
+  {t:'beweise',q:'Was zeigt der Induktionsanfang?',o:['p(n)→p(n+1)','p(0)','∀n p(n)','Die IV'],c:1,e:'I.A. zeigt p(0) — den Startfall.'},
+  {t:'beweise',q:'Schubfach: 9 Socken, 4 Farben — min. wie viele gleichfarbig?',o:['1','2','3','4'],c:1,e:'⌈9/4⌉=3 in einem Fach. Mind. 2 gleiche garantiert (9>4).'},
+  {t:'beweise',q:'Was ist Kontraposition?',o:['p∧¬q→Widerspruch','(p→q)≡(¬q→¬p)','p annehmen und q zeigen','Induktiver Beweis'],c:1,e:'Kontraposition: (p→q) ≡ (¬q→¬p).'},
+  {t:'boolesch',q:'Wie viele 3-stellige Bool. Funktionen?',o:['8','16','256','512'],c:2,e:'2^(2^3) = 2^8 = 256.'},
+  {t:'boolesch',q:'Was ist Minterm M(1,0,1)?',o:['x₁+x̄₂+x₃','x₁·x̄₂·x₃','x̄₁·x₂·x̄₃','x₁·x₂·x₃'],c:1,e:'M(b): xᵢ wenn bᵢ=1, x̄ᵢ wenn bᵢ=0. → x₁·x̄₂·x₃'},
+  {t:'boolesch',q:'Welches System ist NICHT vollständig?',o:['{¬,∨}','{¬,∧}','{NAND}','{+,*}'],c:3,e:'{+,*} kann keine Negation darstellen.'},
+  {t:'boolesch',q:'1+1 in der Bool. Algebra?',o:['0','1','2','undefined'],c:1,e:'Boolesche Summe = OR: 1+1=1.'},
+  {t:'resolution',q:'F KNF unerfüllbar wenn?',o:['Alle Klauseln leer','∅ ∈ Res∞(K(F))','F Hornformel','Jede Klausel positiv'],c:1,e:'Resolutionssatz: F unerfüllbar ⟺ ∅ ableitbar.'},
+  {t:'resolution',q:'Hornklausel hat max. wie viele positive Literale?',o:['0','1','2','beliebig'],c:1,e:'Hornklausel: höchstens 1 positives Literal.'},
+  {t:'resolution',q:'Laufzeit Markierungsalgorithmus?',o:['O(2^n)','O(n²)','O(n)','O(n log n)'],c:2,e:'O(n) — max. n Durchläufe für n Variablen.'},
+  {t:'resolution',q:'BFS vs DFS beim SLD-Baum?',o:['DFS vollständig','BFS vollständig, DFS kann hängen','Beide vollständig','Keine'],c:1,e:'BFS vollständig. DFS kann in unendl. Ästen hängen. Prolog nutzt DFS.'},
+  {t:'aussagen',q:'Was bedeutet Extensionalität in der Aussagenlogik?',o:['Alle Aussagen sind wahr','Der Wahrheitswert einer Verknüpfung hängt nur von den Wahrheitswerten der Teile ab','Nur Tautologien werden betrachtet','Aussagen müssen beweisbar sein'],c:1,e:'Extensional = Wahrheitswert der Verknüpfung ist allein durch die Wahrheitswerte der Teilaussagen bestimmt.'},
+  {t:'boolesch',q:'Welche Elemente gehören zum Zeichenvorrat Boolescher Ausdrücke?',o:['A, ∨, ∧, ¬','X, 0, 1, (, ), +, *, ¬','P, Q, →, ↔','∀, ∃, x, f'],c:1,e:'Der Zeichenvorrat ist Z = {X, 0, 1, (, ), +, *, ¬}. + steht für ODER, * für UND.'},
+  {t:'aussagen',q:'Was erlaubt der Ersetzungssatz beim Umformen von Formeln?',o:['Beliebige Variablen zu streichen','Äquivalente Teilformeln gegeneinander auszutauschen','Klammern beliebig zu setzen','Quantoren einzufügen'],c:1,e:'Ersetzungssatz: F ≡ F′ → G ≡ G′, d.h. man darf Teilformeln durch äquivalente ersetzen ohne den Gesamtwahrheitswert zu ändern.'},
+  {t:'resolution',q:'Was ist die leere Klausel ∅?',o:['Eine Klausel mit allen Literalen','Eine immer wahre Klausel','Eine unerfüllbare Klausel','Eine Klausel mit nur positiven Literalen'],c:2,e:'∅ enthält keine Literale — keine Belegung kann sie erfüllen. ∅ ∈ Res∞(K(F)) bedeutet F ist unerfüllbar.'},
+  {t:'resolution',q:'Was unterscheidet lineare von Input-Resolution?',o:['Lineare Resolution ist langsamer','Bei linearer Resolution dürfen Seitenklauseln auch frühere Zwischenergebnisse sein','Input-Resolution verwendet nur Zielklauseln','Lineare Resolution ist für Hornformeln vollständig'],c:1,e:'Input-Resolution: Seitenklauseln nur aus K(F). Lineare Resolution: Seitenklauseln aus K(F) ∪ {K₀,…,Kᵢ₋₁} — also auch frühere Zwischenergebnisse erlaubt.'},
+
+  // ── AUSSAGENLOGIK (22 neue) ──
+  {t:'aussagen',q:'Was ist eine wohlgeformte Formel (WFF)?',o:['Jede Zeichenkette über dem Alphabet','Nur atomare Formeln','Induktiv aus atomaren Formeln mit ¬, ∧, ∨ aufgebaute Formeln','Formeln ohne Variablen'],c:2,e:'WFF ist induktiv definiert: Atome sind WFF, und wenn F,G WFF sind, dann auch ¬F, (F∧G), (F∨G).'},
+  {t:'aussagen',q:'Welche der folgenden ist eine Kontradiktion?',o:['p∨¬p','p∧¬p','p→p','p↔p'],c:1,e:'p∧¬p ist stets falsch — Konjunktion von p und seiner Negation.'},
+  {t:'aussagen',q:'Was ist p↔q äquivalent zu?',o:['p∧q','(p→q)∧(q→p)','¬p∨q','p∨¬q'],c:1,e:'Äquivalenz = beide Implikationsrichtungen. (p→q)∧(q→p).'},
+  {t:'aussagen',q:'Assoziativgesetz der Konjunktion?',o:['p∧q ≡ q∧p','(p∧q)∧r ≡ p∧(q∧r)','p∧(q∨r) ≡ (p∧q)∨(p∧r)','¬(p∧q) ≡ ¬p∨¬q'],c:1,e:'Assoziativität: Klammerung spielt keine Rolle — (p∧q)∧r ≡ p∧(q∧r).'},
+  {t:'aussagen',q:'Was ist die Kontraposition von (p→q)?',o:['q→p','¬p→¬q','¬q→¬p','p→¬q'],c:2,e:'Kontraposition: (p→q) ≡ (¬q→¬p). Äquivalent, aber anderes Beweisziel.'},
+  {t:'aussagen',q:'Welche Tautologie beschreibt den Modus Ponens?',o:['(p∧q)→p','(p∧(p→q))→q','p→(p∨q)','(p→q)→(q→p)'],c:1,e:'Modus Ponens als Tautologie: (p∧(p→q))→q — aus p und p→q folgt q.'},
+  {t:'aussagen',q:'Distributivgesetz: p∧(q∨r) ≡ ?',o:['(p∨q)∧(p∨r)','(p∧q)∨(p∧r)','p∨(q∧r)','(p∧q)∨r'],c:1,e:'∧ über ∨ distributieren: p∧(q∨r) ≡ (p∧q)∨(p∧r).'},
+  {t:'aussagen',q:'Was bedeutet „Ex falso quodlibet"?',o:['Aus Wahrem folgt nur Wahres','Aus Falschem folgt Beliebiges','Tautologien sind beweisbar','Jede Aussage ist wahr oder falsch'],c:1,e:'Ist p falsch, so ist p→q für jedes q wahr. Aus einer falschen Prämisse folgt alles.'},
+  {t:'aussagen',q:'Welche Aussageform ist logisch äquivalent zu ¬(p→q)?',o:['¬p∧q','p∧¬q','¬p∨¬q','p→¬q'],c:1,e:'p→q ≡ ¬p∨q, also ¬(p→q) ≡ ¬(¬p∨q) ≡ p∧¬q.'},
+  {t:'aussagen',q:'Was ist das Absorptionsgesetz?',o:['p∧(p∨q) ≡ p','p∧(q∨r) ≡ (p∧q)∨r','(p∧q)∨p ≡ q','p∨(p∧q) ≡ q'],c:0,e:'Absorption: p∧(p∨q) ≡ p und p∨(p∧q) ≡ p. Das größere „schluckt" das kleinere.'},
+  {t:'aussagen',q:'p∨(q∧r) ≡ ?',o:['(p∨q)∧r','(p∨q)∧(p∨r)','p∧(q∨r)','(p∧q)∨(p∧r)'],c:1,e:'Distributivgesetz: p∨(q∧r) ≡ (p∨q)∧(p∨r).'},
+  {t:'aussagen',q:'Was ist der Unterschied zwischen ↔ und ≡?',o:['Kein Unterschied','↔ ist Junktor in Formeln, ≡ ist Metasymbol zum Vergleich von Formeln','≡ ist stärker als ↔','↔ gilt nur für Tautologien'],c:1,e:'↔ lebt innerhalb von Formeln. ≡ ist ein Metasymbol — A≡B bedeutet A↔B ist Tautologie.'},
+  {t:'aussagen',q:'Idempotenzgesetz der Disjunktion?',o:['p∨q ≡ q∨p','p∨p ≡ p','p∨¬p ≡ w','p∨f ≡ p'],c:1,e:'Idempotenz: p∨p ≡ p. Doppelte Disjunktion ändert nichts.'},
+  {t:'aussagen',q:'Was besagt das Dominanzgesetz p∧f ≡ ?',o:['p','f','w','¬p'],c:1,e:'Dominanz: p∧f ≡ f. Konjunktion mit Falsum ist immer falsch. Analog: p∨w ≡ w.'},
+  {t:'aussagen',q:'Welche Formel ist keine Tautologie?',o:['p∨¬p','(p→q)→(¬q→¬p)','p∧¬p','(p∧(p→q))→q'],c:2,e:'p∧¬p ist eine Kontradiktion, keine Tautologie — immer falsch.'},
+  {t:'aussagen',q:'Was ist eine atomare Formel in der formalen Syntax?',o:['Jede kurze Formel','Eine Formel ohne Junktoren, z.B. A1, A2, A3','Immer eine wahre Formel','Eine Formel mit genau einem Junktor'],c:1,e:'Atomare Formeln sind die Grundbausteine: A1, A10, A11,… — keine Verknüpfungen.'},
+  {t:'aussagen',q:'¬¬p ≡ ?',o:['¬p','p','f','w'],c:1,e:'Doppelte Negation: ¬¬p ≡ p. Zwei Negationen heben sich auf.'},
+  {t:'aussagen',q:'Was ist die formale Schreibweise der Implikation p→q in WFF?',o:['(p∧q)','(¬p∨q)','(p↔q)','(p∧¬q)'],c:1,e:'p→q ist definiert als Abkürzung für (¬p∨q).'},
+  {t:'aussagen',q:'Wie viele Zeilen hat eine Wahrheitstafel für 3 Variablen?',o:['3','6','8','16'],c:2,e:'2³ = 8 Zeilen — jede Variable kann wahr oder falsch sein.'},
+  {t:'aussagen',q:'Was ist eine Schlusskette (modus ponens)?',o:['p₁ und p₁→p₂ → damit p₂, und p₂→p₃ → damit p₃ usw.','Beliebige Implikationskette','Eine Tautologie mit n Variablen','Eine Beweismethode per Widerspruch'],c:0,e:'Aus p₁ und p₁→p₂ folgt p₂ (modus ponens), dann aus p₂ und p₂→p₃ folgt p₃ — Schlusskette.'},
+  {t:'aussagen',q:'Was ist die Negation einer Tautologie?',o:['Wieder eine Tautologie','Eine Kontradiktion','Eine erfüllbare Formel','Unbestimmt'],c:1,e:'Die Negation einer stets wahren Formel ist stets falsch — also eine Kontradiktion.'},
+  {t:'aussagen',q:'Welche der folgenden ist eine korrekte Anwendung von De Morgan?',o:['¬(p∨q) ≡ ¬p∨¬q','¬(p∧q) ≡ ¬p∨¬q','¬(p→q) ≡ ¬p∧¬q','¬(p↔q) ≡ ¬p↔¬q'],c:1,e:'De Morgan: ¬(p∧q) ≡ ¬p∨¬q. Negation reinziehen dreht ∧ zu ∨.'},
+  {t:'aussagen',q:'Was gilt für die Kommutativität der Disjunktion?',o:['p∨q ≡ q∨p gilt nur wenn beide wahr','p∨q ≡ q∨p gilt immer','p∨q ≡ p∧q','p∨q ≡ ¬q∨¬p'],c:1,e:'Disjunktion ist kommutativ: p∨q ≡ q∨p für alle Wahrheitswerte.'},
+
+  // ── PRÄDIKATENLOGIK (14 neue) ──
+  {t:'praedikat',q:'Was ist eine Aussageform?',o:['Eine immer wahre Aussage','Ein Gebilde mit Variablen, das durch Einsetzen zur Aussage wird','Eine Formel ohne Quantoren','Ein Axiom'],c:1,e:'Aussageform = Gebilde mit Leerstellen (Variablen). Durch Einsetzen konkreter Werte entsteht eine Aussage.'},
+  {t:'praedikat',q:'Was ist das Universum U in der Prädikatenlogik?',o:['Die Menge aller wahren Aussagen','Die Menge der Objekte die in Variablen eingesetzt werden dürfen','Die Menge aller Formeln','Eine beliebige Zahl'],c:1,e:'U = Universum: legt fest, welche Werte Variablen annehmen dürfen. Der Wahrheitswert kann von U abhängen.'},
+  {t:'praedikat',q:'Was ist der Unterschied zwischen freier und gebundener Variable?',o:['Kein Unterschied','Frei: kein Quantor. Gebunden: durch ∀ oder ∃ erfasst','Frei: durch ∃. Gebunden: durch ∀','Frei: ganzzahlig. Gebunden: reell'],c:1,e:'Frei = kein Quantor bezieht sich auf das Vorkommen. Gebunden = ein Quantor ∀x oder ∃x erfasst die Variable.'},
+  {t:'praedikat',q:'∀x∈ℤ (x>1 → x≥2) — wahr oder falsch?',o:['Wahr für ℤ','Falsch für ℤ','Wahr für ℝ, falsch für ℤ','Unbestimmbar'],c:0,e:'Für ganze Zahlen gilt: x>1 bedeutet x≥2. Wahr für ℤ. Falsch für ℚ (z.B. x=3/2).'},
+  {t:'praedikat',q:'De Morgan für Quantoren: ¬(∃x P(x)) ≡ ?',o:['∃x ¬P(x)','∀x ¬P(x)','¬∀x P(x)','∀x P(¬x)'],c:1,e:'¬(∃x P(x)) ≡ ∀x ¬P(x). Wenn es kein x mit P gibt, dann hat kein x die Eigenschaft P.'},
+  {t:'praedikat',q:'Was ist ein Allquantor?',o:['∃','∀','∈','⊆'],c:1,e:'∀ ist der Allquantor: „für alle x gilt…". Bei endlichem U entspricht ∀x P(x) der Konjunktion aller P(uᵢ).'},
+  {t:'praedikat',q:'∃y∀x P(x,y) impliziert ∀x∃y P(x,y) — aber gilt auch die Umkehrung?',o:['Ja, immer','Nein, nicht immer','Nur für endliche U','Nur wenn P symmetrisch ist'],c:1,e:'∃y∀x impliziert ∀x∃y, aber nicht umgekehrt. Das gleiche y muss für alle x funktionieren — das ist stärker.'},
+  {t:'praedikat',q:'Was ist ein Existenzquantor?',o:['∀','∃','∈','≡'],c:1,e:'∃ ist der Existenzquantor: „es gibt mindestens ein x mit…". Bei endlichem U entspricht ∃x P(x) der Disjunktion.'},
+  {t:'praedikat',q:'Was ist ein Prädikat?',o:['Eine Funktion die Wahrheitswerte liefert','Eine Variable','Ein Axiom','Ein Quantor'],c:0,e:'Prädikat = Funktion die aus Elementen des Universums Wahrheitswerte macht, z.B. „x ist gerade".'},
+  {t:'praedikat',q:'Was verändert sich, wenn man bei ∀x∃y P(x,y) die Quantoren vertauscht?',o:['Nichts','Die Bedeutung ändert sich fundamental','Nur die Schreibweise','Es wird unerfüllbar'],c:1,e:'∀x∃y P(x,y) ≠ ∃y∀x P(x,y). Beim zweiten muss ein einziges y für alle x funktionieren — viel stärker!'},
+  {t:'praedikat',q:'Was ist ein Term in der Prädikatenlogik?',o:['Jede Formel','Variable oder durch Funktionssymbole aufgebauter Ausdruck','Nur Konstanten','Ein Prädikat mit Argument'],c:1,e:'Terme: Variablen sind Terme, und f(t₁,…,tₖ) ist Term wenn f ein Funktionssymbol und t₁,…,tₖ Terme sind.'},
+  {t:'praedikat',q:'Was ist eine Struktur α in der Semantik der Prädikatenlogik?',o:['Eine Menge von Wahrheitswerten','Ein Tupel (U, φ, ψ, ξ) mit Universum, Funktionen, Prädikaten und Variablenbelegung','Eine Formel in KNF','Eine Belegung atomarer Variablen'],c:1,e:'Struktur α = (U, φ, ψ, ξ): Universum + Interpretation von Funktionssymbolen + Prädikaten + Variablen.'},
+  {t:'praedikat',q:'Gilt ∀x∀y F ≡ ∀y∀x F?',o:['Nein, Reihenfolge wichtig','Ja, gleiche Quantorart darf getauscht werden','Nur für endliche U','Nur wenn F keine freien Variablen hat'],c:1,e:'Gleichartige Quantoren dürfen getauscht werden: ∀x∀y F ≡ ∀y∀x F und ∃x∃y F ≡ ∃y∃x F.'},
+  {t:'praedikat',q:'Was besagt der Gödelsche erste Unvollständigkeitssatz?',o:['Alle Aussagen sind beweisbar','Jedes mächtige widerspruchsfreie formale System ist unvollständig','Prädikatenlogik ist entscheidbar','Jede Formel hat ein Modell'],c:1,e:'Gödel 1931: In jedem hinreichend mächtigen widerspruchsfreien System gibt es wahre aber unbeweisbare Aussagen.'},
+
+  // ── BEWEISTECHNIKEN (14 neue) ──
+  {t:'beweise',q:'Was ist ein direkter Beweis?',o:['Man nimmt ¬q an und leitet Widerspruch her','Man nimmt p an und leitet q schrittweise her','Man zeigt alle Fälle einzeln','Man zeigt p ist falsch'],c:1,e:'Direkter Beweis: Prämisse p annehmen, dann Schlusskette bis zur Konklusion q ableiten.'},
+  {t:'beweise',q:'Was ist ein indirekter Beweis (Widerspruchsbeweis)?',o:['p annehmen, q herleiten','¬q annehmen und daraus einen Widerspruch ableiten','Alle Fälle einzeln prüfen','p∧q zeigen'],c:1,e:'Indirekter Beweis: ¬q annehmen, dann Widerspruch r∧¬r ableiten. Wegen (p→q)≡(p∧¬q→f).'},
+  {t:'beweise',q:'Was ist das Schubfachprinzip (Dirichlet)?',o:['n Objekte in n Fächer — immer eines leer','n>k Objekte auf k Fächer → mind. ein Fach mit ≥⌈n/k⌉ Objekten','k Objekte auf n Fächer → alle Fächer leer','n Objekte gleich verteilt'],c:1,e:'n>k Objekte auf k Fächer → mind. ein Fach hat ≥⌈n/k⌉ Objekte. Beweis per Widerspruch.'},
+  {t:'beweise',q:'Was sind die Peano-Axiome?',o:['Axiome der Prädikatenlogik','5 Axiome die die natürlichen Zahlen charakterisieren','Axiome der Mengenlehre','Beweisregeln für Induktion'],c:1,e:'Peano-Axiome (1889): 5 Axiome die ℕ₀ charakterisieren — 0 ist nat. Zahl, Nachfolger, kein Vorgänger von 0, Injektivität, Induktionsaxiom.'},
+  {t:'beweise',q:'Was ist die Induktionsvoraussetzung (I.V.)?',o:['p(0) ist wahr','Annahme dass p(n) gilt, um p(n+1) zu beweisen','p(n+1) ist wahr','Alle p(k) für k<n sind wahr'],c:1,e:'I.V. = Annahme p(n). Daraus wird im Induktionsschritt p(n+1) hergeleitet.'},
+  {t:'beweise',q:'Was unterscheidet vollständige von einfacher Induktion?',o:['Kein Unterschied','Bei vollständiger Induktion darf man p(0),…,p(n−1) alle annehmen, nicht nur p(n)','Vollständige Induktion hat keinen I.A.','Vollständige Induktion gilt nur für endliche Mengen'],c:1,e:'Vollständige Induktion: I.V. ist ∀m<n: p(m). Stärkere Voraussetzung, kein expliziter I.A. nötig.'},
+  {t:'beweise',q:'6|x → 3|x. Welche Beweismethode ist hier am direktesten?',o:['Widerspruchsbeweis','Induktion','Direkter Beweis mit Schlusskette','Fallunterscheidung'],c:2,e:'Direkter Beweis: 6|x → ∃k: 6k=x → ∃k: 3·(2k)=x → 3|x. Schlusskette.'},
+  {t:'beweise',q:'Was ist die Kontraposition als Beweismethode?',o:['p→q direkt beweisen','Statt p→q lieber ¬q→¬p beweisen','¬p annehmen und Widerspruch finden','Beide Richtungen einer Äquivalenz zeigen'],c:1,e:'Kontraposition: (p→q)≡(¬q→¬p). Manchmal ist der Umkehrschluss einfacher zu beweisen.'},
+  {t:'beweise',q:'Was ist der Induktionsanker (I.A.)?',o:['Allgemeiner Schritt','Nachweis von p(0) als Startfall','Annahme p(n)','Abschlussfloskel'],c:1,e:'I.A. = Nachweis von p(0). Zeigt dass die Induktionskette beginnen kann.'},
+  {t:'beweise',q:'Schubfach: 13 Spielkarten, 4 Farben — mind. wie viele gleiche Farbe?',o:['3','4','5','6'],c:1,e:'⌈13/4⌉ = 4. Mind. 4 Karten gleicher Farbe garantiert.'},
+  {t:'beweise',q:'Was ist ein inhaltsleerer Beweis von p→q?',o:['Man zeigt q direkt','Man zeigt p ist stets falsch','Man zeigt q ist stets wahr','Man zeigt p↔q'],c:1,e:'Inhaltsleerer Beweis: p ist falsch, also ist p→q automatisch wahr. Nichts zu zeigen.'},
+  {t:'beweise',q:'Was ist ein trivialer Beweis von p→q?',o:['Man zeigt p ist falsch','Man zeigt q ist wahr unabhängig von p','Man zeigt p∧q','Fallunterscheidung'],c:1,e:'Trivialer Beweis: q ist wahr — dann ist p→q automatisch wahr, egal ob p gilt.'},
+  {t:'beweise',q:'Wann verwendet man Fallunterscheidung?',o:['Immer bei Induktion','Wenn eine Hilfsvariable q alle Fälle abdeckt: (q→p)∧(¬q→p)','Nur bei Widerspruchsbeweisen','Wenn die Prämisse falsch ist'],c:1,e:'Fallunterscheidung: Zeige (q→p) und (¬q→p) für beliebiges q. Wegen Tautologie p≡(q→p)∧(¬q→p).'},
+  {t:'beweise',q:'Was zeigt der Induktionsschritt (I.S.)?',o:['p(0)','p(n)→p(n+1) für beliebiges n','∀n p(n)','Die Gültigkeit des I.A.'],c:1,e:'I.S. zeigt unter I.V. p(n) die I.B. p(n+1). Damit gilt die Induktionskette für alle n.'},
+
+  // ── BOOLESCHE ALGEBRA (16 neue) ──
+  {t:'boolesch',q:'Wie viele 1-stellige Boolesche Funktionen gibt es?',o:['2','4','8','16'],c:1,e:'2^(2^1) = 2^2 = 4: konstant 0, konstant 1, Identität, Negation.'},
+  {t:'boolesch',q:'Was ist der Minterm M(0,1,0)?',o:['x₁·x₂·x₃','x̄₁·x₂·x̄₃','x₁·x̄₂·x₃','x̄₁·x̄₂·x̄₃'],c:1,e:'M(b): xᵢ wenn bᵢ=1, x̄ᵢ wenn bᵢ=0. M(0,1,0) = x̄₁·x₂·x̄₃.'},
+  {t:'boolesch',q:'Was ist eine DNF?',o:['Produkt von Summen von Literalen','Summe von Produkten von Literalen','Negation einer KNF','Eine einzelne Klausel'],c:1,e:'DNF = Disjunktive Normalform: Summe (+) von Produkten (*) von Literalen. Jede Bool. Funktion hat eine DNF.'},
+  {t:'boolesch',q:'Was ist eine KNF in der Booleschen Algebra?',o:['Summe von Produkten','Produkt von Summen von Literalen','Einzelnes Literal','Negation einer DNF'],c:1,e:'KNF = Konjunktive Normalform: Produkt (*) von Summen (+) von Literalen.'},
+  {t:'boolesch',q:'Was ist funktionale Vollständigkeit?',o:['Ein System das alle Tautologien darstellt','Ein System mit dem jede Boolesche Funktion darstellbar ist','Ein vollständiger Kalkül','Ein System mit genau 16 Funktionen'],c:1,e:'Funktional vollständig = jede n-stellige Boolesche Funktion ist durch Ausdrücke des Systems darstellbar.'},
+  {t:'boolesch',q:'Ist {NAND} alleine funktional vollständig?',o:['Nein','Ja','Nur für 2-stellige Funktionen','Nur zusammen mit NOR'],c:1,e:'Ja! NAND(x,y) = x̄+ȳ. Man kann ¬, +, * alle durch NAND ausdrücken. Einzige Funktion die alleine ausreicht (neben NOR).'},
+  {t:'boolesch',q:'0 * 1 in der Booleschen Algebra?',o:['0','1','2','undefined'],c:0,e:'Boolesches Produkt = AND: 0*1 = 0. Nur 1*1 = 1.'},
+  {t:'boolesch',q:'Was ist ein Literal?',o:['Eine Variable oder eine negierte Variable','Eine Klausel mit einem Element','Ein Minterm','Eine atomare Formel'],c:0,e:'Literal = Variable (positives Literal) oder negierte Variable (negatives Literal). Grundbaustein von KNF/DNF.'},
+  {t:'boolesch',q:'Wie stellt man eine Boolesche Funktion als DNF dar?',o:['Man bildet Maxterme für alle 0-Zeilen','Man bildet Minterme für alle 1-Zeilen und verbindet sie mit +','Man negiert die KNF','Man bildet die Wahrheitstafel neu'],c:1,e:'DNF-Satz: Bestimme alle Eingaben b mit f(b)=1, bilde M(b) und verbinde mit +. Jede Funktion hat eine DNF.'},
+  {t:'boolesch',q:'Was beschreibt ein Syntaxbaum eines Booleschen Ausdrucks?',o:['Die Wahrheitstafel','Den hierarchischen Aufbau des Ausdrucks mit Operatoren als Knoten und Variablen als Blätter','Die Klauselmenge','Die DNF'],c:1,e:'Syntaxbaum: innere Knoten sind Operatoren (+, *, ¬), Blätter sind Variablen/Konstanten. Zeigt Aufbau induktiv.'},
+  {t:'boolesch',q:'Was ist ein Halbaddierer?',o:['Addiert zwei 3-Bit-Zahlen','Addiert zwei 1-Bit-Zahlen und liefert Summe s und Übertrag c','Addiert zwei 1-Bit-Zahlen ohne Übertrag','Ein NAND-Gatter'],c:1,e:'Halbaddierer: s = x₁⊕x₂ (XOR), c = x₁·x₂ (AND). Addiert zwei Bits, kein Eingangsübertrag.'},
+  {t:'boolesch',q:'Warum ist {+, *} nicht funktional vollständig?',o:['Weil es zu viele Funktionen gibt','Weil die Negation nicht dargestellt werden kann','Weil + und * identisch sind','Weil es keine Konstanten gibt'],c:1,e:'{+,*} kann ¬ nicht darstellen: jede Funktion in {+,*} ohne ¬ ist monoton — Negation ist nicht monoton.'},
+  {t:'boolesch',q:'Was ist das boolesche Gesetz ¬(x·y) ≡ ?',o:['x̄+ȳ (De Morgan)','x̄·ȳ','x+y','x·ȳ'],c:0,e:'De Morgan für Boolesche Algebra: ¬(x*y) ≡ x̄+ȳ. Negation von AND wird zu OR mit negierten Literalen.'},
+  {t:'boolesch',q:'Wann sind zwei Boolesche Ausdrücke äquivalent?',o:['Wenn sie gleich lang sind','Wenn sie für alle Belegungen denselben Wert haben','Wenn sie die gleiche Anzahl Variablen haben','Wenn einer die Negation des anderen ist'],c:1,e:'Äquivalenz v≡w: f_v(b₁,…,bₙ) = f_w(b₁,…,bₙ) für alle Bitvektoren (b₁,…,bₙ).'},
+  {t:'boolesch',q:'Wie viele n-stellige Boolesche Funktionen gibt es allgemein?',o:['2^n','n²','2^(2^n)','n!'],c:2,e:'2^n mögliche Eingaben, je 2 Ausgaben → 2^(2^n) verschiedene n-stellige Boolesche Funktionen.'},
+  {t:'boolesch',q:'Was sind Umformungsregeln zur KNF-Erzeugung?',o:['Nur De Morgan','¬¬w→w, De Morgan für ∧ und ∨, und Distributivgesetze','Nur Distributivgesetze','Nur Absorption'],c:1,e:'Zur KNF: (1) ¬¬w→w, (2) ¬(v*w)→¬v+¬w, (3) ¬(v+w)→¬v*¬w, (4) w+(u*v)→(w+u)*(w+v), (5) (u*v)+w→(u+w)*(v+w).'},
+
+  // ── RESOLUTION (14 neue) ──
+  {t:'resolution',q:'Was ist eine Resolvente?',o:['Eine Klausel mit allen Literalen','Aus K₁ und K₂ durch Auflösen eines komplementären Paars A und ¬A entstehende Klausel','Die Vereinigung zweier Klauseln','Eine leere Klausel'],c:1,e:'Resolvente K₃ = (K₁\\{A}) ∪ (K₂\\{¬A}). Das komplementäre Paar A/¬A fällt raus, der Rest wird vereinigt.'},
+  {t:'resolution',q:'Was besagt das Resolutionslemma?',o:['Jede KNF ist erfüllbar','Wenn K₃ Resolvente von K₁ und K₂ ist, dann ist F äquivalent zu F∪{K₃}','Resolution erzeugt immer ∅','Jede Klausel ist eine Resolvente'],c:1,e:'Resolutionslemma: Ist K₃ Resolvente aus K(F), dann ist F äquivalent zu jeder KNF mit Klauselmenge K(F)∪{K₃}.'},
+  {t:'resolution',q:'Was ist Res∞(K)?',o:['Die erste Resolvente','Die Vereinigung aller Resn(K) — alle durch Resolution erreichbaren Klauseln','Die Klauselmenge von F','Eine einzelne Klausel'],c:1,e:'Res∞(K) = ⋃_{n≥0} Resn(K). Alle Klauseln die sich durch beliebig viele Resolutionsschritte ableiten lassen.'},
+  {t:'resolution',q:'Warum terminiert der Resolutionskalkül?',o:['Weil Klauseln immer kürzer werden','Weil es für k atomare Formeln maximal 4^k Klauseln gibt','Weil immer ∅ erzeugt wird','Weil die Klauselmenge endlich startet'],c:1,e:'Für k atomare Formeln gibt es maximal 4^k Klauseln in Res∞(K). Also terminiert der Algorithmus spätestens nach 4^k Schritten.'},
+  {t:'resolution',q:'Was ist eine Tatsachenklausel?',o:['Eine leere Klausel','Eine Hornklausel mit nur einem positiven Literal','Eine Klausel mit nur negativen Literalen','Die Zielklausel'],c:1,e:'Tatsachenklausel = Hornklausel ohne negative Literale: nur ein einzelnes positives Literal {A}. Entspricht einer Grundannahme.'},
+  {t:'resolution',q:'Was ist eine Prozedurklausel (Regel) in der Hornlogik?',o:['Klausel mit nur positiven Literalen','Hornklausel mit einem positiven und mindestens einem negativen Literal','Leere Klausel','Klausel mit nur negativen Literalen'],c:1,e:'Prozedurklausel: {¬A,¬B,C} — ein positives Literal C (Konklusion) und negative Literale (Prämissen). Entspricht A∧B→C.'},
+  {t:'resolution',q:'Was ist eine Zielklausel?',o:['Eine Tatsachenklausel','Hornklausel ohne positives Literal, nur negative Literale','Klausel mit allen Literalen','Eine Resolvente'],c:1,e:'Zielklausel = Hornklausel ohne positives Literal: {¬L₁,…,¬Lₙ}. Entspricht der Anfrage: Folgt L₁∧…∧Lₙ?'},
+  {t:'resolution',q:'Was ist das P=NP Problem in Bezug auf SAT?',o:['SAT ist immer in O(n) lösbar','Ob SAT (Erfüllbarkeit einer KNF) in polynomialer Zeit entscheidbar ist — ungeklärt','SAT ist unentscheidbar','SAT ist immer unerfüllbar'],c:1,e:'P=NP: Ungeklärt ob Erfüllbarkeit einer KNF in polynomialer statt exponentieller Zeit entschieden werden kann. 1 Mio. $ Preisgeld.'},
+  {t:'resolution',q:'Was macht der Markierungsalgorithmus bei einer Tatsachenklausel {A}?',o:['Er löscht A','Er markiert A','Er erzeugt eine Resolvente','Er beendet die Suche'],c:1,e:'Schritt 2 des Markierungsalgorithmus: Alle Literale aus Tatsachenklauseln werden sofort markiert.'},
+  {t:'resolution',q:'Wann markiert der Markierungsalgorithmus ein positives Literal einer Regel?',o:['Sofort','Wenn alle negativen Literale der Regel markiert sind','Nie','Wenn die Zielklausel erreicht ist'],c:1,e:'Wenn alle negativen Literale {¬A,¬B} in einer Regel {¬A,¬B,C} markiert sind → markiere das positive Literal C.'},
+  {t:'resolution',q:'Was ist Prolog?',o:['Eine objektorientierte Sprache','Eine Programmiersprache basierend auf Hornlogik und SLD-Resolution','Eine Datenbanksprache','Ein Beweisassistent'],c:1,e:'Prolog = Programmation en Logique. Basiert auf Hornklauseln und verwendet DFS-SLD-Resolution für Anfragen.'},
+  {t:'resolution',q:'Wie kodiert man Sudoku als SAT-Problem?',o:['Direkt als Wahrheitstafel','Mit Booleschen Variablen xᵢⱼₖ für jede Zelle/Ziffer, KNF mit Zeilen-, Spalten- und Blockklauseln','Nur mit Hornklauseln','Als Prolog-Programm'],c:1,e:'xᵢⱼₖ = „In Zelle Fᵢⱼ steht k". Klauseln für Vollständigkeit (Zeilen/Spalten/Blöcke) und Ausschluss (max. eine Zahl).'},
+  {t:'resolution',q:'Was ist eine SLD-Resolution?',o:['Allgemeine Resolution aller Klauselpaare','Input-Resolution startend mit einer Zielklausel, Seitenklauseln nur Programmklauseln','Lineare Resolution ohne Seitenklauseln','Resolution mit BFS'],c:1,e:'SLD = lineare Input-Resolution von Zielklauseln. Vollständig für Hornformeln. Grundlage von Prolog.'},
+  {t:'resolution',q:'Warum kann Prolog bei DFS in eine Endlosschleife geraten?',o:['Weil die Klauselmenge zu groß ist','Weil DFS unendliche Äste des SLD-Baumes nicht abbricht','Weil BFS effizienter ist','Weil Prolog keine Tatsachen kennt'],c:1,e:'DFS: Wenn ein Ast des SLD-Baumes unendlich lang ist (z.B. a:- a.), läuft DFS unendlich. BFS würde ∅ finden, braucht aber exponentiell Speicher.'},
+];
+
+// ═══════════════════════════════════════════════
+// SPACED REPETITION POOL
+// ═══════════════════════════════════════════════
+const SR_POOL=[
+  {q:'Was ist eine Aussage in der Logik?',opts:['Ein Satz der immer wahr ist','Ein Gebilde dem man sinnvoll wahr oder falsch zuordnen kann','Eine mathematische Formel','Ein Beweis'],correct:1,exp:'Aussagen haben einen Wahrheitswert – Fragen und Paradoxien nicht.'},
+  {q:'Wann ist p → q falsch?',opts:['p=f, q=f','p=f, q=w','p=w, q=w','p=w, q=f'],correct:3,exp:'Nur wenn die Prämisse wahr und die Konklusion falsch ist.'},
+  {q:'De Morgan: ¬(p ∧ q) ≡ ?',opts:['¬p ∧ ¬q','¬p ∨ ¬q','p ∨ q','¬(p ∨ q)'],correct:1,exp:'¬(p ∧ q) ≡ ¬p ∨ ¬q ist eines der De Morgan Gesetze.'},
+  {q:'Was ist eine Tautologie?',opts:['Immer falsche Formel','Immer wahre Formel','Manchmal wahre Formel','Unentscheidbare Formel'],correct:1,exp:'Eine Tautologie ist unter jeder Belegung wahr, z.B. p ∨ ¬p.'},
+  {q:'Schema math. Induktion – was zeigt der Induktionsanfang?',opts:['p(n)→p(n+1)','p(0)','∀n p(n)','Die Induktionsvoraussetzung'],correct:1,exp:'I.A. zeigt p(0) – den Startfall der Induktion.'},
+  {q:'Was bedeutet ∀x∃y P(x,y)?',opts:['Es gibt ein y das für alle x gilt','Für jedes x gibt es ein y mit P(x,y)','Für alle x und alle y gilt P','Es gibt ein x für das kein y gilt'],correct:1,exp:'Für jedes x existiert (mindestens) ein y mit der Eigenschaft P.'},
+  {q:'Was ist eine Hornklausel?',opts:['Klausel ohne Literale','Klausel mit max. 1 positivem Literal','Klausel mit max. 1 negativem Literal','Leere Klausel'],correct:1,exp:'Hornklauseln haben höchstens ein positives Literal – Grundlage von Prolog.'},
+  {q:'Resolutionssatz: F KNF unerfüllbar genau dann wenn?',opts:['Alle Klauseln erfüllt','Leere Klausel ∅ ableitbar','F eine Tautologie ist','Keine Resolventen existieren'],correct:1,exp:'F unerfüllbar ⟺ ∅ ∈ Res∞(K(F)).'},
+  {q:'Kontraposition von p → q?',opts:['q → p','¬p → ¬q','¬q → ¬p','p → ¬q'],correct:2,exp:'(p→q) ≡ (¬q→¬p) – die Kontraposition ist äquivalent.'},
+  {q:'Wie viele 2-stellige Boolesche Funktionen gibt es?',opts:['4','8','16','32'],correct:2,exp:'2^(2^2) = 2^4 = 16.'},
+];
+
+// ═══════════════════════════════════════════════
+// THINK QUESTIONS (pro Topic)
+// ═══════════════════════════════════════════════
+const THINK_QS={
+  aussagen:[
+    {q:'Warum ist „Dieser Satz ist falsch" keine Aussage im logischen Sinne?',hint:'Tipp: Was passiert wenn du annimmst es ist wahr? Und wenn falsch?'},
+    {q:'Die Implikation p → q ist auch wahr wenn p falsch ist. Klingt seltsam – kannst du dir erklären warum das sinnvoll ist?',hint:'Tipp: Denke an Versprechen: „Wenn es regnet, nehme ich den Schirm." Was wenn es nicht regnet?'},
+  ],
+  praedikat:[
+    {q:'Warum gilt ∃y∀x P(x,y) → ∀x∃y P(x,y), aber nicht umgekehrt? Finde ein konkretes Gegenbeispiel.',hint:'Tipp: P(x,y) = „x liebt y". Was bedeutet jede Richtung?'},
+  ],
+  beweise:[
+    {q:'Beim indirekten Beweis nimmt man ¬q an und leitet einen Widerspruch her. Warum reicht das, um q zu beweisen?',hint:'Tipp: Welche logische Äquivalenz steckt dahinter?'},
+  ],
+  boolesch:[
+    {q:'Warum reicht {NAND} allein als funktional vollständiges System, aber {+, *} nicht?',hint:'Tipp: Welche Operation fehlt bei {+,*}? Was kann NAND simulieren?'},
+  ],
+  resolution:[
+    {q:'Der Markierungsalgorithmus für Hornformeln läuft in O(n). Warum ist das für allgemeine KNF nicht möglich?',hint:'Tipp: SAT-Problem, NP-Vollständigkeit.'},
+  ],
+};
+
+// ═══════════════════════════════════════════════
+// STEP ENRICHMENT
+// ═══════════════════════════════════════════════
+function enrichModules(){
+  MODULES.forEach(m=>{
+    m.lessons.forEach(lesson=>{
+      const enriched=[];
+      let recallDone=0, thinkDone=0;
+      lesson.steps.forEach((s,i)=>{
+        enriched.push(s);
+        // Nach erstem callout.def → recall
+        if(s.type==='callout' && s.kind==='def' && recallDone===0){
+          const ans=stripHtml(s.html);
+          if(ans.length>15){
+            enriched.push({type:'recall',q:`Erkläre „${s.label}" in eigenen Worten.`,answer:ans});
+            recallDone++;
+          }
+        }
+        // Nach zweitem prose → think (einmal pro Lektion)
+        if(s.type==='prose' && thinkDone===0 && i>=2){
+          const tq=getThinkQ(lesson.topic);
+          if(tq){enriched.push({type:'think',q:tq.q,hint:tq.hint});thinkDone++;}
+        }
+      });
+      // 2 SR-Fragen vor complete einfügen
+      const ci=enriched.findIndex(s=>s.type==='complete');
+      if(ci>=0){
+        const picked=[...SR_POOL].sort(()=>Math.random()-0.5).slice(0,2).map(q=>({...q,type:'sr-mcq'}));
+        enriched.splice(ci,0,...picked);
+      }
+      lesson.steps=enriched;
+    });
+  });
+}
+
+function stripHtml(h){return h.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,200);}
+function getThinkQ(topic){
+  const pool=THINK_QS[topic];
+  if(!pool||!pool.length)return null;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+// Recall handlers
+function submitRecall(){
+  const inp=document.getElementById('rcl_inp');
+  const res=document.getElementById('rcl_res');
+  if(!inp||!res)return;
+  const s=CL.steps[CS];
+  inp.disabled=true;
+  res.innerHTML=`<div style="margin-bottom:8px"><strong>✅ Musterlösung:</strong></div>
+    <div style="margin-bottom:10px;line-height:1.65">${s.answer}</div>
+    <div class="recall-selfcheck"><strong>War deine Antwort richtig?</strong></div>
+    <div class="recall-btns">
+      <button class="btn r" style="flex:1" onclick="rateRecall(0)">😕 Nein</button>
+      <button class="btn o" style="flex:1" onclick="rateRecall(1)">🤔 Teilweise</button>
+      <button class="btn g" style="flex:1" onclick="rateRecall(2)">✅ Ja!</button>
+    </div>`;
+  res.className='recall-result hint show';
+}
+function revealRecall(){
+  const inp=document.getElementById('rcl_inp');
+  const res=document.getElementById('rcl_res');
+  if(!inp||!res)return;
+  inp.disabled=true;
+  const s=CL.steps[CS];
+  res.innerHTML=`<div style="margin-bottom:8px"><strong>📖 Antwort:</strong></div>
+    <div style="line-height:1.65;margin-bottom:10px">${s.answer}</div>
+    <div class="recall-selfcheck"><strong>Wusstest du es?</strong></div>
+    <div class="recall-btns">
+      <button class="btn r" style="flex:1" onclick="rateRecall(0)">😕 Nein</button>
+      <button class="btn o" style="flex:1" onclick="rateRecall(1)">🤔 Teilweise</button>
+      <button class="btn g" style="flex:1" onclick="rateRecall(2)">✅ Ja!</button>
+    </div>`;
+  res.className='recall-result hint show';
+}
+function rateRecall(r){
+  if(r===2)addXP(8); else if(r===1)addXP(4); else addXP(1);
+  document.querySelectorAll('.recall-btns .btn').forEach(b=>b.disabled=true);
+  lvInteracted=true;unlockNext();save();
+}
+
+// Think handler
+function submitThink(){
+  const ta=document.getElementById('think_ta');
+  const fb=document.getElementById('think_fb');
+  if(!ta||!fb)return;
+  if(ta.value.trim().length<3){ta.focus();return;}
+  ta.disabled=true;
+  document.querySelector('.think-submit').disabled=true;
+  fb.classList.add('show');
+  addXP(5);lvInteracted=true;unlockNext();save();
+}
+
+// Lock helpers
+function unlockNext(){document.getElementById('lvNext').classList.remove('locked');}
+function lockNext(){document.getElementById('lvNext').classList.add('locked');}
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let S={xp:0,streak:0,cardsLearned:[],activities:[],quizCorrect:0,quizTotal:0,lessonsDone:[]};
+
+function save(){try{localStorage.setItem('logik_v4',JSON.stringify(S));}catch(e){}}
+function load(){
+  try{
+    const r=localStorage.getItem('logik_v4');
+    if(!r)return;
+    const d=JSON.parse(r);
+    Object.assign(S,d);
+    S.cardsLearned=d.cardsLearned||[];
+    S.activities=d.activities||[];
+    S.lessonsDone=d.lessonsDone||[];
+  }catch(e){}
+}
+function addXP(n){S.xp+=n;document.getElementById('spXP').textContent=S.xp+' XP';save();}
+function addAct(text,color='#4dd9c0'){
+  S.activities.push({text,color});
+  if(S.activities.length>50)S.activities.shift();
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map=['s-home','s-kurs','s-karten','s-quiz'];
+  const i=map.indexOf(id);
+  if(i>=0)document.querySelectorAll('.nb')[i].classList.add('active');
+  document.getElementById('content').scrollTop=0;
+  if(id==='s-home')renderHome();
+}
+
+// ═══════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════
+function renderHome(){
+  document.getElementById('spXP').textContent=S.xp+' XP';
+  document.getElementById('spStreak').textContent='🔥 '+S.streak;
+  const totalLes=MODULES.reduce((a,m)=>a+m.lessons.length,0);
+  const doneLes=S.lessonsDone.length;
+  const learned=S.cardsLearned.length;
+  const ov=Math.round((learned/CARDS.length*0.4+doneLes/totalLes*0.6)*100);
+  document.getElementById('overallBar').style.width=ov+'%';
+  document.getElementById('overallPct').textContent=ov+'% Gesamtfortschritt';
+  document.getElementById('dCards').textContent=learned;
+  document.getElementById('dXP').textContent=S.xp;
+  document.getElementById('dLes').textContent=doneLes;
+  if(S.quizTotal>0)document.getElementById('dAcc').textContent=Math.round(S.quizCorrect/S.quizTotal*100)+'%';
+  const tr=document.getElementById('topicRows');
+  tr.innerHTML=TOPICS.map(t=>{
+    const tot=CARDS.filter(c=>c.t===t.id).length;
+    const don=CARDS.filter((c,i)=>c.t===t.id&&S.cardsLearned.includes(i)).length;
+    const p=tot>0?Math.round(don/tot*100):0;
+    return `<div class="trow"><div class="tdot" style="background:${t.color}"></div>
+      <div class="tname">${t.name}</div>
+      <div class="tbar-w"><div class="tbar" style="width:${p}%;background:${t.color}"></div></div>
+      <div class="tpct">${p}%</div></div>`;
+  }).join('');
+  const al=document.getElementById('actList');
+  if(!S.activities.length){al.innerHTML='<div class="act-row"><div class="adot" style="background:var(--muted)"></div>Starte mit dem Kurs!</div>';return;}
+  al.innerHTML=S.activities.slice(-6).reverse().map(a=>`<div class="act-row"><div class="adot" style="background:${a.color}"></div>${a.text}</div>`).join('');
+}
+
+// ═══════════════════════════════════════════════
+// COURSE
+// ═══════════════════════════════════════════════
+function renderModules(){
+  const totalLes=MODULES.reduce((a,m)=>a+m.lessons.length,0);
+  const p=totalLes>0?Math.round(S.lessonsDone.length/totalLes*100):0;
+  document.getElementById('courseBar').style.width=p+'%';
+  const ml=document.getElementById('modList');
+  ml.innerHTML=MODULES.map((m,mi)=>{
+    const allDone=m.lessons.every(l=>S.lessonsDone.includes(l.id));
+    const doneCnt=m.lessons.filter(l=>S.lessonsDone.includes(l.id)).length;
+    const st=allDone?'✅':doneCnt>0?'🔄':'⬜';
+    const les=m.lessons.map((l,li)=>{
+      const done=S.lessonsDone.includes(l.id);
+      const isNext=!done&&(li===0||S.lessonsDone.includes(m.lessons[li-1]?.id));
+      let badge=done?'<span class="les-badge done-b">✓ done</span>':
+                isNext?'<span class="les-badge new">Starten</span>':
+                '<span class="les-badge">›</span>';
+      return `<div class="les-item" onclick="openLesson('${m.id}','${l.id}')">
+        <div class="les-icon" style="background:${m.color}18;color:${m.color}">${l.icon}</div>
+        <div class="les-title ${done?'done':''}">${l.title}</div>
+        ${badge}</div>`;
+    }).join('');
+    return `<div class="mod-card">
+      <div class="mod-head" onclick="toggleMod(${mi})">
+        <div class="mod-num" style="background:${m.color}18;color:${m.color}">${m.icon}</div>
+        <div class="mod-info"><div class="mod-title">${m.title}</div>
+          <div class="mod-meta">${doneCnt}/${m.lessons.length} · ${m.desc}</div></div>
+        <div class="mod-status">${st}</div>
+      </div>
+      <div class="mod-lessons" id="ml_${mi}">${les}</div>
+    </div>`;
+  }).join('');
+  // auto-open first incomplete
+  MODULES.forEach((m,mi)=>{
+    if(m.lessons.some(l=>!S.lessonsDone.includes(l.id))){
+      document.getElementById('ml_'+mi)?.classList.add('open');
+      return;
+    }
+  });
+}
+
+function toggleMod(i){document.getElementById('ml_'+i)?.classList.toggle('open');}
+
+// ═══════════════════════════════════════════════
+// LESSON VIEWER
+// ═══════════════════════════════════════════════
+let CL=null,CS=0,CM=null;
+let lvInteracted=false;
+
+function openLesson(modId,lesId){
+  CM=MODULES.find(m=>m.id===modId);
+  CL=CM.lessons.find(l=>l.id===lesId);
+  CS=0;lvInteracted=false;
+  document.getElementById('lvTitle').textContent=CL.title;
+  document.getElementById('lvMod').textContent=CM.title;
+  renderStep();
+  document.getElementById('lv').classList.add('open');
+}
+
+function closeLesson(){
+  document.getElementById('lv').classList.remove('open');
+  renderModules();
+}
+
+function renderStep(){
+  const steps=CL.steps;
+  const total=steps.length;
+  const pct=((CS+1)/total)*100;
+  document.getElementById('lvPbar').style.width=pct+'%';
+  document.getElementById('lvProg').textContent=(CS+1)+'/'+total;
+  document.getElementById('lvPrev').style.visibility=CS===0?'hidden':'visible';
+  const isLast=CS===total-1;
+  document.getElementById('lvNext').textContent=isLast?'✅ Abschließen':'Weiter →';
+  document.getElementById('lvBody').innerHTML=`<div class="lv-step">${buildStep(steps[CS])}</div>`;
+  document.getElementById('lvBody').scrollTop=0;
+  lvInteracted=false;
+  const lockTypes=['recall','think','mcq','fillin','sr-mcq'];
+  if(lockTypes.includes(steps[CS].type)) lockNext();
+  else unlockNext();
+}
+
+function buildStep(s){
+  switch(s.type){
+    case 'title': return `
+      <div style="margin-bottom:20px;font-size:2.5rem">${s.icon||''}</div>
+      <div class="st-title">${s.title}</div>
+      <div class="st-subtitle">${s.sub}</div>
+      <div class="continue-hint">Tippe „Weiter" um zu beginnen</div>`;
+
+    case 'prose': return `<p class="prose">${s.html}</p>`;
+
+    case 'formula': return `<div class="formula">${s.f}</div>`;
+
+    case 'callout': return `
+      <div class="callout ${s.kind}">
+        <div class="callout-label">${s.label}</div>
+        ${s.html}
+      </div>`;
+
+    case 'truthtable': {
+      const hs=s.headers.map(h=>`<th>${h}</th>`).join('');
+      const hiSet=new Set((s.hi||[]).map(h=>h[0]+','+h[1]));
+      const rows=s.rows.map((row,ri)=>
+        '<tr>'+row.map((cell,ci)=>{
+          const k=ri+','+ci;
+          const cls=hiSet.has(k)?(cell==='w'?'hi':'lo'):'';
+          return `<td class="${cls}">${cell}</td>`;
+        }).join('')+'</tr>'
+      ).join('');
+      return `<p style="font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em">${s.label}</p>
+        <div class="tt-wrap"><table class="tt"><thead><tr>${hs}</tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+
+    case 'reveal-steps': return `
+      <div class="reveal-steps">
+        ${s.steps.map((st,i)=>`
+          <div class="reveal-step" id="rs_${i}" onclick="toggleReveal(${i})">
+            <div class="rs-header">
+              <div class="rs-num" id="rsn_${i}">${st.num}</div>
+              <div class="rs-title">${st.title}</div>
+              <div class="rs-arrow" id="rsa_${i}">›</div>
+            </div>
+            <div class="rs-body" id="rsb_${i}">${st.body}</div>
+          </div>`).join('')}
+      </div>`;
+
+    case 'mcq': return `
+      <div class="mcq">
+        <div class="mcq-q">${s.q}</div>
+        <div class="mcq-opts">
+          ${s.opts.map((o,i)=>`
+            <button class="mcq-opt" id="mopt_${i}" onclick="answerMCQ(${i},${s.correct},'${esc(s.exp)}')">
+              <span class="opt-letter">${'ABCD'[i]}</span>${o}
+            </button>`).join('')}
+        </div>
+        <div class="mcq-fb" id="mcqfb"></div>
+      </div>`;
+
+    case 'fillin': return `
+      <div class="fillin">
+        <div class="fillin-q">${s.q}</div>
+        <div class="fillin-wrap">
+          <input class="fillin-input" id="fii" placeholder="Antwort eingeben…" 
+            onkeydown="if(event.key==='Enter')checkFillin('${esc(s.answer)}','${esc(s.exp)}')">
+          <button class="btn p" onclick="checkFillin('${esc(s.answer)}','${esc(s.exp)}')">✓</button>
+        </div>
+        <div class="fillin-fb" id="fifb"></div>
+        <div style="margin-top:6px;font-size:0.7rem;color:var(--muted)">Hinweis: ${s.hint}</div>
+      </div>`;
+
+    case 'sort': return buildSort(s);
+
+    case 'complete': return `
+      <div class="lesson-complete">
+        <div class="lc-emoji">🎓</div>
+        <div class="lc-title">${s.title}</div>
+        <div class="lc-sub">${s.sub}</div>
+        <div class="lc-xp">+20 XP</div>
+        <div class="lc-xp-label">verdient!</div>
+      </div>`;
+
+    case 'recall': return `
+      <div class="recall-wrap">
+        <div class="recall-label">💬 Active Recall</div>
+        <div class="recall-prompt">${s.q}</div>
+        <div class="recall-input-row">
+          <input class="recall-input" id="rcl_inp" placeholder="Deine Antwort…"
+            onkeydown="if(event.key==='Enter')submitRecall()">
+          <button class="recall-hint-btn" onclick="revealRecall()">Zeigen →</button>
+        </div>
+        <button class="btn p" style="width:100%;margin-bottom:4px" onclick="submitRecall()">Antwort prüfen ✓</button>
+        <div class="recall-result" id="rcl_res"></div>
+      </div>`;
+
+    case 'think': return `
+      <div class="think-wrap">
+        <div class="think-label">🤔 Denk kurz nach</div>
+        <div class="think-q">${s.q}</div>
+        <textarea class="think-ta" id="think_ta" placeholder="Schreib deine Gedanken…"></textarea>
+        <button class="think-submit" onclick="submitThink()">Weiter denken →</button>
+        <div class="think-fb" id="think_fb">${s.hint||''}</div>
+      </div>`;
+
+    case 'sr-mcq': return `
+      <div>
+        <div class="sr-banner">
+          <span class="sr-badge">🔁 Wiederholung</span>
+          <span class="sr-text">Frage aus einer früheren Lektion – weißt du es noch?</span>
+        </div>
+        <div class="mcq">
+          <div class="mcq-q">${s.q}</div>
+          <div class="mcq-opts">
+            ${s.opts.map((o,i)=>`
+              <button class="mcq-opt" id="mopt_${i}" onclick="answerMCQ(${i},${s.correct},'${esc(s.exp)}')">
+                <span class="opt-letter">${'ABCD'[i]}</span>${o}
+              </button>`).join('')}
+          </div>
+          <div class="mcq-fb" id="mcqfb"></div>
+        </div>
+      </div>`;
+
+    default: return '';
+  }
+}
+
+function buildSort(s){
+  const id='sort_'+Math.random().toString(36).slice(2);
+  window['_sort_'+id]={pairs:s.pairs,options:s.options,selections:{},exp:s.exp};
+  const chips=s.options.map((o,i)=>`<div class="sort-chip" id="chip_${id}_${i}" onclick="sortSelect('${id}',${i})">${o}</div>`).join('');
+  const slots=s.pairs.map((p,i)=>`
+    <div class="sort-row">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+        <div class="match-left" style="font-size:0.75rem">${p.from}</div>
+        <div class="match-arrow">→</div>
+        <div class="sort-slot" id="slot_${id}_${i}" onclick="sortSlotClick('${id}',${i})">
+          <span class="sort-slot-val" id="slotval_${id}_${i}">— tippe zum Wählen</span>
+        </div>
+      </div>
+    </div>`).join('');
+  return `<div class="sort-zone">
+    <p class="prose">${s.q}</p>
+    <div style="margin:10px 0 4px;font-size:0.68rem;color:var(--muted)">Verfügbare Optionen:</div>
+    <div class="sort-bank" id="bank_${id}">${chips}</div>
+    <div class="sort-slots">${slots}</div>
+    <div class="match-check">
+      <button class="btn p" onclick="checkSort('${id}')">Prüfen</button>
+      <div class="sort-fb" id="sortfb_${id}"></div>
+    </div>
+  </div>`;
+}
+
+let _sortActive={id:null,optIdx:null};
+
+function sortSelect(id,optIdx){
+  _sortActive={id,optIdx};
+  document.querySelectorAll(`[id^="chip_${id}_"]`).forEach(c=>c.style.outline='none');
+  document.getElementById(`chip_${id}_${optIdx}`).style.outline='2px solid var(--teal)';
+}
+
+function sortSlotClick(id,slotIdx){
+  if(_sortActive.id!==id||_sortActive.optIdx===null)return;
+  const data=window['_sort_'+id];
+  data.selections[slotIdx]=_sortActive.optIdx;
+  document.getElementById(`slotval_${id}_${slotIdx}`).textContent=data.options[_sortActive.optIdx];
+  document.getElementById(`slot_${id}_${slotIdx}`).classList.add('filled');
+  document.getElementById(`chip_${id}_${_sortActive.optIdx}`).classList.add('placed');
+  _sortActive={id:null,optIdx:null};
+  lvInteracted=true;
+}
+
+function checkSort(id){
+  const data=window['_sort_'+id];
+  let all=true;
+  data.pairs.forEach((p,i)=>{
+    const sel=data.selections[i];
+    const slot=document.getElementById(`slot_${id}_${i}`);
+    if(sel===undefined){all=false;return;}
+    const correct=data.options[sel]===p.to;
+    slot.className='sort-slot filled '+(correct?'correct':'wrong');
+    if(!correct)all=false;
+  });
+  const fb=document.getElementById(`sortfb_${id}`);
+  fb.textContent=all?'✅ Perfekt! '+data.exp:'❌ Nicht ganz. '+data.exp;
+  fb.className='sort-fb show '+(all?'ok':'no');
+  if(all)addXP(8);
+}
+
+function esc(s){return(s||'').replace(/'/g,"&#39;").replace(/"/g,'&quot;');}
+
+function toggleReveal(i){
+  const b=document.getElementById('rsb_'+i);
+  const a=document.getElementById('rsa_'+i);
+  const n=document.getElementById('rsn_'+i);
+  b.classList.toggle('open');
+  a.classList.toggle('open');
+  n.classList.add('done');
+  lvInteracted=true;unlockNext();
+}
+
+function answerMCQ(idx,correct,exp){
+  const opts=document.querySelectorAll('.mcq-opt');
+  if(opts[0].disabled)return;
+  opts.forEach(o=>o.disabled=true);
+  opts[correct].classList.add('correct');
+  const fb=document.getElementById('mcqfb');
+  if(idx===correct){
+    opts[idx].classList.add('correct');
+    fb.textContent='✅ Richtig! '+exp;
+    fb.className='mcq-fb ok show';
+    addXP(5);addAct('Richtig beantwortet','#4ade80');
+  } else {
+    opts[idx].classList.add('wrong');
+    fb.textContent='❌ Leider falsch. '+exp;
+    fb.className='mcq-fb no show';
+    addXP(1);
+  }
+  lvInteracted=true;unlockNext();save();
+}
+
+function checkFillin(answer,exp){
+  const inp=document.getElementById('fii');
+  if(!inp)return;
+  const val=inp.value.trim().toLowerCase();
+  const ans=answer.toLowerCase();
+  const ok=val===ans||val.replace(/\s/g,'')===ans.replace(/\s/g,'');
+  inp.className='fillin-input '+(ok?'ok':'no');
+  const fb=document.getElementById('fifb');
+  if(ok){
+    fb.textContent='✅ Korrekt! '+exp;
+    fb.className='fillin-fb ok show';
+    addXP(5);
+  } else {
+    fb.textContent=`❌ Nicht ganz. Richtig: ${answer}. ${exp}`;
+    fb.className='fillin-fb no show';
+  }
+  inp.disabled=true;
+  lvInteracted=true;unlockNext();save();
+}
+
+function lvNav(dir){
+  const steps=CL.steps;
+  const newIdx=CS+dir;
+  if(newIdx<0)return;
+  if(newIdx>=steps.length){
+    if(!S.lessonsDone.includes(CL.id)){
+      S.lessonsDone.push(CL.id);
+      addXP(20);
+      addAct(`Lektion: "${CL.title}"`,CM.color);
+      save();
+    }
+    closeLesson();
+    return;
+  }
+  CS=newIdx;
+  renderStep();
+}
+
+// ═══════════════════════════════════════════════
+// FLASHCARDS
+// ═══════════════════════════════════════════════
+let fcCards=[],fcIdx=0;
+
+function initFC(){
+  const f=document.getElementById('fcFilters');
+  let h=`<div class="fc-chip active" onclick="fcFilter('all',this)">Alle (${CARDS.length})</div>`;
+  TOPICS.forEach(t=>{
+    const n=CARDS.filter(c=>c.t===t.id).length;
+    h+=`<div class="fc-chip" onclick="fcFilter('${t.id}',this)">${t.name} (${n})</div>`;
+  });
+  f.innerHTML=h;
+  fcFilter('all',f.querySelector('.fc-chip'));
+}
+
+function fcFilter(topic,btn){
+  document.querySelectorAll('.fc-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  fcCards=topic==='all'?CARDS.map((c,i)=>({...c,oi:i})):CARDS.map((c,i)=>({...c,oi:i})).filter(c=>c.t===topic);
+  fcIdx=0;fcRender();
+  document.getElementById('fc').classList.remove('flipped');
+  document.getElementById('fcRating').classList.remove('show');
+}
+
+function fcRender(){
+  document.getElementById('fc').classList.remove('flipped');
+  document.getElementById('fcRating').classList.remove('show');
+  if(!fcCards.length){document.getElementById('fcQ').textContent='Keine Karten';document.getElementById('fcCtr').textContent='0/0';return;}
+  const c=fcCards[fcIdx];
+  const t=TOPICS.find(x=>x.id===c.t);
+  ['fcCat','fcCatB'].forEach(id=>document.getElementById(id).textContent=t?.name||c.t);
+  document.getElementById('fcQ').textContent=c.q;
+  document.getElementById('fcH').textContent=c.h?'💡 '+c.h:'';
+  document.getElementById('fcA').innerHTML=c.a;
+  document.getElementById('fcCtr').textContent=(fcIdx+1)+'/'+fcCards.length;
+}
+
+function flipCard(){
+  document.getElementById('fc').classList.toggle('flipped');
+  if(document.getElementById('fc').classList.contains('flipped'))
+    document.getElementById('fcRating').classList.add('show');
+}
+function fcPrev(){fcIdx=fcIdx>0?fcIdx-1:fcCards.length-1;fcRender();}
+function fcNext(){fcIdx=fcIdx<fcCards.length-1?fcIdx+1:0;fcRender();}
+
+function fcRate(r){
+  if(!fcCards.length)return;
+  const c=fcCards[fcIdx];
+  if(r===2&&!S.cardsLearned.includes(c.oi)){S.cardsLearned.push(c.oi);addXP(5);addAct(`Karte: "${c.q.slice(0,35)}…"`);}
+  else if(r===1)addXP(2);
+  save();setTimeout(fcNext,220);
+}
+
+// ═══════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════
+let qQs=[],qIdx=0,qScore=0,qTopic='all';
+
+function initQSetup(){
+  const g=document.getElementById('qTopicGrid');
+  let h=`<div class="q-tbtn sel" onclick="qSelTopic('all',this)">🎲 Alle<span>${QUIZ.length} Fragen</span></div>`;
+  TOPICS.forEach(t=>{
+    const n=QUIZ.filter(q=>q.t===t.id).length;
+    h+=`<div class="q-tbtn" onclick="qSelTopic('${t.id}',this)">${t.name}<span>${n} Fragen</span></div>`;
+  });
+  g.innerHTML=h;
+}
+
+function qSelTopic(t,btn){
+  document.querySelectorAll('.q-tbtn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');qTopic=t;
+}
+
+function startQuiz(){
+  let pool=qTopic==='all'?QUIZ:QUIZ.filter(q=>q.t===qTopic);
+  qQs=pool.sort(()=>Math.random()-0.5).slice(0,Math.min(10,pool.length));
+  qIdx=0;qScore=0;
+  document.getElementById('qSetup').style.display='none';
+  document.getElementById('qActive').classList.add('show');
+  document.getElementById('qResult').classList.remove('show');
+  renderQ();
+}
+
+function renderQ(){
+  const con=document.getElementById('qContainer');
+  if(qIdx>=qQs.length){showQResult();return;}
+  const q=qQs[qIdx];
+  const t=TOPICS.find(x=>x.id===q.t);
+  document.getElementById('qPbar').style.width=(qIdx/qQs.length*100)+'%';
+  document.getElementById('qInfo').textContent=(qIdx+1)+'/'+qQs.length;
+  document.getElementById('qScoreD').textContent=qScore+'/'+qIdx;
+  const opts=q.o.map((o,i)=>`<button class="q-opt" onclick="ansQ(${i})">
+    <span class="ol">${'ABCD'[i]}</span>${o}</button>`).join('');
+  con.innerHTML=`<div class="q-card">
+    <div class="q-cat">${t?.name||q.t}</div>
+    <div class="q-q">${q.q}</div>
+    <div class="q-opts">${opts}</div>
+    <div class="q-fb" id="qfb"></div>
+  </div>
+  <div class="q-next-wrap"><button class="btn" id="qnb" style="display:none" onclick="qNext()">Weiter →</button></div>`;
+}
+
+function ansQ(idx){
+  const opts=document.querySelectorAll('.q-opt');
+  if(opts[0].disabled)return;
+  opts.forEach(o=>o.disabled=true);
+  const q=qQs[qIdx];
+  opts[q.c].classList.add('correct');
+  const fb=document.getElementById('qfb');
+  if(idx===q.c){
+    qScore++;S.quizCorrect++;addXP(10);
+    fb.textContent='✅ Richtig! '+q.e;fb.className='q-fb ok show';
+    addAct(`Quiz korrekt: "${q.q.slice(0,35)}…"`,'#4ade80');
+  } else {
+    opts[idx].classList.add('wrong');
+    fb.textContent='❌ '+q.e;fb.className='q-fb no show';addXP(2);
+    addAct(`Quiz falsch: "${q.q.slice(0,35)}…"`,'#f87171');
+  }
+  S.quizTotal++;
+  document.getElementById('qnb').style.display='flex';
+  save();
+}
+
+function qNext(){qIdx++;renderQ();}
+
+function showQResult(){
+  document.getElementById('qContainer').innerHTML='';
+  document.getElementById('qPbar').style.width='100%';
+  const pct=qQs.length?Math.round(qScore/qQs.length*100):0;
+  let emoji,title,sub;
+  if(pct>=90){emoji='🏆';title='Hervorragend!';sub='Top-Leistung!';}
+  else if(pct>=70){emoji='🎉';title='Gut gemacht!';sub='Noch etwas üben!';}
+  else if(pct>=50){emoji='📚';title='Weiter üben!';sub='Kurs & Karten helfen.';}
+  else{emoji='💪';title='Nicht aufgeben!';sub='Starte mit dem Kurs.';}
+  document.getElementById('qrEmoji').textContent=emoji;
+  document.getElementById('qrTitle').textContent=title;
+  document.getElementById('qrScore').textContent=qScore+'/'+qQs.length;
+  document.getElementById('qrSub').textContent=sub;
+  document.getElementById('qResult').classList.add('show');
+  addXP(qScore*5);addAct(`Quiz: ${qScore}/${qQs.length} (${pct}%)`,pct>=70?'#4ade80':'#fbbf24');
+  save();renderHome();
+}
+
+function restartQuiz(){
+  document.getElementById('qResult').classList.remove('show');
+  startQuiz();
+}
+
+// ═══════════════════════════════════════════════
+// THEME TOGGLE — simpel: html.light = hell, sonst dunkel
+// ═══════════════════════════════════════════════
+function toggleTheme(){
+  const isLight = document.documentElement.classList.toggle('light');
+  document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
+  try{ localStorage.setItem('logik_theme', isLight ? 'light' : 'dark'); }catch(e){}
+}
+
+function loadTheme(){
+  try{
+    const saved = localStorage.getItem('logik_theme');
+    if(saved === 'light'){
+      document.documentElement.classList.add('light');
+      document.getElementById('themeBtn').textContent = '☀️';
+    } else {
+      // Standard: dunkel — kein prefers-color-scheme, immer dunkel
+      document.documentElement.classList.remove('light');
+      document.getElementById('themeBtn').textContent = '🌙';
+    }
+  }catch(e){}
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+load();
+loadTheme();
+enrichModules();
+renderHome();
+renderModules();
+initFC();
+initQSetup();
+</script>
+
+</body>
+</html>
