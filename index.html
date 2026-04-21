@@ -934,7 +934,7 @@ const MODULES=[
   ]},
   {id:'l2_2',title:'Allquantor ∀',icon:'∀',topic:'praedikat',steps:[
     {type:'title',icon:'∀',title:'Der Allquantor',sub:'„Für alle x gilt..." — der Allquantor ∀ macht aus Aussageformen Aussagen über das gesamte Universum.'},
-    {type:'callout',kind:'def',label:'Universelle Quantifizierung',html:'<p><strong>∀x ∈ U: P(x)</strong> bedeutet: <em>„Alle x aus U haben Eigenschaft P."</em></p><p>Bei endlichem U = {u₁,…,uₙ}:<br>∀x P(x) ≡ P(u₁) ∧ P(u₂) ∧ … ∧ P(uₙ)</p>'},
+    {type:'callout',kind:'def',label:'Universelle Quantifizierung',html:'<p><strong>∀x ∈ U: P(x)</strong> bedeutet: <em>„Alle x aus U haben Eigenschaft P."</em></p><p>Bei endlichem U = {u₁,...,uₙ}:<br>∀x P(x) ≡ P(u₁) ∧ P(u₂) ∧ ... ∧ P(uₙ)</p>'},
     {type:'callout',kind:'warn',label:'Universum bestimmt Wahrheitswert!',html:'<ul><li>U = ℤ: <code>∀x (x > 1 → x ≥ 2)</code> → <strong>wahr</strong></li><li>U = ℚ: <code>∀x (x > 1 → x ≥ 2)</code> → <strong>falsch</strong> (x = 1.5 ist Gegenbeispiel)</li></ul>'},
     {type:'callout',kind:'info',label:'Beweisschema für ∀',html:'<ol><li><strong>„x sei beliebig aus U gewählt."</strong></li><li>Zeige P(x) (für dieses beliebige x)</li><li><strong>„Da x beliebig war, gilt ∀x P(x)."</strong></li></ol>'},
     {type:'reveal-steps',steps:[
@@ -948,7 +948,7 @@ const MODULES=[
   ]},
   {id:'l2_3',title:'Existenzquantor & De Morgan',icon:'∃',topic:'praedikat',steps:[
     {type:'title',icon:'∃',title:'Existenzquantor & De Morgan',sub:'„Es gibt ein x mit..." und die fundamentalen Umformungsregeln für Quantoren.'},
-    {type:'callout',kind:'def',label:'Existentielle Quantifizierung',html:'<p><strong>∃x ∈ U: P(x)</strong> bedeutet: <em>„Es gibt mindestens ein x in U mit P(x)."</em></p><p>Bei endlichem U = {u₁,…,uₙ}:<br>∃x P(x) ≡ P(u₁) ∨ P(u₂) ∨ … ∨ P(uₙ)</p>'},
+    {type:'callout',kind:'def',label:'Existentielle Quantifizierung',html:'<p><strong>∃x ∈ U: P(x)</strong> bedeutet: <em>„Es gibt mindestens ein x in U mit P(x)."</em></p><p>Bei endlichem U = {u₁,...,uₙ}:<br>∃x P(x) ≡ P(u₁) ∨ P(u₂) ∨ ... ∨ P(uₙ)</p>'},
     {type:'callout',kind:'satz',label:'De Morgan für Quantoren',html:'<p>Analog zu den Junktoren:</p>'},
     {type:'formula',f:'¬(∀x P(x))  ≡  ∃x ¬P(x)\n¬(∃x P(x))  ≡  ∀x ¬P(x)'},
     {type:'prose',html:'<strong>Merkhilfe:</strong> Negation rein → Quantor wechselt (∀↔∃), Prädikat negiert.'},
@@ -985,7 +985,7 @@ const MODULES=[
  lessons:[
   {id:'l3_1',title:'Direkte & indirekte Beweise',icon:'⊢',topic:'beweise',steps:[
     {type:'title',icon:'⊢',title:'Beweistechniken I',sub:'Wie zeigt man formal, dass etwas wahr ist? Es gibt mehrere Strategien — je nach Form der Aussage ist eine eleganter als die andere.'},
-    {type:'callout',kind:'def',label:'Direkter Beweis',html:'<p>Zeige p → q durch: Annahme p, dann Schlusskette p ⇒ A₁ ⇒ A₂ ⇒ … ⇒ q.</p>'},
+    {type:'callout',kind:'def',label:'Direkter Beweis',html:'<p>Zeige p → q durch: Annahme p, dann Schlusskette p ⇒ A₁ ⇒ A₂ ⇒ ... ⇒ q.</p>'},
     {type:'callout',kind:'def',label:'Indirekter Beweis (Widerspruch)',html:'<p>Zeige p → q durch: Annahme (p ∧ ¬q), leite Widerspruch (r ∧ ¬r) ab.</p><p>Basis: (p → q) ≡ ((p ∧ ¬q) → f)</p>'},
     {type:'callout',kind:'def',label:'Kontraposition',html:'<p>Zeige p → q durch: Beweise ¬q → ¬p (äquivalent!).</p><p>Manchmal ist der Umweg über die Kontraposition eleganter.</p>'},
     {type:'reveal-steps',steps:[
@@ -1027,10 +1027,10 @@ const MODULES=[
     {type:'reveal-steps',steps:[
       {num:'1',title:'Schema: n beliebig wählen',body:'n ∈ ℕ₀ sei beliebig gewählt.'},
       {num:'2',title:'I.V.: Alle Vorgänger gelten',body:'Annahme: ∀m < n gilt p(m).'},
-      {num:'3',title:'I.B.: p(n) zeigen',body:'Fallunterscheidung: n=0 (trivial), n>0 (nutze I.V. für p(n-1), p(n-2), …)'},
+      {num:'3',title:'I.B.: p(n) zeigen',body:'Fallunterscheidung: n=0 (trivial), n>0 (nutze I.V. für p(n-1), p(n-2), ...)'},
       {num:'4',title:'Schluss',body:'Da n beliebig: ∀n ∈ ℕ₀ p(n) ∎'},
     ]},
-    {type:'mcq',q:'Was ist der Hauptunterschied zur einfachen Induktion?',opts:['Kein Induktionsanfang','Die I.V. gilt für ALLE m < n, nicht nur m = n-1','Man braucht keinen Induktionsschritt','Die Aussage muss für n=1 starten'],correct:1,exp:'Bei vollständiger Induktion ist die I.V. stärker: man darf alle Vorgänger p(0), p(1), …, p(n-1) verwenden, nicht nur den direkten Vorgänger.'},
+    {type:'mcq',q:'Was ist der Hauptunterschied zur einfachen Induktion?',opts:['Kein Induktionsanfang','Die I.V. gilt für ALLE m < n, nicht nur m = n-1','Man braucht keinen Induktionsschritt','Die Aussage muss für n=1 starten'],correct:1,exp:'Bei vollständiger Induktion ist die I.V. stärker: man darf alle Vorgänger p(0), p(1), ..., p(n-1) verwenden, nicht nur den direkten Vorgänger.'},
   ]},
   {id:'l3_5',title:'Beweise mit Quantoren',icon:'∀',topic:'beweise',steps:[
     {type:'title',icon:'∀',title:'Beweise mit Quantoren',sub:'Wie beweist man Allaussagen, Existenzaussagen und negierte Quantoren? Systematische Techniken für die häufigsten Beweisformen.'},
@@ -1040,7 +1040,7 @@ const MODULES=[
     {type:'reveal-steps',steps:[
       {num:'∀',title:'Euklid: Es gibt unendlich viele Primzahlen',body:'Formal: ∀k ∈ ℕ ∃p ∈ ℕ (p > k ∧ prim(p))'},
       {num:'1',title:'Annahme des Gegenteils',body:'∃k ∀n (n ∈ ℙ → n ≤ k) — es gibt eine größte Primzahl k₀'},
-      {num:'2',title:'Konstruktion',body:'b := 1 + (1·2·3·…·k₀) — das Produkt aller Primzahlen plus 1'},
+      {num:'2',title:'Konstruktion',body:'b := 1 + (1·2·3·...·k₀) — das Produkt aller Primzahlen plus 1'},
       {num:'3',title:'Widerspruch',body:'Kein pᵢ ≤ k₀ teilt b (Rest 1) → b hat einen Primteiler > k₀ → Widerspruch!'},
       {num:'∎',title:'Schluss',body:'Die Annahme war falsch → Es gibt unendlich viele Primzahlen ∎'},
     ]},
@@ -1060,7 +1060,7 @@ const MODULES=[
   ]},
   {id:'l4_2',title:'Normalformen',icon:'NF',topic:'boolesch',steps:[
     {type:'title',icon:'NF',title:'Normalformen',sub:'Jede Boolesche Funktion kann systematisch als DNF oder KNF geschrieben werden — das ist die Grundlage für Compiler und Schaltkreisdesign.'},
-    {type:'callout',kind:'def',label:'Minterme & DNF',html:'<p><strong>Minterm M(b)</strong> = x₁^b₁ · x₂^b₂ · … · xₙ^bₙ<br>Genau für den Vektor b gleich 1.</p><p><strong>DNF</strong> (Summe von Produkten): Für alle 1-Einträge der Wertetabelle, bilde Minterm, summiere auf.</p>'},
+    {type:'callout',kind:'def',label:'Minterme & DNF',html:'<p><strong>Minterm M(b)</strong> = x₁^b₁ · x₂^b₂ · ... · xₙ^bₙ<br>Genau für den Vektor b gleich 1.</p><p><strong>DNF</strong> (Summe von Produkten): Für alle 1-Einträge der Wertetabelle, bilde Minterm, summiere auf.</p>'},
     {type:'truthtable',label:'Beispiel: DNF konstruieren',headers:['x₁','x₂','f','Minterm'],rows:[['0','0','1','x̄₁·x̄₂'],['0','1','0','—'],['1','0','0','—'],['1','1','1','x₁·x₂']],hi:[[0,0,2,2],[3,0,2,2]]},
     {type:'formula',f:'f = (x̄₁·x̄₂) + (x₁·x₂)'},
     {type:'callout',kind:'def',label:'KNF',html:'<p><strong>KNF</strong> (Produkt von Summen): Jede Klausel ist eine Bedingung, alle müssen erfüllt sein.</p><p>Erzeugung durch Umformungsregeln: ¬¬w → w, ¬(v*w) → ¬v+¬w, v+(u*w) → (v+u)*(v+w)</p>'},
@@ -1098,19 +1098,19 @@ const MODULES=[
     {type:'title',icon:'⊨',title:'Formale Semantik',sub:'Was bedeutet es formal, wenn eine Formel "gilt"? Wir definieren Belegungen und Modelle präzise.'},
     {type:'callout',kind:'def',label:'Belegung & Modell',html:'<p>Eine <strong>Belegung</strong> α: D → {0,1} weist atomaren Formeln Wahrheitswerte zu.</p><p><strong>α ⊨ F</strong> bedeutet: α ist ein <strong>Modell</strong> für F (α(F) = 1).</p>'},
     {type:'callout',kind:'def',label:'Erfüllbarkeit & Tautologie',html:'<ul><li><strong>Erfüllbar</strong>: mindestens ein Modell existiert</li><li><strong>Unerfüllbar</strong>: kein Modell existiert</li><li><strong>Tautologie</strong>: jede Belegung ist Modell</li></ul><p>F ist Tautologie ⟺ ¬F ist unerfüllbar!</p>'},
-    {type:'callout',kind:'info',label:'Warum Unerfüllbarkeit?',html:'<p>Unerfüllbarkeit zu prüfen reicht für alles:</p><ul><li>F Tautologie? → ¬F unerfüllbar?</li><li>G folgt aus F₁,…,Fₙ? → F₁∧…∧Fₙ∧¬G unerfüllbar?</li></ul>'},
+    {type:'callout',kind:'info',label:'Warum Unerfüllbarkeit?',html:'<p>Unerfüllbarkeit zu prüfen reicht für alles:</p><ul><li>F Tautologie? → ¬F unerfüllbar?</li><li>G folgt aus F₁,...,Fₙ? → F₁∧...∧Fₙ∧¬G unerfüllbar?</li></ul>'},
     {type:'mcq',q:'F ist genau dann eine Tautologie, wenn...',opts:['F erfüllbar ist','F unerfüllbar ist','¬F unerfüllbar ist','¬F eine Tautologie ist'],correct:2,exp:'F ist Tautologie ⟺ jede Belegung ist Modell ⟺ keine Belegung macht ¬F wahr ⟺ ¬F unerfüllbar.'},
   ]},
   {id:'l5_2',title:'Resolutionskalkül',icon:'⊢',topic:'resolution',steps:[
     {type:'title',icon:'⊢',title:'Resolutionskalkül',sub:'Ein algorithmisches Verfahren zum Nachweis der Unerfüllbarkeit — die Grundlage moderner SAT-Solver.'},
-    {type:'callout',kind:'def',label:'Klausel & Resolvente',html:'<p>Eine <strong>Klausel</strong> ist eine endliche Menge von Literalen: K = {L₁,…,Lⱼ}.</p><p>Die <strong>Resolvente</strong> von K₁ (mit A) und K₂ (mit ¬A):</p><p>K₃ = (K₁ \\ {A}) ∪ (K₂ \\ {¬A})</p>'},
+    {type:'callout',kind:'def',label:'Klausel & Resolvente',html:'<p>Eine <strong>Klausel</strong> ist eine endliche Menge von Literalen: K = {L₁,...,Lⱼ}.</p><p>Die <strong>Resolvente</strong> von K₁ (mit A) und K₂ (mit ¬A):</p><p>K₃ = (K₁ \\ {A}) ∪ (K₂ \\ {¬A})</p>'},
     {type:'callout',kind:'example',label:'Beispiel',html:'<p>K₁ = {A, B, ¬C}, K₂ = {A, ¬B, C}</p><p>Resolution über B: K₃ = {A, ¬C, C}</p><p>Wenn K₁={A} und K₂={¬A}: K₃ = ∅ (leere Klausel!)</p>'},
     {type:'callout',kind:'satz',label:'Resolutionssatz',html:'<p>Eine KNF F ist genau dann <strong>unerfüllbar</strong>, wenn die leere Klausel ableitbar ist:</p><p><strong>F unerfüllbar ⟺ ∅ ∈ Res∞(K(F))</strong></p>'},
     {type:'callout',kind:'warn',label:'P=NP Problem',html:'<p>Ob SAT (Erfüllbarkeit einer KNF) in polynomialer Zeit lösbar ist, ist <strong>das ungelöste Hauptproblem der Informatik</strong>. Das Clay Institute zahlt 1 Million Dollar für die Lösung.</p>'},
     {type:'mcq',q:'Was bedeutet ∅ ∈ Res∞(K(F))?',opts:['F ist erfüllbar','F ist eine Tautologie','F ist unerfüllbar','F hat keine Klauseln'],correct:2,exp:'Die leere Klausel ableitbar bedeutet: F ist unerfüllbar. Die leere Klausel ist der "Alarm" des Resolutionskalküls.'},
     {type:'reveal-steps',steps:[
       {num:'1',title:'Sudoku als Logik',body:'9×9 Sudoku: 729 Variablen x_{i,j,k} (= „Zelle(i,j) enthält k")'},
-      {num:'2',title:'Klauseln für Zeilen',body:'Jede Ziffer kommt in jeder Zeile vor: {x_{i,1,k}, x_{i,2,k},…,x_{i,9,k}}'},
+      {num:'2',title:'Klauseln für Zeilen',body:'Jede Ziffer kommt in jeder Zeile vor: {x_{i,1,k}, x_{i,2,k},...,x_{i,9,k}}'},
       {num:'3',title:'Ausschlussklauseln',body:'Nicht zwei Ziffern in einer Zelle: {x̄_{i,j,k}, x̄_{i,j,k\'}} für k≠k\''},
       {num:'4',title:'SAT-Solver',body:'Moderne SAT-Solver lösen Sudokus in Millisekunden — mit Millionen von Klauseln!'},
     ]},
@@ -1138,7 +1138,7 @@ const MODULES=[
  lessons:[
   {id:'l6_1',title:'Extensionale Aussageverknüpfungen',icon:'⊕',topic:'aussagen',steps:[
     {type:'title',icon:'⊕',title:'Extensionalität',sub:'Warum hängt der Wahrheitswert einer Verknüpfung nur von den Teilaussagen ab — und nicht von deren Bedeutung?'},
-    {type:'callout',kind:'def',label:'Def. 1.1.3 — Aussageverknüpfung',html:'<p>Sind p₁,…,pₙ Aussagen, so können diese zu einer Aussageverknüpfung a(p₁,…,pₙ) kombiniert werden.</p><p>Eine Verknüpfung heißt <strong>extensional</strong>, wenn ihr Wahrheitswert bereits <em>eindeutig durch die Wahrheitswerte der Teilaussagen</em> bestimmt ist.</p>'},
+    {type:'callout',kind:'def',label:'Def. 1.1.3 — Aussageverknüpfung',html:'<p>Sind p₁,...,pₙ Aussagen, so können diese zu einer Aussageverknüpfung a(p₁,...,pₙ) kombiniert werden.</p><p>Eine Verknüpfung heißt <strong>extensional</strong>, wenn ihr Wahrheitswert bereits <em>eindeutig durch die Wahrheitswerte der Teilaussagen</em> bestimmt ist.</p>'},
     {type:'callout',kind:'example',label:'Extensional vs. nicht-extensional',html:'<p><strong>Extensional:</strong> „Alice ist reich <em>und</em> Bob ist arm." — Wahrheitswert hängt nur davon ab ob jede Teilaussage wahr ist.</p><p><strong>Nicht extensional:</strong> „Alice ist reich, <em>weil</em> Bob arm ist." — Das Wort „weil" impliziert einen kausalen Zusammenhang, der nicht im Wahrheitswert steckt.</p>'},
     {type:'callout',kind:'info',label:'Konsequenz für die Aussagenlogik',html:'<p>Die Aussagenlogik betrachtet <strong>ausschließlich extensionale Verknüpfungen</strong>. Das bedeutet: Alle Junktoren (¬, ∧, ∨, →, ↔) liefern denselben Wahrheitswert, egal welche inhaltliche Beziehung zwischen den Aussagen besteht.</p><p>Natürliche Sprache ist oft <em>nicht</em> extensional — deshalb brauchen wir die formale Logik!</p>'},
     {type:'callout',kind:'warn',label:'Vorsicht: Sprachfallen',html:'<p>„Lisa stolpert <em>und</em> fällt hin" impliziert zeitliche Reihenfolge.<br>„Lisa fällt hin <em>und</em> stolpert" klingt anders — aber p∧q ≡ q∧p ist eine Tautologie!</p><p>Die natürliche Sprache ist nicht extensional. Die formale Logik ignoriert solche Beziehungen absichtlich.</p>'},
@@ -1147,7 +1147,7 @@ const MODULES=[
   ]},
   {id:'l6_2',title:'Formale Syntax Boolescher Ausdrücke',icon:'𝔹',topic:'boolesch',steps:[
     {type:'title',icon:'𝔹',title:'Formale Syntax Boolescher Ausdrücke',sub:'Genau wie WFF für die Aussagenlogik — aber jetzt für Boolesche Funktionen auf Bits {0,1}.'},
-    {type:'callout',kind:'def',label:'Zeichenvorrat (Def. 3.1.4)',html:'<p>Wähle als Zeichenvorrat:</p><p style="font-family:monospace;font-size:0.85em">Z = { X, 0, 1, (, ), +, *, ¬ }</p><p>Boolesche Variablen: V = {X1, X10, X11, X100, …} (Binärindizes)</p>'},
+    {type:'callout',kind:'def',label:'Zeichenvorrat (Def. 3.1.4)',html:'<p>Wähle als Zeichenvorrat:</p><p style="font-family:monospace;font-size:0.85em">Z = { X, 0, 1, (, ), +, *, ¬ }</p><p>Boolesche Variablen: V = {X1, X10, X11, X100, ...} (Binärindizes)</p>'},
     {type:'reveal-steps',steps:[
       {num:'1',title:'Konstanten sind Ausdrücke',body:'<code>0</code> und <code>1</code> sind Boolesche Ausdrücke.',done:false},
       {num:'2',title:'Variablen sind Ausdrücke',body:'Jede Variable v ∈ V ist ein Boolescher Ausdruck.',done:false},
@@ -1155,7 +1155,7 @@ const MODULES=[
       {num:'4',title:'Summe (ODER)',body:'Sind v, w Ausdrücke, so auch <code>(v+w)</code>.',done:false},
       {num:'5',title:'Produkt (UND)',body:'Sind v, w Ausdrücke, so auch <code>(v*w)</code>.',done:false},
     ]},
-    {type:'callout',kind:'info',label:'Syntaxbaum',html:'<p>Jeder Boolesche Ausdruck hat eine Baumstruktur — ähnlich wie WFF. Für (x₁+x₂)·x̄₂·x₃·(x₁+1) ergibt sich ein Baum mit +, *, ¬ als innere Knoten und Variablen als Blätter.</p><p>So wird aus Syntax (Text) eine Semantik (Boolesche Funktion): Für jede Belegung b₁,…,bₙ ∈ {0,1} wertet man den Baum von unten nach oben aus.</p>'},
+    {type:'callout',kind:'info',label:'Syntaxbaum',html:'<p>Jeder Boolesche Ausdruck hat eine Baumstruktur — ähnlich wie WFF. Für (x₁+x₂)·x̄₂·x₃·(x₁+1) ergibt sich ein Baum mit +, *, ¬ als innere Knoten und Variablen als Blätter.</p><p>So wird aus Syntax (Text) eine Semantik (Boolesche Funktion): Für jede Belegung b₁,...,bₙ ∈ {0,1} wertet man den Baum von unten nach oben aus.</p>'},
     {type:'callout',kind:'warn',label:'Unterschied zu WFF',html:'<p>Boolesche Ausdrücke erlauben <strong>Konstanten 0 und 1</strong> explizit.<br>Statt w und f gibt es 0 und 1.<br>+ ersetzt ∨, * ersetzt ∧.</p>'},
     {type:'mcq',q:'Welcher der folgenden Ausdrücke ist nach Def. 3.1.4 ein gültiger Boolescher Ausdruck?',opts:['(X1 ∧ X2)','(X1 * X2)','X1 ODER X2','X1 xor X2'],correct:1,exp:'Der Zeichenvorrat enthält *, nicht ∧. Also ist (X1 * X2) ein gültiger Boolescher Ausdruck.'},
     {type:'fillin',q:'Ein Boolescher Ausdruck der Form (v + w), wobei v und w selbst Ausdrücke sind, entspricht welcher aussagenlogischen Verknüpfung?',answer:'Disjunktion',hint:'Disjunktion',exp:'+ in Boolescher Algebra entspricht der Disjunktion (∨), d.h. dem logischen ODER.'},
@@ -1171,19 +1171,19 @@ const MODULES=[
   ]},
   {id:'l6_4',title:'Klauselmenge K(F)',icon:'{}',topic:'resolution',steps:[
     {type:'title',icon:'{}',title:'Die Klauselmenge K(F)',sub:'Formale Definition der Klauselmenge — das zentrale Objekt des Resolutionskalküls.'},
-    {type:'callout',kind:'def',label:'Def. 4.2.1 — Klausel und Klauselmenge',html:'<p>Eine <strong>Klausel</strong> ist eine endliche Menge K = {L₁,…,Lⱼ} von Literalen.</p><p>Sei F eine KNF-Formel: F = ⋀ᵢ (⋁ⱼ Lᵢⱼ). Jede Disjunktion definiert eine Klausel Kᵢ = {Lᵢ₁,…,Lᵢₘ}.</p><p>Die <strong>Klauselmenge</strong> K(F) = {K₁,…,Kₙ} ist die Menge aller dieser Klauseln.</p>'},
+    {type:'callout',kind:'def',label:'Def. 4.2.1 — Klausel und Klauselmenge',html:'<p>Eine <strong>Klausel</strong> ist eine endliche Menge K = {L₁,...,Lⱼ} von Literalen.</p><p>Sei F eine KNF-Formel: F = ⋀ᵢ (⋁ⱼ Lᵢⱼ). Jede Disjunktion definiert eine Klausel Kᵢ = {Lᵢ₁,...,Lᵢₘ}.</p><p>Die <strong>Klauselmenge</strong> K(F) = {K₁,...,Kₙ} ist die Menge aller dieser Klauseln.</p>'},
     {type:'callout',kind:'example',label:'Beispiel',html:'<p>F = (A₁ ∨ A₂) ∧ (A₂ ∨ ¬A₃)</p><p>K₁ = {A₁, A₂}, K₂ = {A₂, ¬A₃}</p><p>K(F) = { {A₁, A₂}, {A₂, ¬A₃} }</p><p><strong>Wichtig:</strong> Verschiedene Formeln können dieselbe Klauselmenge haben!</p>'},
     {type:'callout',kind:'info',label:'Belegung und Klauseln',html:'<p>Eine Belegung α ist Modell einer KNF genau dann, wenn α in <strong>jeder Klausel</strong> mindestens ein Literal erfüllt.</p><p>Die leere Klausel ∅ ist <strong>unerfüllbar</strong> — kein Literal kann erfüllt werden.</p>'},
     {type:'callout',kind:'warn',label:'Mengendarstellung',html:'<p>Klauseln sind <strong>Mengen</strong> — d.h. doppelte Literale werden zusammengefasst, und die Reihenfolge spielt keine Rolle.</p><p>Deshalb sind {A₂, ¬A₃} und {¬A₃, A₂} dieselbe Klausel.</p>'},
     {type:'mcq',q:'Was ist die Klauselmenge K(F) für F = A ∧ (¬A ∨ B)?',opts:['{{A}, {¬A, B}}','{{A, ¬A, B}}','{{A}, {¬A}, {B}}','{{A ∧ ¬A ∨ B}}'],correct:0,exp:'A ist eine Klausel {A}, und (¬A ∨ B) ist eine Klausel {¬A, B}. Also K(F) = {{A}, {¬A, B}}.'},
-    {type:'fillin',q:'Die leere Klausel ∅ ist stets …',answer:'unerfüllbar',hint:'unerfüllbar',exp:'∅ enthält keine Literale — keine Belegung kann sie erfüllen. Sie entsteht bei Resolution aus {A} und {¬A}.'},
+    {type:'fillin',q:'Die leere Klausel ∅ ist stets ...',answer:'unerfüllbar',hint:'unerfüllbar',exp:'∅ enthält keine Literale — keine Belegung kann sie erfüllen. Sie entsteht bei Resolution aus {A} und {¬A}.'},
   ]},
   {id:'l6_5',title:'Lineare Resolution',icon:'⟶',topic:'resolution',steps:[
     {type:'title',icon:'⟶',title:'Lineare Resolution',sub:'Effizienter als allgemeine Resolution — eine Klausel wird schrittweise zur leeren Klausel resolviert.'},
-    {type:'callout',kind:'def',label:'Def. 4.3.4 — Lineare Resolution',html:'<p>Eine Folge K₀, K₁, …, Kₙ heißt <strong>lineare Resolution</strong> in F, wenn:</p><ul><li>K₀ aus K(F)</li><li>Für i=1,…,n: Kᵢ entsteht durch Resolution aus Kᵢ₋₁ und einer Seitenklausel Bᵢ</li><li>Bᵢ stammt aus K(F) ∪ {K₀,…,Kᵢ₋₁}</li></ul>'},
+    {type:'callout',kind:'def',label:'Def. 4.3.4 — Lineare Resolution',html:'<p>Eine Folge K₀, K₁, ..., Kₙ heißt <strong>lineare Resolution</strong> in F, wenn:</p><ul><li>K₀ aus K(F)</li><li>Für i=1,...,n: Kᵢ entsteht durch Resolution aus Kᵢ₋₁ und einer Seitenklausel Bᵢ</li><li>Bᵢ stammt aus K(F) ∪ {K₀,...,Kᵢ₋₁}</li></ul>'},
     {type:'callout',kind:'example',label:'Beispiel',html:'<p>Logikprogramm: {A}, {B}, {¬A,¬B,C}, {¬B,¬C,D}, {¬D}</p><p>Lineare Resolution:<br>{A} + {¬A,¬B,C} → {¬B,C}<br>{¬B,C} + {B} → {C}<br>{C} + {¬B,¬C,D} → {¬B,D}<br>{¬B,D} + {B} → {D}<br>{D} + {¬D} → ∅</p>'},
     {type:'callout',kind:'info',label:'Verhältnis zu anderen Resolutionsformen',html:'<ul><li><strong>Allgemeine Resolution:</strong> alle Paare von Klauseln werden resolviert</li><li><strong>Lineare Resolution:</strong> eine der Klauseln ist immer das Zwischenergebnis — effizienter</li><li><strong>Input-Resolution:</strong> Seitenklauseln nur aus K(F), nicht aus Zwischenergebnissen</li><li><strong>SLD-Resolution:</strong> Input-Resolution, Start mit Zielklausel (Prolog)</li></ul>'},
-    {type:'callout',kind:'satz',label:'Satz 4.3.7(a) — Vollständigkeit',html:'<p>Lineare Resolution ist für KNF <strong>vollständig</strong>: Für jede unerfüllbare KNF F gibt es eine lineare Resolution K₀,…,Kₙ in F mit Kₙ = ∅.</p>'},
+    {type:'callout',kind:'satz',label:'Satz 4.3.7(a) — Vollständigkeit',html:'<p>Lineare Resolution ist für KNF <strong>vollständig</strong>: Für jede unerfüllbare KNF F gibt es eine lineare Resolution K₀,...,Kₙ in F mit Kₙ = ∅.</p>'},
     {type:'mcq',q:'Was unterscheidet lineare von allgemeiner Resolution?',opts:['Lineare Resolution kann keine leere Klausel erzeugen','Bei linearer Resolution ist eine der zwei Klauseln immer das aktuelle Zwischenergebnis','Lineare Resolution benötigt nur Hornklauseln','Lineare Resolution ist langsamer'],correct:1,exp:'Bei linearer Resolution wird eine Startklausel K₀ schrittweise durch Resolution mit Seitenklauseln umgewandelt — nicht alle Paare.'},
     {type:'mcq',q:'Welche Aussage zur SLD-Resolution ist richtig?',opts:['SLD ist vollständig für alle KNF-Formeln','SLD ist Input-Resolution startend mit einer Zielklausel, vollständig für Hornformeln','SLD verwendet BFS und ist immer terminierend','SLD kann keine leere Klausel finden'],correct:1,exp:'SLD = lineare Input-Resolution mit Zielklausel als Start. Vollständig für Hornformeln. Prolog benutzt DFS, was Nichtterminierung möglich macht.'},
     {type:'complete',title:'✅ Modul 6 abgeschlossen!',sub:'Extensionalität, Boolesche Syntax, Ersetzungssatz, Klauselmenge K(F) und Lineare Resolution gemeistert!'},
@@ -1220,7 +1220,7 @@ const CARDS=[
   {t:'beweise',q:'Direkter vs. indirekter Beweis?',h:'p annehmen vs. ¬q annehmen...',a:'Direkt: p annehmen, q herleiten. Indirekt: ¬q annehmen, Widerspruch herleiten.'},
   {t:'beweise',q:'Kontraposition als Beweisstrategie?',h:'(p→q) ≡ (¬q→¬p)...',a:'Statt p→q beweise ¬q→¬p. Äquivalent, manchmal eleganter.'},
   {t:'boolesch',q:'Boolesche Funktion?',h:'Bits → Bit...',a:'f: {0,1}ⁿ → {0,1}. Es gibt 2^(2^n) n-stellige Boolesche Funktionen.'},
-  {t:'boolesch',q:'Minterm M(b)?',h:'Produkt von Literalen...',a:'M(b) = x₁^b₁·…·xₙ^bₙ. Genau für b gleich 1.'},
+  {t:'boolesch',q:'Minterm M(b)?',h:'Produkt von Literalen...',a:'M(b) = x₁^b₁·...·xₙ^bₙ. Genau für b gleich 1.'},
   {t:'boolesch',q:'DNF?',h:'Summe von Produkten...',a:'Disjunktive Normalform: Summe (+) von Produkten (*) von Literalen. Jede Funktion hat eine!'},
   {t:'boolesch',q:'KNF?',h:'Produkt von Summen...',a:'Konjunktive Normalform: Produkt (*) von Summen (+) von Literalen (Klauseln).'},
   {t:'boolesch',q:'Funktionale Vollständigkeit?',h:'{NAND}...',a:'System mit dem jede Bool. Funktion darstellbar ist. NAND allein reicht! {+,*} ist NICHT vollständig.'},
@@ -1237,8 +1237,8 @@ const CARDS=[
   {t:'aussagen',q:'Warum ist „weil" nicht extensional?',h:'Kausalität...',a:'„Weil" drückt einen <code>kausalen Zusammenhang</code> aus, der über den reinen Wahrheitswert hinausgeht. „A weil B" ist falsch wenn A falsch ist — aber A∧B kann trotzdem wahr sein.'},
   {t:'boolesch',q:'Formale Syntax Boolescher Ausdrücke?',h:'Induktive Def...',a:'0 und 1 sind Ausdrücke. Variablen Xᵢ sind Ausdrücke. Ist w Ausdruck → <code>¬w</code> auch. Sind v,w Ausdrücke → <code>(v+w)</code> und <code>(v*w)</code> auch.'},
   {t:'aussagen',q:'Was besagt der Ersetzungssatz (Satz 4.1.5)?',h:'F ≡ F′...',a:'Ist F ≡ F′, dann kann man in jeder Formel G die Teilformel F durch F′ ersetzen — das Ergebnis G′ ist äquivalent zu G. Formal: <code>G ≡ G′</code>.'},
-  {t:'resolution',q:'Was ist die Klauselmenge K(F)?',h:'Endliche Mengenmenge...',a:'K(F) = {K₁,…,Kₙ} wobei jedes Kᵢ = {Lᵢ₁,…,Lᵢₘ} eine endliche Menge von Literalen (Klausel) ist. Entspricht den Disjunktionen der <code>KNF</code>.'},
-  {t:'resolution',q:'Lineare Resolution — was ist das?',h:'Schrittweise...',a:'Folge K₀,…,Kₙ wobei K₀ ∈ K(F) und jedes Kᵢ durch Resolution aus Kᵢ₋₁ und einer Seitenklausel aus K(F)∪{K₀,…,Kᵢ₋₁} entsteht. <code>Vollständig für KNF</code>.'},
+  {t:'resolution',q:'Was ist die Klauselmenge K(F)?',h:'Endliche Mengenmenge...',a:'K(F) = {K₁,...,Kₙ} wobei jedes Kᵢ = {Lᵢ₁,...,Lᵢₘ} eine endliche Menge von Literalen (Klausel) ist. Entspricht den Disjunktionen der <code>KNF</code>.'},
+  {t:'resolution',q:'Lineare Resolution — was ist das?',h:'Schrittweise...',a:'Folge K₀,...,Kₙ wobei K₀ ∈ K(F) und jedes Kᵢ durch Resolution aus Kᵢ₋₁ und einer Seitenklausel aus K(F)∪{K₀,...,Kᵢ₋₁} entsteht. <code>Vollständig für KNF</code>.'},
 ];
 
 // ═══════════════════════════════════════════════
@@ -1269,7 +1269,7 @@ const QUIZ=[
   {t:'boolesch',q:'Welche Elemente gehören zum Zeichenvorrat Boolescher Ausdrücke?',o:['A, ∨, ∧, ¬','X, 0, 1, (, ), +, *, ¬','P, Q, →, ↔','∀, ∃, x, f'],c:1,e:'Der Zeichenvorrat ist Z = {X, 0, 1, (, ), +, *, ¬}. + steht für ODER, * für UND.'},
   {t:'aussagen',q:'Was erlaubt der Ersetzungssatz beim Umformen von Formeln?',o:['Beliebige Variablen zu streichen','Äquivalente Teilformeln gegeneinander auszutauschen','Klammern beliebig zu setzen','Quantoren einzufügen'],c:1,e:'Ersetzungssatz: F ≡ F′ → G ≡ G′, d.h. man darf Teilformeln durch äquivalente ersetzen ohne den Gesamtwahrheitswert zu ändern.'},
   {t:'resolution',q:'Was ist die leere Klausel ∅?',o:['Eine Klausel mit allen Literalen','Eine immer wahre Klausel','Eine unerfüllbare Klausel','Eine Klausel mit nur positiven Literalen'],c:2,e:'∅ enthält keine Literale — keine Belegung kann sie erfüllen. ∅ ∈ Res∞(K(F)) bedeutet F ist unerfüllbar.'},
-  {t:'resolution',q:'Was unterscheidet lineare von Input-Resolution?',o:['Lineare Resolution ist langsamer','Bei linearer Resolution dürfen Seitenklauseln auch frühere Zwischenergebnisse sein','Input-Resolution verwendet nur Zielklauseln','Lineare Resolution ist für Hornformeln vollständig'],c:1,e:'Input-Resolution: Seitenklauseln nur aus K(F). Lineare Resolution: Seitenklauseln aus K(F) ∪ {K₀,…,Kᵢ₋₁} — also auch frühere Zwischenergebnisse erlaubt.'},
+  {t:'resolution',q:'Was unterscheidet lineare von Input-Resolution?',o:['Lineare Resolution ist langsamer','Bei linearer Resolution dürfen Seitenklauseln auch frühere Zwischenergebnisse sein','Input-Resolution verwendet nur Zielklauseln','Lineare Resolution ist für Hornformeln vollständig'],c:1,e:'Input-Resolution: Seitenklauseln nur aus K(F). Lineare Resolution: Seitenklauseln aus K(F) ∪ {K₀,...,Kᵢ₋₁} — also auch frühere Zwischenergebnisse erlaubt.'},
 
   // ── AUSSAGENLOGIK (22 neue) ──
   {t:'aussagen',q:'Was ist eine wohlgeformte Formel (WFF)?',o:['Jede Zeichenkette über dem Alphabet','Nur atomare Formeln','Induktiv aus atomaren Formeln mit ¬, ∧, ∨ aufgebaute Formeln','Formeln ohne Variablen'],c:2,e:'WFF ist induktiv definiert: Atome sind WFF, und wenn F,G WFF sind, dann auch ¬F, (F∧G), (F∨G).'},
@@ -1287,7 +1287,7 @@ const QUIZ=[
   {t:'aussagen',q:'Idempotenzgesetz der Disjunktion?',o:['p∨q ≡ q∨p','p∨p ≡ p','p∨¬p ≡ w','p∨f ≡ p'],c:1,e:'Idempotenz: p∨p ≡ p. Doppelte Disjunktion ändert nichts.'},
   {t:'aussagen',q:'Was besagt das Dominanzgesetz p∧f ≡ ?',o:['p','f','w','¬p'],c:1,e:'Dominanz: p∧f ≡ f. Konjunktion mit Falsum ist immer falsch. Analog: p∨w ≡ w.'},
   {t:'aussagen',q:'Welche Formel ist keine Tautologie?',o:['p∨¬p','(p→q)→(¬q→¬p)','p∧¬p','(p∧(p→q))→q'],c:2,e:'p∧¬p ist eine Kontradiktion, keine Tautologie — immer falsch.'},
-  {t:'aussagen',q:'Was ist eine atomare Formel in der formalen Syntax?',o:['Jede kurze Formel','Eine Formel ohne Junktoren, z.B. A1, A2, A3','Immer eine wahre Formel','Eine Formel mit genau einem Junktor'],c:1,e:'Atomare Formeln sind die Grundbausteine: A1, A10, A11,… — keine Verknüpfungen.'},
+  {t:'aussagen',q:'Was ist eine atomare Formel in der formalen Syntax?',o:['Jede kurze Formel','Eine Formel ohne Junktoren, z.B. A1, A2, A3','Immer eine wahre Formel','Eine Formel mit genau einem Junktor'],c:1,e:'Atomare Formeln sind die Grundbausteine: A1, A10, A11,... — keine Verknüpfungen.'},
   {t:'aussagen',q:'¬¬p ≡ ?',o:['¬p','p','f','w'],c:1,e:'Doppelte Negation: ¬¬p ≡ p. Zwei Negationen heben sich auf.'},
   {t:'aussagen',q:'Was ist die formale Schreibweise der Implikation p→q in WFF?',o:['(p∧q)','(¬p∨q)','(p↔q)','(p∧¬q)'],c:1,e:'p→q ist definiert als Abkürzung für (¬p∨q).'},
   {t:'aussagen',q:'Wie viele Zeilen hat eine Wahrheitstafel für 3 Variablen?',o:['3','6','8','16'],c:2,e:'2³ = 8 Zeilen — jede Variable kann wahr oder falsch sein.'},
@@ -1302,12 +1302,12 @@ const QUIZ=[
   {t:'praedikat',q:'Was ist der Unterschied zwischen freier und gebundener Variable?',o:['Kein Unterschied','Frei: kein Quantor. Gebunden: durch ∀ oder ∃ erfasst','Frei: durch ∃. Gebunden: durch ∀','Frei: ganzzahlig. Gebunden: reell'],c:1,e:'Frei = kein Quantor bezieht sich auf das Vorkommen. Gebunden = ein Quantor ∀x oder ∃x erfasst die Variable.'},
   {t:'praedikat',q:'∀x∈ℤ (x>1 → x≥2) — wahr oder falsch?',o:['Wahr für ℤ','Falsch für ℤ','Wahr für ℝ, falsch für ℤ','Unbestimmbar'],c:0,e:'Für ganze Zahlen gilt: x>1 bedeutet x≥2. Wahr für ℤ. Falsch für ℚ (z.B. x=3/2).'},
   {t:'praedikat',q:'De Morgan für Quantoren: ¬(∃x P(x)) ≡ ?',o:['∃x ¬P(x)','∀x ¬P(x)','¬∀x P(x)','∀x P(¬x)'],c:1,e:'¬(∃x P(x)) ≡ ∀x ¬P(x). Wenn es kein x mit P gibt, dann hat kein x die Eigenschaft P.'},
-  {t:'praedikat',q:'Was ist ein Allquantor?',o:['∃','∀','∈','⊆'],c:1,e:'∀ ist der Allquantor: „für alle x gilt…". Bei endlichem U entspricht ∀x P(x) der Konjunktion aller P(uᵢ).'},
+  {t:'praedikat',q:'Was ist ein Allquantor?',o:['∃','∀','∈','⊆'],c:1,e:'∀ ist der Allquantor: „für alle x gilt...". Bei endlichem U entspricht ∀x P(x) der Konjunktion aller P(uᵢ).'},
   {t:'praedikat',q:'∃y∀x P(x,y) impliziert ∀x∃y P(x,y) — aber gilt auch die Umkehrung?',o:['Ja, immer','Nein, nicht immer','Nur für endliche U','Nur wenn P symmetrisch ist'],c:1,e:'∃y∀x impliziert ∀x∃y, aber nicht umgekehrt. Das gleiche y muss für alle x funktionieren — das ist stärker.'},
-  {t:'praedikat',q:'Was ist ein Existenzquantor?',o:['∀','∃','∈','≡'],c:1,e:'∃ ist der Existenzquantor: „es gibt mindestens ein x mit…". Bei endlichem U entspricht ∃x P(x) der Disjunktion.'},
+  {t:'praedikat',q:'Was ist ein Existenzquantor?',o:['∀','∃','∈','≡'],c:1,e:'∃ ist der Existenzquantor: „es gibt mindestens ein x mit...". Bei endlichem U entspricht ∃x P(x) der Disjunktion.'},
   {t:'praedikat',q:'Was ist ein Prädikat?',o:['Eine Funktion die Wahrheitswerte liefert','Eine Variable','Ein Axiom','Ein Quantor'],c:0,e:'Prädikat = Funktion die aus Elementen des Universums Wahrheitswerte macht, z.B. „x ist gerade".'},
   {t:'praedikat',q:'Was verändert sich, wenn man bei ∀x∃y P(x,y) die Quantoren vertauscht?',o:['Nichts','Die Bedeutung ändert sich fundamental','Nur die Schreibweise','Es wird unerfüllbar'],c:1,e:'∀x∃y P(x,y) ≠ ∃y∀x P(x,y). Beim zweiten muss ein einziges y für alle x funktionieren — viel stärker!'},
-  {t:'praedikat',q:'Was ist ein Term in der Prädikatenlogik?',o:['Jede Formel','Variable oder durch Funktionssymbole aufgebauter Ausdruck','Nur Konstanten','Ein Prädikat mit Argument'],c:1,e:'Terme: Variablen sind Terme, und f(t₁,…,tₖ) ist Term wenn f ein Funktionssymbol und t₁,…,tₖ Terme sind.'},
+  {t:'praedikat',q:'Was ist ein Term in der Prädikatenlogik?',o:['Jede Formel','Variable oder durch Funktionssymbole aufgebauter Ausdruck','Nur Konstanten','Ein Prädikat mit Argument'],c:1,e:'Terme: Variablen sind Terme, und f(t₁,...,tₖ) ist Term wenn f ein Funktionssymbol und t₁,...,tₖ Terme sind.'},
   {t:'praedikat',q:'Was ist eine Struktur α in der Semantik der Prädikatenlogik?',o:['Eine Menge von Wahrheitswerten','Ein Tupel (U, φ, ψ, ξ) mit Universum, Funktionen, Prädikaten und Variablenbelegung','Eine Formel in KNF','Eine Belegung atomarer Variablen'],c:1,e:'Struktur α = (U, φ, ψ, ξ): Universum + Interpretation von Funktionssymbolen + Prädikaten + Variablen.'},
   {t:'praedikat',q:'Gilt ∀x∀y F ≡ ∀y∀x F?',o:['Nein, Reihenfolge wichtig','Ja, gleiche Quantorart darf getauscht werden','Nur für endliche U','Nur wenn F keine freien Variablen hat'],c:1,e:'Gleichartige Quantoren dürfen getauscht werden: ∀x∀y F ≡ ∀y∀x F und ∃x∃y F ≡ ∃y∃x F.'},
   {t:'praedikat',q:'Was besagt der Gödelsche erste Unvollständigkeitssatz?',o:['Alle Aussagen sind beweisbar','Jedes mächtige widerspruchsfreie formale System ist unvollständig','Prädikatenlogik ist entscheidbar','Jede Formel hat ein Modell'],c:1,e:'Gödel 1931: In jedem hinreichend mächtigen widerspruchsfreien System gibt es wahre aber unbeweisbare Aussagen.'},
@@ -1318,7 +1318,7 @@ const QUIZ=[
   {t:'beweise',q:'Was ist das Schubfachprinzip (Dirichlet)?',o:['n Objekte in n Fächer — immer eines leer','n>k Objekte auf k Fächer → mind. ein Fach mit ≥⌈n/k⌉ Objekten','k Objekte auf n Fächer → alle Fächer leer','n Objekte gleich verteilt'],c:1,e:'n>k Objekte auf k Fächer → mind. ein Fach hat ≥⌈n/k⌉ Objekte. Beweis per Widerspruch.'},
   {t:'beweise',q:'Was sind die Peano-Axiome?',o:['Axiome der Prädikatenlogik','5 Axiome die die natürlichen Zahlen charakterisieren','Axiome der Mengenlehre','Beweisregeln für Induktion'],c:1,e:'Peano-Axiome (1889): 5 Axiome die ℕ₀ charakterisieren — 0 ist nat. Zahl, Nachfolger, kein Vorgänger von 0, Injektivität, Induktionsaxiom.'},
   {t:'beweise',q:'Was ist die Induktionsvoraussetzung (I.V.)?',o:['p(0) ist wahr','Annahme dass p(n) gilt, um p(n+1) zu beweisen','p(n+1) ist wahr','Alle p(k) für k<n sind wahr'],c:1,e:'I.V. = Annahme p(n). Daraus wird im Induktionsschritt p(n+1) hergeleitet.'},
-  {t:'beweise',q:'Was unterscheidet vollständige von einfacher Induktion?',o:['Kein Unterschied','Bei vollständiger Induktion darf man p(0),…,p(n−1) alle annehmen, nicht nur p(n)','Vollständige Induktion hat keinen I.A.','Vollständige Induktion gilt nur für endliche Mengen'],c:1,e:'Vollständige Induktion: I.V. ist ∀m<n: p(m). Stärkere Voraussetzung, kein expliziter I.A. nötig.'},
+  {t:'beweise',q:'Was unterscheidet vollständige von einfacher Induktion?',o:['Kein Unterschied','Bei vollständiger Induktion darf man p(0),...,p(n−1) alle annehmen, nicht nur p(n)','Vollständige Induktion hat keinen I.A.','Vollständige Induktion gilt nur für endliche Mengen'],c:1,e:'Vollständige Induktion: I.V. ist ∀m<n: p(m). Stärkere Voraussetzung, kein expliziter I.A. nötig.'},
   {t:'beweise',q:'6|x → 3|x. Welche Beweismethode ist hier am direktesten?',o:['Widerspruchsbeweis','Induktion','Direkter Beweis mit Schlusskette','Fallunterscheidung'],c:2,e:'Direkter Beweis: 6|x → ∃k: 6k=x → ∃k: 3·(2k)=x → 3|x. Schlusskette.'},
   {t:'beweise',q:'Was ist die Kontraposition als Beweismethode?',o:['p→q direkt beweisen','Statt p→q lieber ¬q→¬p beweisen','¬p annehmen und Widerspruch finden','Beide Richtungen einer Äquivalenz zeigen'],c:1,e:'Kontraposition: (p→q)≡(¬q→¬p). Manchmal ist der Umkehrschluss einfacher zu beweisen.'},
   {t:'beweise',q:'Was ist der Induktionsanker (I.A.)?',o:['Allgemeiner Schritt','Nachweis von p(0) als Startfall','Annahme p(n)','Abschlussfloskel'],c:1,e:'I.A. = Nachweis von p(0). Zeigt dass die Induktionskette beginnen kann.'},
@@ -1342,7 +1342,7 @@ const QUIZ=[
   {t:'boolesch',q:'Was ist ein Halbaddierer?',o:['Addiert zwei 3-Bit-Zahlen','Addiert zwei 1-Bit-Zahlen und liefert Summe s und Übertrag c','Addiert zwei 1-Bit-Zahlen ohne Übertrag','Ein NAND-Gatter'],c:1,e:'Halbaddierer: s = x₁⊕x₂ (XOR), c = x₁·x₂ (AND). Addiert zwei Bits, kein Eingangsübertrag.'},
   {t:'boolesch',q:'Warum ist {+, *} nicht funktional vollständig?',o:['Weil es zu viele Funktionen gibt','Weil die Negation nicht dargestellt werden kann','Weil + und * identisch sind','Weil es keine Konstanten gibt'],c:1,e:'{+,*} kann ¬ nicht darstellen: jede Funktion in {+,*} ohne ¬ ist monoton — Negation ist nicht monoton.'},
   {t:'boolesch',q:'Was ist das boolesche Gesetz ¬(x·y) ≡ ?',o:['x̄+ȳ (De Morgan)','x̄·ȳ','x+y','x·ȳ'],c:0,e:'De Morgan für Boolesche Algebra: ¬(x*y) ≡ x̄+ȳ. Negation von AND wird zu OR mit negierten Literalen.'},
-  {t:'boolesch',q:'Wann sind zwei Boolesche Ausdrücke äquivalent?',o:['Wenn sie gleich lang sind','Wenn sie für alle Belegungen denselben Wert haben','Wenn sie die gleiche Anzahl Variablen haben','Wenn einer die Negation des anderen ist'],c:1,e:'Äquivalenz v≡w: f_v(b₁,…,bₙ) = f_w(b₁,…,bₙ) für alle Bitvektoren (b₁,…,bₙ).'},
+  {t:'boolesch',q:'Wann sind zwei Boolesche Ausdrücke äquivalent?',o:['Wenn sie gleich lang sind','Wenn sie für alle Belegungen denselben Wert haben','Wenn sie die gleiche Anzahl Variablen haben','Wenn einer die Negation des anderen ist'],c:1,e:'Äquivalenz v≡w: f_v(b₁,...,bₙ) = f_w(b₁,...,bₙ) für alle Bitvektoren (b₁,...,bₙ).'},
   {t:'boolesch',q:'Wie viele n-stellige Boolesche Funktionen gibt es allgemein?',o:['2^n','n²','2^(2^n)','n!'],c:2,e:'2^n mögliche Eingaben, je 2 Ausgaben → 2^(2^n) verschiedene n-stellige Boolesche Funktionen.'},
   {t:'boolesch',q:'Was sind Umformungsregeln zur KNF-Erzeugung?',o:['Nur De Morgan','¬¬w→w, De Morgan für ∧ und ∨, und Distributivgesetze','Nur Distributivgesetze','Nur Absorption'],c:1,e:'Zur KNF: (1) ¬¬w→w, (2) ¬(v*w)→¬v+¬w, (3) ¬(v+w)→¬v*¬w, (4) w+(u*v)→(w+u)*(w+v), (5) (u*v)+w→(u+w)*(v+w).'},
 
@@ -1353,7 +1353,7 @@ const QUIZ=[
   {t:'resolution',q:'Warum terminiert der Resolutionskalkül?',o:['Weil Klauseln immer kürzer werden','Weil es für k atomare Formeln maximal 4^k Klauseln gibt','Weil immer ∅ erzeugt wird','Weil die Klauselmenge endlich startet'],c:1,e:'Für k atomare Formeln gibt es maximal 4^k Klauseln in Res∞(K). Also terminiert der Algorithmus spätestens nach 4^k Schritten.'},
   {t:'resolution',q:'Was ist eine Tatsachenklausel?',o:['Eine leere Klausel','Eine Hornklausel mit nur einem positiven Literal','Eine Klausel mit nur negativen Literalen','Die Zielklausel'],c:1,e:'Tatsachenklausel = Hornklausel ohne negative Literale: nur ein einzelnes positives Literal {A}. Entspricht einer Grundannahme.'},
   {t:'resolution',q:'Was ist eine Prozedurklausel (Regel) in der Hornlogik?',o:['Klausel mit nur positiven Literalen','Hornklausel mit einem positiven und mindestens einem negativen Literal','Leere Klausel','Klausel mit nur negativen Literalen'],c:1,e:'Prozedurklausel: {¬A,¬B,C} — ein positives Literal C (Konklusion) und negative Literale (Prämissen). Entspricht A∧B→C.'},
-  {t:'resolution',q:'Was ist eine Zielklausel?',o:['Eine Tatsachenklausel','Hornklausel ohne positives Literal, nur negative Literale','Klausel mit allen Literalen','Eine Resolvente'],c:1,e:'Zielklausel = Hornklausel ohne positives Literal: {¬L₁,…,¬Lₙ}. Entspricht der Anfrage: Folgt L₁∧…∧Lₙ?'},
+  {t:'resolution',q:'Was ist eine Zielklausel?',o:['Eine Tatsachenklausel','Hornklausel ohne positives Literal, nur negative Literale','Klausel mit allen Literalen','Eine Resolvente'],c:1,e:'Zielklausel = Hornklausel ohne positives Literal: {¬L₁,...,¬Lₙ}. Entspricht der Anfrage: Folgt L₁∧...∧Lₙ?'},
   {t:'resolution',q:'Was ist das P=NP Problem in Bezug auf SAT?',o:['SAT ist immer in O(n) lösbar','Ob SAT (Erfüllbarkeit einer KNF) in polynomialer Zeit entscheidbar ist — ungeklärt','SAT ist unentscheidbar','SAT ist immer unerfüllbar'],c:1,e:'P=NP: Ungeklärt ob Erfüllbarkeit einer KNF in polynomialer statt exponentieller Zeit entschieden werden kann. 1 Mio. $ Preisgeld.'},
   {t:'resolution',q:'Was macht der Markierungsalgorithmus bei einer Tatsachenklausel {A}?',o:['Er löscht A','Er markiert A','Er erzeugt eine Resolvente','Er beendet die Suche'],c:1,e:'Schritt 2 des Markierungsalgorithmus: Alle Literale aus Tatsachenklauseln werden sofort markiert.'},
   {t:'resolution',q:'Wann markiert der Markierungsalgorithmus ein positives Literal einer Regel?',o:['Sofort','Wenn alle negativen Literale der Regel markiert sind','Nie','Wenn die Zielklausel erreicht ist'],c:1,e:'Wenn alle negativen Literale {¬A,¬B} in einer Regel {¬A,¬B,C} markiert sind → markiere das positive Literal C.'},
@@ -1437,7 +1437,7 @@ const LESSON_META={
     miniCheckQuestions:[
       {q:'Was ist De Morgans Gesetz für ¬(p∨q)?',opts:['¬p∨¬q','¬p∧¬q','p∧q','¬p→¬q'],correct:1,exp:'¬(p∨q) ≡ ¬p∧¬q — Negation reinziehen dreht ∨ zu ∧.'},
       {q:'Was bedeutet F ≡ G?',opts:['F und G sind identische Strings','F↔G ist eine Tautologie','F und G haben gleich viele Variablen','F impliziert G'],correct:1,exp:'≡ ist ein Metasymbol: F≡G bedeutet F↔G ist immer wahr.'},
-      {q:'p∧¬p ist eine …?',opts:['Tautologie','Kontradiktion','Erfüllbare Formel','Implikation'],correct:1,exp:'p∧¬p ist immer falsch — eine Kontradiktion.'},
+      {q:'p∧¬p ist eine ...?',opts:['Tautologie','Kontradiktion','Erfüllbare Formel','Implikation'],correct:1,exp:'p∧¬p ist immer falsch — eine Kontradiktion.'},
     ],
   },
 };
@@ -1455,15 +1455,15 @@ const LESSON_META={
 
 // ═══════════════════════════════════════════════
 const SR_POOL=[
-  {q:'Was ist eine Aussage in der Logik?',opts:['Ein Satz der immer wahr ist','Ein Gebilde dem man sinnvoll wahr oder falsch zuordnen kann','Eine mathematische Formel','Ein Beweis'],correct:1,exp:'Aussagen haben einen Wahrheitswert – Fragen und Paradoxien nicht.'},
+  {q:'Was ist eine Aussage in der Logik?',opts:['Ein Satz der immer wahr ist','Ein Gebilde dem man sinnvoll wahr oder falsch zuordnen kann','Eine mathematische Formel','Ein Beweis'],correct:1,exp:'Aussagen haben einen Wahrheitswert -- Fragen und Paradoxien nicht.'},
   {q:'Wann ist p → q falsch?',opts:['p=f, q=f','p=f, q=w','p=w, q=w','p=w, q=f'],correct:3,exp:'Nur wenn die Prämisse wahr und die Konklusion falsch ist.'},
   {q:'De Morgan: ¬(p ∧ q) ≡ ?',opts:['¬p ∧ ¬q','¬p ∨ ¬q','p ∨ q','¬(p ∨ q)'],correct:1,exp:'¬(p ∧ q) ≡ ¬p ∨ ¬q ist eines der De Morgan Gesetze.'},
   {q:'Was ist eine Tautologie?',opts:['Immer falsche Formel','Immer wahre Formel','Manchmal wahre Formel','Unentscheidbare Formel'],correct:1,exp:'Eine Tautologie ist unter jeder Belegung wahr, z.B. p ∨ ¬p.'},
-  {q:'Schema math. Induktion – was zeigt der Induktionsanfang?',opts:['p(n)→p(n+1)','p(0)','∀n p(n)','Die Induktionsvoraussetzung'],correct:1,exp:'I.A. zeigt p(0) – den Startfall der Induktion.'},
+  {q:'Schema math. Induktion -- was zeigt der Induktionsanfang?',opts:['p(n)→p(n+1)','p(0)','∀n p(n)','Die Induktionsvoraussetzung'],correct:1,exp:'I.A. zeigt p(0) -- den Startfall der Induktion.'},
   {q:'Was bedeutet ∀x∃y P(x,y)?',opts:['Es gibt ein y das für alle x gilt','Für jedes x gibt es ein y mit P(x,y)','Für alle x und alle y gilt P','Es gibt ein x für das kein y gilt'],correct:1,exp:'Für jedes x existiert (mindestens) ein y mit der Eigenschaft P.'},
-  {q:'Was ist eine Hornklausel?',opts:['Klausel ohne Literale','Klausel mit max. 1 positivem Literal','Klausel mit max. 1 negativem Literal','Leere Klausel'],correct:1,exp:'Hornklauseln haben höchstens ein positives Literal – Grundlage von Prolog.'},
+  {q:'Was ist eine Hornklausel?',opts:['Klausel ohne Literale','Klausel mit max. 1 positivem Literal','Klausel mit max. 1 negativem Literal','Leere Klausel'],correct:1,exp:'Hornklauseln haben höchstens ein positives Literal -- Grundlage von Prolog.'},
   {q:'Resolutionssatz: F KNF unerfüllbar genau dann wenn?',opts:['Alle Klauseln erfüllt','Leere Klausel ∅ ableitbar','F eine Tautologie ist','Keine Resolventen existieren'],correct:1,exp:'F unerfüllbar ⟺ ∅ ∈ Res∞(K(F)).'},
-  {q:'Kontraposition von p → q?',opts:['q → p','¬p → ¬q','¬q → ¬p','p → ¬q'],correct:2,exp:'(p→q) ≡ (¬q→¬p) – die Kontraposition ist äquivalent.'},
+  {q:'Kontraposition von p → q?',opts:['q → p','¬p → ¬q','¬q → ¬p','p → ¬q'],correct:2,exp:'(p→q) ≡ (¬q→¬p) -- die Kontraposition ist äquivalent.'},
   {q:'Wie viele 2-stellige Boolesche Funktionen gibt es?',opts:['4','8','16','32'],correct:2,exp:'2^(2^2) = 2^4 = 16.'},
 ];
 
@@ -1473,7 +1473,7 @@ const SR_POOL=[
 const THINK_QS={
   aussagen:[
     {q:'Warum ist „Dieser Satz ist falsch" keine Aussage im logischen Sinne?',hint:'Tipp: Was passiert wenn du annimmst es ist wahr? Und wenn falsch?'},
-    {q:'Die Implikation p → q ist auch wahr wenn p falsch ist. Klingt seltsam – kannst du dir erklären warum das sinnvoll ist?',hint:'Tipp: Denke an Versprechen: „Wenn es regnet, nehme ich den Schirm." Was wenn es nicht regnet?'},
+    {q:'Die Implikation p → q ist auch wahr wenn p falsch ist. Klingt seltsam -- kannst du dir erklären warum das sinnvoll ist?',hint:'Tipp: Denke an Versprechen: „Wenn es regnet, nehme ich den Schirm." Was wenn es nicht regnet?'},
   ],
   praedikat:[
     {q:'Warum gilt ∃y∀x P(x,y) → ∀x∃y P(x,y), aber nicht umgekehrt? Finde ein konkretes Gegenbeispiel.',hint:'Tipp: P(x,y) = „x liebt y". Was bedeutet jede Richtung?'},
@@ -1602,7 +1602,7 @@ let S={
 };
 
 const STATUS_META={
-  not_started:   {label:'',                pip:'var(--muted)',    text:'–'},
+  not_started:   {label:'',                pip:'var(--muted)',    text:'--'},
   in_progress:   {label:'läuft',           pip:'var(--sky)',      text:'In Arbeit'},
   completed_unsure: {label:'unsicher',     pip:'var(--warn)',     text:'Unsicher'},
   completed_secure: {label:'✓',            pip:'var(--green)',    text:'Sicher'},
@@ -1817,7 +1817,7 @@ function renderLinkedResources(l){
   const cardChips=(l.linkedCardIds||[]).slice(0,3).map(i=>{
     const c=CARDS[i];
     if(!c) return '';
-    return `<span class="lr-chip card-chip" onclick="goToCard(${i})">🃏 ${c.q.slice(0,28)}…</span>`;
+    return `<span class="lr-chip card-chip" onclick="goToCard(${i})">🃏 ${c.q.slice(0,28)}...</span>`;
   }).join('');
   const quizChips=(l.linkedQuizQuestionIds||[]).slice(0,3).map(i=>{
     const q=QUIZ[i];
@@ -2124,7 +2124,7 @@ function buildStep(s){
       <div class="fillin">
         <div class="fillin-q">${s.q}</div>
         <div class="fillin-wrap">
-          <input class="fillin-input" id="fii" placeholder="Antwort eingeben…" 
+          <input class="fillin-input" id="fii" placeholder="Antwort eingeben..." 
             onkeydown="if(event.key==='Enter')checkFillin('${esc(s.answer)}','${esc(s.exp)}')">
           <button class="btn p" onclick="checkFillin('${esc(s.answer)}','${esc(s.exp)}')">✓</button>
         </div>
@@ -2148,7 +2148,7 @@ function buildStep(s){
         <div class="recall-label">💬 Active Recall</div>
         <div class="recall-prompt">${s.q}</div>
         <div class="recall-input-row">
-          <input class="recall-input" id="rcl_inp" placeholder="Deine Antwort…"
+          <input class="recall-input" id="rcl_inp" placeholder="Deine Antwort..."
             onkeydown="if(event.key==='Enter')submitRecall()">
           <button class="recall-hint-btn" onclick="revealRecall()">Zeigen →</button>
         </div>
@@ -2160,18 +2160,20 @@ function buildStep(s){
       <div class="think-wrap">
         <div class="think-label">🤔 Denk kurz nach</div>
         <div class="think-q">${s.q}</div>
-        <textarea class="think-ta" id="think_ta" placeholder="Schreib deine Gedanken…"></textarea>
+        <textarea class="think-ta" id="think_ta" placeholder="Schreib deine Gedanken..."></textarea>
 
 ```
     <button class="think-submit" onclick="submitThink()">Weiter denken →</button>
     <div class="think-fb" id="think_fb">${s.hint||''}</div>
   </div>`;
+```
 
-case 'sr-mcq': return `
+case ‘sr-mcq’: return `
+
   <div>
     <div class="sr-banner">
       <span class="sr-badge">🔁 Wiederholung</span>
-      <span class="sr-text">Frage aus einer früheren Lektion – weißt du es noch?</span>
+      <span class="sr-text">Frage aus einer früheren Lektion -- weißt du es noch?</span>
     </div>
     <div class="mcq">
       <div class="mcq-q">${s.q}</div>
@@ -2185,6 +2187,7 @@ case 'sr-mcq': return `
     </div>
   </div>`;
 
+```
 default: return '';
 ```
 
@@ -2197,6 +2200,7 @@ window[’*sort*’+id]={pairs:s.pairs,options:s.options,selections:{},exp:s.exp
 const chips=s.options.map((o,i)=>`<div class="sort-chip" id="chip_${id}_${i}" onclick="sortSelect('${id}',${i})">${o}</div>`).join(’’);
 const slots=s.pairs.map((p,i)=>` <div class="sort-row"> <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"> <div class="match-left" style="font-size:0.75rem">${p.from}</div> <div class="match-arrow">→</div> <div class="sort-slot" id="slot_${id}_${i}" onclick="sortSlotClick('${id}',${i})"> <span class="sort-slot-val" id="slotval_${id}_${i}">— tippe zum Wählen</span> </div> </div> </div>`).join(’’);
 return `<div class="sort-zone">
+
 <p class="prose">${s.q}</p>
 <div style="margin:10px 0 4px;font-size:0.68rem;color:var(--muted)">Verfügbare Optionen:</div>
 <div class="sort-bank" id="bank_${id}">${chips}</div>
@@ -2245,7 +2249,7 @@ fb.className=’sort-fb show ’+(all?‘ok’:‘no’);
 if(all)addXP(8);
 }
 
-function esc(s){return(s||’’).replace(/’/g,”'”).replace(/”/g,’"’);}
+function esc(s){return(s||’’).replace(/’/g,”’”).replace(/”/g,’”’);}
 
 function toggleReveal(i){
 const b=document.getElementById(‘rsb_’+i);
@@ -2372,7 +2376,7 @@ function fcNext(){fcIdx=fcIdx<fcCards.length-1?fcIdx+1:0;fcRender();}
 function fcRate(r){
 if(!fcCards.length)return;
 const c=fcCards[fcIdx];
-if(r===2&&!S.cardsLearned.includes(c.oi)){S.cardsLearned.push(c.oi);addXP(5);addAct(`Karte: "${c.q.slice(0,35)}…"`);}
+if(r===2&&!S.cardsLearned.includes(c.oi)){S.cardsLearned.push(c.oi);addXP(5);addAct(`Karte: "${c.q.slice(0,35)}..."`);}
 else if(r===1)addXP(2);
 save();setTimeout(fcNext,220);
 }
@@ -2417,6 +2421,7 @@ document.getElementById(‘qInfo’).textContent=(qIdx+1)+’/’+qQs.length;
 document.getElementById(‘qScoreD’).textContent=qScore+’/’+qIdx;
 const opts=q.o.map((o,i)=>`<button class="q-opt" onclick="ansQ(${i})"> <span class="ol">${'ABCD'[i]}</span>${o}</button>`).join(’’);
 con.innerHTML=`<div class="q-card">
+
 <div class="q-cat">${t?.name||q.t}</div>
 <div class="q-q">${q.q}</div>
 <div class="q-opts">${opts}</div>
@@ -2436,11 +2441,11 @@ const fb=document.getElementById(‘qfb’);
 if(idx===q.c){
 qScore++;S.quizCorrect++;addXP(10);
 fb.textContent=‘✅ Richtig! ‘+q.e;fb.className=‘q-fb ok show’;
-addAct(`Quiz korrekt: "${q.q.slice(0,35)}…"`,’#4ade80’);
+addAct(`Quiz korrekt: "${q.q.slice(0,35)}..."`,’#4ade80’);
 } else {
 opts[idx].classList.add(‘wrong’);
 fb.textContent=‘❌ ‘+q.e;fb.className=‘q-fb no show’;addXP(2);
-addAct(`Quiz falsch: "${q.q.slice(0,35)}…"`,’#f87171’);
+addAct(`Quiz falsch: "${q.q.slice(0,35)}..."`,’#f87171’);
 }
 S.quizTotal++;
 document.getElementById(‘qnb’).style.display=‘flex’;
